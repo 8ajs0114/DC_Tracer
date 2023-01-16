@@ -157,6 +157,7 @@ typedef long double     float64;
 #include "..\main\rom.h"
 #include "..\main\sensor.h"
 #include "..\main\search.h"
+#include "..\main\check.h"
 #include "..\main\fastrun.h"
 #include "..\main\extremerun.h"
 
