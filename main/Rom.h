@@ -15,6 +15,8 @@
 #ifndef __ROM_H__
 #define __ROM_H__
 
+extern void maxmin_read_rom( void );
+extern void maxmin_write_rom( void );
 
 #endif
 

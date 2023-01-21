@@ -25,44 +25,44 @@ void InitGpio(void)
 {
    EALLOW;
 /*
-//   IO0 	- Left_PWM
-	GpioCtrlRegs.GPAMUX1.bit.GPIO0 = 1;		dir	1			
-//   IO1 	- LMotor_DIR
+//   IO0 	- S OUT L0 R7
+	GpioCtrlRegs.GPAMUX1.bit.GPIO0 = 0;		dir	1			
+//   IO1 	- S OUT L1 R6
 	GpioCtrlRegs.GPAMUX1.bit.GPIO1 = 0;		dir	1			  
-//   IO2 	- Right_PWM 
-	GpioCtrlRegs.GPAMUX1.bit.GPIO2 = 1;		dir	1
-//   IO3 	- RMotor_DIR
+//   IO2 	- S OUT L2 R5
+	GpioCtrlRegs.GPAMUX1.bit.GPIO2 = 0;		dir	1
+//   IO3 	- S OUT L3 R4
 	GpioCtrlRegs.GPAMUX1.bit.GPIO3 = 0; 	dir 1
 	
-//   IO4 	- LSen1, RSen8
+//   IO4 	- S OUT L4 R3
 	GpioCtrlRegs.GPAMUX1.bit.GPIO4 = 0;		dir	1
-//   IO5 	- LSen2, RSen7
+//   IO5 	- S OUT L5 R2
 	GpioCtrlRegs.GPAMUX1.bit.GPIO5 = 0;		dir	1
-//   IO6 	- LSen3, RSen6
+//   IO6 	- S OUT L6 R1
 	GpioCtrlRegs.GPAMUX1.bit.GPIO6 = 0;		dir	1
-//   IO7 	- LSen4, RSen5
+//   IO7 	- S OUT L7 R0
 	GpioCtrlRegs.GPAMUX1.bit.GPIO7 = 0;		dir	1
 	
-//   IO8 	- LSen5, RSen4
-	GpioCtrlRegs.GPAMUX1.bit.GPIO8 = 0;		dir	1
-//   IO9 	- LSen6, RSen3
-	GpioCtrlRegs.GPAMUX1.bit.GPIO9 = 0;		dir	1
-//   IO10	- LSen7, RSen2
+//   IO8 	- PWM A Left
+	GpioCtrlRegs.GPAMUX1.bit.GPIO8 = 1;		dir	1
+//   IO9 	- PWM B Right
+	GpioCtrlRegs.GPAMUX1.bit.GPIO9 = 1;		dir	1
+//   IO10	- DIR A Left
 	GpioCtrlRegs.GPAMUX1.bit.GPIO10 = 0;	dir	1
-//   IO11   - LSen8, RSen1
+//   IO11   - DIR B Right
 	GpioCtrlRegs.GPAMUX1.bit.GPIO11 = 0;	dir	1
 	
-//   IO12   - Buzzer
+//   IO12   - LED Right 
 	GpioCtrlRegs.GPAMUX1.bit.GPIO12 = 0;	dir	1
-//   IO13   - LED1
+//   IO13   - LED Center
 	GpioCtrlRegs.GPAMUX1.bit.GPIO13 = 0;	dir	1
-//   IO14   - SW_Down
+//   IO14   - SWITCH Right
 	GpioCtrlRegs.GPAMUX1.bit.GPIO14 = 0;	dir	0
-//   IO15   - SW_Left
+//   IO15   - SWITCH Left
 	GpioCtrlRegs.GPAMUX1.bit.GPIO15 = 0;	dir	0
 	
-//mux	0000 0000 / 0000 0000 / 0000 0000 / 0001 0001 */
-	GpioCtrlRegs.GPAMUX1.all = 0x00000011;
+//mux	0000 0000 / 0000 0101 / 0000 0000 / 0000 0000 */
+	GpioCtrlRegs.GPAMUX1.all = 0x00050000;
 	
 /*
 //   IO16   - spi simo
@@ -74,31 +74,31 @@ void InitGpio(void)
 //   IO19   - spi en(output io) --> led 0
 	GpioCtrlRegs.GPAMUX2.bit.GPIO19 = 0;	dir	1
 	
-//   IO20   - Right_QEP_1A     
+//   IO20   - QEP Left A 3Y
 	GpioCtrlRegs.GPAMUX2.bit.GPIO20 = 1;	dir	0
-//   IO21   - Right_QEP_1B
+//   IO21   - QEP Left B 4Y
 	GpioCtrlRegs.GPAMUX2.bit.GPIO21 = 1;	dir	0
 //   IO22   - VFD_Data
 	GpioCtrlRegs.GPAMUX2.bit.GPIO22 = 0;	dir	1
 //   IO23   - VFD_RS
 	GpioCtrlRegs.GPAMUX2.bit.GPIO23 = 0;	dir	1
 	
-//   IO24   - Left_QEP_2A
+//   IO24   - QEP Right A 1Y
 	GpioCtrlRegs.GPAMUX2.bit.GPIO24 = 2;	dir	0
-//   IO25   - Left_QEP_2B
+//   IO25   - QEP Right B 2Y
 	GpioCtrlRegs.GPAMUX2.bit.GPIO25 = 2;	dir	0
 //   IO26   - VFD_Clock
 	GpioCtrlRegs.GPAMUX2.bit.GPIO26 = 0;	dir	1
-//   IO27   - LED2
+//   IO27   - BUZZER
 	GpioCtrlRegs.GPAMUX2.bit.GPIO27 = 0;	dir	1
 	
 //   IO28   - rxd User(LED_C2)
 	GpioCtrlRegs.GPAMUX2.bit.GPIO28 = 1;	dir	0
 //   IO29   - txd 
 	GpioCtrlRegs.GPAMUX2.bit.GPIO29 = 1;	dir	1
-//   IO30   - SW_Up
+//   IO30   - SWITCH Down
 	GpioCtrlRegs.GPAMUX2.bit.GPIO30 = 0;	dir	0
-//   IO31   - SW_Right
+//   IO31   - SWITCH Up
 	GpioCtrlRegs.GPAMUX2.bit.GPIO31 = 0;	dir	0
 	
 //mux	0000 0101 / 0000 1010 /  0000 0101 / 0001 0101/ */
@@ -108,15 +108,15 @@ void InitGpio(void)
 /*
 //   IO32 - VFD_CE
 	GpioCtrlRegs.GPBMUX1.bit.GPIO32 = 0;	dir	1
-//   IO33 - LED0
+//   IO33 - LED Left
 	GpioCtrlRegs.GPBMUX1.bit.GPIO33 = 0;	dir	1
-//   IO34 - LED3
+//   IO34 - 
 	GpioCtrlRegs.GPBMUX1.bit.GPIO34 = 0;	dir	1
 //mux 	0000 0000 / 0000 0000 / 0000 0000 / 0000 0000/ */
 	GpioCtrlRegs.GPBMUX1.all = 0x0;
 	
 /*	
-	GpioCtrlRegs.GPADIR.bit.GPIO0 = 1;    // PWM 
+	GpioCtrlRegs.GPADIR.bit.GPIO0 = 1;    
 	GpioCtrlRegs.GPADIR.bit.GPIO1 = 1;
 	GpioCtrlRegs.GPADIR.bit.GPIO2 = 1;
 	GpioCtrlRegs.GPADIR.bit.GPIO3 = 1;
@@ -155,7 +155,7 @@ void InitGpio(void)
 	GpioCtrlRegs.GPADIR.bit.GPIO29 = 1;
 	GpioCtrlRegs.GPADIR.bit.GPIO30 = 0;
 	GpioCtrlRegs.GPADIR.bit.GPIO31 = 0;
-*/	// 0010 1100 1100 1101 0011 1111 1111 1111
+*/	// 0010 1100 1100 1101 1111 1111 1111 1111
 	GpioCtrlRegs.GPADIR.all = 0x2ccd3fff;
 
 	
@@ -193,3 +193,4 @@ void InitGpio(void)
 //===========================================================================
 // End of file.
 //===========================================================================
+
