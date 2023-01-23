@@ -39,7 +39,7 @@ typedef	volatile struct sensor_variable
 
 }sen_t;
 
-__STRUCT_EXT__  	sen_t	g_sen[16];
+__STRUCT_EXT__		sen_t		g_sen[16];
 
 typedef volatile struct position
 {
@@ -50,7 +50,18 @@ typedef volatile struct position
 	_iq10      iq10_temp_position;	
 }position_t;
 
-__STRUCT_EXT__	position_t		g_pos;
+__STRUCT_EXT__		position_t		g_pos;
+
+typedef volatile struct encoder
+{
+	Uint16	u16qep_count;
+
+}encoder_t;
+
+__STRUCT_EXT__		encoder_t	R_encoder;
+__STRUCT_EXT__		encoder_t	L_encoder;
+
+
 
 
 #endif

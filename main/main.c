@@ -30,8 +30,8 @@ void System_Init(void)
 //	InitEPWM( &LeftPwmRegs );
 //	InitEPWM( &RightPwmRegs );
 	
-//	InitEQep( &LeftQepRegs );
-//	InitEQep( &RightQepRegs );
+	InitEQep( &LeftQepRegs );
+	InitEQep( &RightQepRegs );
 	
 }
 
@@ -46,6 +46,9 @@ void Variable_Init( void )
 	pwm = 2000;
 	PWM_Left = pwm;
 	PWM_Right = pwm;
+
+	memset( ( void * )&L_encoder, 0x00, sizeof(encoder_t) );
+	memset( ( void * )&R_encoder, 0x00, sizeof(encoder_t) );
 }
 
 void main(void)
@@ -61,11 +64,17 @@ void main(void)
 	VFDPrintf("RUN_CODE");
 	while( 1 )
 	{
-		DIR_Left = OFF;
+/*		DIR_Left = OFF;
 		DIR_Right = ON;
 
 		PWM_Left = pwm;
 		PWM_Right = pwm;
+*/
+		R_encoder.u16qep_count = ( Uint16 )RightQepRegs.QPOSCNT;
+		L_encoder.u16qep_count = ( Uint16 )LeftQepRegs.QPOSCNT;
+		
+		TxPrintf("Left Qep : %d\t", L_encoder.u16qep_count);
+		TxPrintf("Right Qep : %d\n", R_encoder.u16qep_count);		
 	}
 
 
