@@ -45,10 +45,10 @@ void InitGpio(void)
 	
 //   IO8 	- PWM A Left
 	GpioCtrlRegs.GPAMUX1.bit.GPIO8 = 1;		dir	1
-//   IO9 	- PWM B Right
-	GpioCtrlRegs.GPAMUX1.bit.GPIO9 = 1;		dir	1
-//   IO10	- DIR A Left
-	GpioCtrlRegs.GPAMUX1.bit.GPIO10 = 0;	dir	1
+//   IO9 	- DIR A Left
+	GpioCtrlRegs.GPAMUX1.bit.GPIO9 = 0;		dir	1
+//   IO10	- PWM B Right
+	GpioCtrlRegs.GPAMUX1.bit.GPIO10 = 1;	dir	1
 //   IO11   - DIR B Right
 	GpioCtrlRegs.GPAMUX1.bit.GPIO11 = 0;	dir	1
 	
@@ -61,8 +61,8 @@ void InitGpio(void)
 //   IO15   - SWITCH Left
 	GpioCtrlRegs.GPAMUX1.bit.GPIO15 = 0;	dir	0
 	
-//mux	0000 0000 / 0000 0101 / 0000 0000 / 0000 0000 */
-	GpioCtrlRegs.GPAMUX1.all = 0x00050000;
+//mux	0000 0000 / 0001 0001 / 0000 0000 / 0000 0000 */
+	GpioCtrlRegs.GPAMUX1.all = 0x00110000;
 	
 /*
 //   IO16   - spi simo
@@ -155,7 +155,7 @@ void InitGpio(void)
 	GpioCtrlRegs.GPADIR.bit.GPIO29 = 1;
 	GpioCtrlRegs.GPADIR.bit.GPIO30 = 0;
 	GpioCtrlRegs.GPADIR.bit.GPIO31 = 0;
-*/	// 0010 1100 1100 1101 1111 1111 1111 1111
+*/	// 0010 1100 1100 1101 0011 1111 1111 1111
 	GpioCtrlRegs.GPADIR.all = 0x2ccd3fff;
 
 	

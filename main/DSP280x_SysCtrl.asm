@@ -1,6 +1,6 @@
 ;***************************************************************
 ;* TMS320C2000 C/C++ Codegen                         PC v4.1.3 *
-;* Date/Time created: Fri Jan 20 15:28:22 2023                 *
+;* Date/Time created: Mon Jan 23 14:08:18 2023                 *
 ;***************************************************************
 	.compiler_opts --mem_model:code=flat --mem_model:data=large --silicon_version=28 
 FP	.set	XAR2
@@ -17,8 +17,8 @@ DW$2	.dwtag  DW_TAG_variable, DW_AT_name("SysCtrlRegs"), DW_AT_symbol_name("_Sys
 	.dwattr DW$2, DW_AT_type(*DW$T$75)
 	.dwattr DW$2, DW_AT_declaration(0x01)
 	.dwattr DW$2, DW_AT_external(0x01)
-;	..\Compiler\bin\opt2000.exe C:\Users\JS\AppData\Local\Temp\TI54010 C:\Users\JS\AppData\Local\Temp\TI5404 
-;	..\Compiler\bin\ac2000.exe --keep_unneeded_types -D_INLINE -DLARGE_MODEL -I..\include --version=28 --keep_unneeded_types --mem_model:code=flat --mem_model:data=large -m --i_output_file C:\Users\JS\AppData\Local\Temp\TI5402 --template_info_file C:\Users\JS\AppData\Local\Temp\TI5406 --object_file DSP280x_SysCtrl.obj --embed_opts 10 --call_assumptions=0 --mem_model:code=flat --mem_model:data=large --opt_for_speed --opt_level=3 --optimizer_comments --optimizer_interlist --program_level_compile 
+;	..\Compiler\bin\opt2000.exe C:\Users\JS\AppData\Local\Temp\TI79610 C:\Users\JS\AppData\Local\Temp\TI7964 
+;	..\Compiler\bin\ac2000.exe --keep_unneeded_types -D_INLINE -DLARGE_MODEL -I..\include --version=28 --keep_unneeded_types --mem_model:code=flat --mem_model:data=large -m --i_output_file C:\Users\JS\AppData\Local\Temp\TI7962 --template_info_file C:\Users\JS\AppData\Local\Temp\TI7966 --object_file DSP280x_SysCtrl.obj --embed_opts 10 --call_assumptions=0 --mem_model:code=flat --mem_model:data=large --opt_for_speed --opt_level=3 --optimizer_comments --optimizer_interlist --program_level_compile 
 	.sect	".text"
 	.global	_ServiceDog
 
@@ -251,7 +251,7 @@ L4:
         ; return occurs
 
 DW$9	.dwtag  DW_TAG_loop
-	.dwattr DW$9, DW_AT_name("H:\Tracer_Mouse\Tracer\DC\BEHEMOTH\main\DSP280x_SysCtrl.asm:L3:1:1674196102")
+	.dwattr DW$9, DW_AT_name("H:\Tracer_Mouse\Tracer\DC\BEHEMOTH\main\DSP280x_SysCtrl.asm:L3:1:1674450498")
 	.dwattr DW$9, DW_AT_begin_file("DSP280x_SysCtrl.c")
 	.dwattr DW$9, DW_AT_begin_line(0xb5)
 	.dwattr DW$9, DW_AT_end_line(0xb9)
@@ -309,9 +309,13 @@ _InitPeripheralClocks:
 ;*** 268	-----------------------    *(&SysCtrlRegs+13L) |= 0x8000u;
 ;*** 270	-----------------------    *(&SysCtrlRegs+13L) |= 1u;
 ;*** 271	-----------------------    *(&SysCtrlRegs+13L) |= 2u;
-;*** 272	-----------------------    *(&SysCtrlRegs+12L) |= 4u;
-;*** 274	-----------------------    asm(" EDIS");
-;*** 274	-----------------------    return;
+;*** 272	-----------------------    *(&SysCtrlRegs+13L) |= 4u;
+;*** 273	-----------------------    *(&SysCtrlRegs+13L) |= 0x8u;
+;*** 274	-----------------------    *(&SysCtrlRegs+13L) |= 0x10u;
+;*** 275	-----------------------    *(&SysCtrlRegs+13L) |= 0x20u;
+;*** 277	-----------------------    *(&SysCtrlRegs+12L) |= 4u;
+;*** 279	-----------------------    asm(" EDIS");
+;*** 279	-----------------------    return;
 	.dwcfa	0x1d, -2
 	.dwcfa	0x1c, 26, 0
 	.dwcfa	0x09, 40, 26
@@ -356,15 +360,23 @@ DW$12	.dwtag  DW_TAG_variable, DW_AT_name("C$1"), DW_AT_symbol_name("C$1")
 	.dwpsn	"DSP280x_SysCtrl.c",271,2
         OR        @_SysCtrlRegs+13,#0x0002 ; |271| 
 	.dwpsn	"DSP280x_SysCtrl.c",272,2
-        OR        @_SysCtrlRegs+12,#0x0004 ; |272| 
-	.dwpsn	"DSP280x_SysCtrl.c",274,5
+        OR        @_SysCtrlRegs+13,#0x0004 ; |272| 
+	.dwpsn	"DSP280x_SysCtrl.c",273,2
+        OR        @_SysCtrlRegs+13,#0x0008 ; |273| 
+	.dwpsn	"DSP280x_SysCtrl.c",274,2
+        OR        @_SysCtrlRegs+13,#0x0010 ; |274| 
+	.dwpsn	"DSP280x_SysCtrl.c",275,2
+        OR        @_SysCtrlRegs+13,#0x0020 ; |275| 
+	.dwpsn	"DSP280x_SysCtrl.c",277,2
+        OR        @_SysCtrlRegs+12,#0x0004 ; |277| 
+	.dwpsn	"DSP280x_SysCtrl.c",279,5
  EDIS
-	.dwpsn	"DSP280x_SysCtrl.c",275,1
+	.dwpsn	"DSP280x_SysCtrl.c",280,1
         SPM       #0
         LRETR
         ; return occurs
 	.dwattr DW$11, DW_AT_end_file("DSP280x_SysCtrl.c")
-	.dwattr DW$11, DW_AT_end_line(0x113)
+	.dwattr DW$11, DW_AT_end_line(0x118)
 	.dwattr DW$11, DW_AT_end_column(0x01)
 	.dwendentry
 	.dwendtag DW$11

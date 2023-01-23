@@ -24,6 +24,7 @@
 	#endif
 #endif	
 
+//------------------------------------------------------------//
 // Sensor
 __VARIABLE_EXT__	volatile 	Uint32 	g_u32_sen_cnt,
 										g_u32_copmare_cnt;
@@ -33,6 +34,7 @@ __VARIABLE_EXT__ 				long	l_adc_sum_left,
 __VARIABLE_EXT__  				Uint16 	g_u16sen_enable,
 										g_u16sen_state,
 						 				g_u16_pos_cnt,
+						 				pwm,
 						 				u16_repeat_const;
 
 typedef enum//If you make set value of first member, after members are set in ascending power . If you don't set first member then it automatically set in "0".
@@ -65,21 +67,29 @@ typedef enum
 	EIGHT_SHIFT	 //8
 }shift_rate_e;
 
-
+//------------------------------------------------------------//
 // MENU_ARRAY_CONST
 #define 	X 				3
 #define 	Y 				5
 #define 	WORD_LENGTH 		9
 
+//------------------------------------------------------------//
 // SWITCH_CONST
 #define 	SR 				GpioDataRegs.GPADAT.bit.GPIO14
 #define 	SL 				GpioDataRegs.GPADAT.bit.GPIO15
 #define 	SU 				GpioDataRegs.GPADAT.bit.GPIO31
 #define 	SD 				GpioDataRegs.GPADAT.bit.GPIO30
 
+//------------------------------------------------------------//
 // SENSOR_STATE_CONST
 #define 	LIMIT_127_VALUE	35
+#define 	POS_END 			_IQ7(16000)
 
-#define 	POS_END 		_IQ7(16000)
+//------------------------------------------------------------//
+// MOTOR OUTPUT SETTING
+#define DIR_Left			GpioDataRegs.GPADAT.bit.GPIO9
+#define DIR_Right		GpioDataRegs.GPADAT.bit.GPIO11
+#define PWM_Left			EPwm5Regs.CMPA.half.CMPA
+#define PWM_Right		EPwm6Regs.CMPA.half.CMPA
 
 

@@ -24,12 +24,14 @@ void System_Init(void)
 	InitAdc();
 
 	Init_ISR();
-
-	InitEPWM( &LeftPwmRegs );
-	InitEPWM( &RightPwmRegs );
 	
-	InitEQep( &LeftQepRegs );
-	InitEQep( &RightQepRegs );
+	InitEPWM( &EPwm5Regs );
+	InitEPWM( &EPwm6Regs );
+//	InitEPWM( &LeftPwmRegs );
+//	InitEPWM( &RightPwmRegs );
+	
+//	InitEQep( &LeftQepRegs );
+//	InitEQep( &RightQepRegs );
 	
 }
 
@@ -41,28 +43,31 @@ void Variable_Init( void )
 	g_pos.iq10_temp_position = _IQ10(0.0);
 	g_pos.iq7_temp_pos = _IQ7(0.0);
 //	int16_repeat_const = 0;
+	pwm = 2000;
+	PWM_Left = pwm;
+	PWM_Right = pwm;
 }
 
 void main(void)
 {	
 	System_Init();
 	Variable_Init();
-	sen_vari_init(g_sen);
-	maxmin_read_rom();
-	menu();
+//	sen_vari_init(g_sen);
+//	maxmin_read_rom();
+//	menu();
 //	StartCpuTimer0();
 	//LOAD
 
-/*	while( 1 )
+	VFDPrintf("RUN_CODE");
+	while( 1 )
 	{
-		for(int16_repeat_const = 0; int16_repeat_const < 16; int16_repeat_const++)
-		{
-			TxPrintf("%2d : %4.0f\t",int16_repeat_const,_IQtoF(g_sen[int16_repeat_const].iq15_4095_value));
-		}
-		
-		TxPrintf("\r\n");
+		DIR_Left = OFF;
+		DIR_Right = ON;
+
+		PWM_Left = pwm;
+		PWM_Right = pwm;
 	}
-*/
+
 
 	
 }

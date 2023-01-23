@@ -269,6 +269,11 @@ struct PCLKCR1_BITS  {    // bits  description
 
 	SysCtrlRegs.PCLKCR1.bit.EPWM1ENCLK = 1;//PWM1 clk enable
 	SysCtrlRegs.PCLKCR1.bit.EPWM2ENCLK = 1;//PWM2 clk ebable
+	SysCtrlRegs.PCLKCR1.bit.EPWM3ENCLK = 1;//PWM3 clk enable
+	SysCtrlRegs.PCLKCR1.bit.EPWM4ENCLK = 1;//PWM4 clk ebable
+	SysCtrlRegs.PCLKCR1.bit.EPWM5ENCLK = 1;//PWM5 clk enable
+	SysCtrlRegs.PCLKCR1.bit.EPWM6ENCLK = 1;//PWM6 clk ebable
+	
 	SysCtrlRegs.PCLKCR0.bit.TBCLKSYNC = 1;
 	
    	EDIS;
