@@ -1,6 +1,13 @@
----- EPwm6Regs Matches (5 in 3 files) ----
-DSP280x_EPwm.h (include):extern volatile struct EPWM_REGS EPwm6Regs;
-DSP280x_GlobalVariableDefs.c (main):#pragma DATA_SECTION(EPwm6Regs,"EPwm6RegsFile");
-DSP280x_GlobalVariableDefs.c (main):volatile struct EPWM_REGS EPwm6Regs;
-Main.c (main):	InitEPWM( &EPwm6Regs );
-Main.c (main):		EPwm6Regs.CMPA.half.CMPA = pwm;	
+---- g_u32_target_velocity Matches (13 in 4 files) ----
+Main.c (main):	g_u32_target_velocity = 2000;
+Rom.c (main):    write_velocity[i++] = ((g_u32_target_velocity >> 0) & 0xff);
+Rom.c (main):    write_velocity[i++] = ((g_u32_target_velocity >> 8) & 0xff);
+Rom.c (main):    g_u32_target_velocity = ((read_velocity[i++] & 0xff) << 0);
+Rom.c (main):    g_u32_target_velocity |= ((read_velocity[i++] & 0xff ) << 8);
+Search.c (main)://	R_motor.iq15_target_velocity = L_motor.iq15_target_velocity = _IQ15(g_u32_target_velocity);
+Search.c (main):	move_to_move(280.0, 0.0, g_u32_target_velocity, g_u32_target_velocity, 3000);		
+Search.c (main):		TxPrintf("velocity : %d\t", g_u32_target_velocity);
+Search.c (main):	  	    	g_u32_target_velocity += 50;
+Search.c (main):	    		g_u32_target_velocity -= 50;
+Search.c (main):       	VFDPrintf("Vel %4lu",g_u32_target_velocity);
+Variable.h (main):											g_u32_target_velocity,

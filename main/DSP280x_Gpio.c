@@ -25,31 +25,31 @@ void InitGpio(void)
 {
    EALLOW;
 /*
-//   IO0 	- S OUT L0 R7
+//   IO0 	- PWM A Left
 	GpioCtrlRegs.GPAMUX1.bit.GPIO0 = 0;		dir	1			
-//   IO1 	- S OUT L1 R6
+//   IO1 	- DIR A Left
 	GpioCtrlRegs.GPAMUX1.bit.GPIO1 = 0;		dir	1			  
-//   IO2 	- S OUT L2 R5
+//   IO2 	- PWM B Right
 	GpioCtrlRegs.GPAMUX1.bit.GPIO2 = 0;		dir	1
-//   IO3 	- S OUT L3 R4
+//   IO3 	- DIR B Right
 	GpioCtrlRegs.GPAMUX1.bit.GPIO3 = 0; 	dir 1
 	
-//   IO4 	- S OUT L4 R3
+//   IO4 	- S OUT L0 R7
 	GpioCtrlRegs.GPAMUX1.bit.GPIO4 = 0;		dir	1
-//   IO5 	- S OUT L5 R2
+//   IO5 	- S OUT L1 R6
 	GpioCtrlRegs.GPAMUX1.bit.GPIO5 = 0;		dir	1
-//   IO6 	- S OUT L6 R1
+//   IO6 	- S OUT L2 R5
 	GpioCtrlRegs.GPAMUX1.bit.GPIO6 = 0;		dir	1
-//   IO7 	- S OUT L7 R0
+//   IO7 	- S OUT L3 R4
 	GpioCtrlRegs.GPAMUX1.bit.GPIO7 = 0;		dir	1
 	
-//   IO8 	- PWM A Left
+//   IO8 	- S OUT L4 R3
 	GpioCtrlRegs.GPAMUX1.bit.GPIO8 = 1;		dir	1
-//   IO9 	- DIR A Left
+//   IO9 	- S OUT L5 R2
 	GpioCtrlRegs.GPAMUX1.bit.GPIO9 = 0;		dir	1
-//   IO10	- PWM B Right
+//   IO10	- S OUT L6 R1
 	GpioCtrlRegs.GPAMUX1.bit.GPIO10 = 1;	dir	1
-//   IO11   - DIR B Right
+//   IO11   - S OUT L7 R0
 	GpioCtrlRegs.GPAMUX1.bit.GPIO11 = 0;	dir	1
 	
 //   IO12   - LED Right 
@@ -61,8 +61,9 @@ void InitGpio(void)
 //   IO15   - SWITCH Left
 	GpioCtrlRegs.GPAMUX1.bit.GPIO15 = 0;	dir	0
 	
-//mux	0000 0000 / 0001 0001 / 0000 0000 / 0000 0000 */
-	GpioCtrlRegs.GPAMUX1.all = 0x00110000;
+//mux	0000 0000 / 0000 0000 / 0000 0000 / 0001 0001 */
+	GpioCtrlRegs.GPAMUX1.all = 0x00000011;
+
 	
 /*
 //   IO16   - spi simo

@@ -37,21 +37,21 @@ void sensor_check_4095(void)
 	while(1)
 	{
 		#if 1
-		if(SR==OFF)
+		if(!SR)
 		{
 			j++;
 			
-			if(j>15)
-				j=0;
+			if(j > 15)
+				j = 0;
 		
 		}
 
-		else if(SL==OFF)
+		else if(!SL)
 		{
 			j--;
 			
-			if(j<0)
-				j=15;
+			if(j < 0)
+				j = 15;
 		}
 		
 		DELAY_US(50000);
@@ -59,7 +59,7 @@ void sensor_check_4095(void)
 
 		#endif
 
-		if(SU==OFF)
+		if(!SU)
 		{
 			StopCpuTimer0();
 			break;
@@ -69,27 +69,27 @@ void sensor_check_4095(void)
 
 void sensor_check_127(void)
 {
-	int32 j=0;
+	int32 j = 0;
 
 	StartCpuTimer0();
 
 	while(1)
 	{
 		#if 1
-		if(SR==OFF)
+		if(!SR )
 		{
 			j++;
 
-			if(j>15)
-				j=0;
+			if(j > 15)
+				j = 0;
 		}
 
-		else if(SL==OFF)
+		else if(!SL)
 		{
 			j--;
 			
-			if(j<0)
-				j=15;
+			if(j < 0)
+				j = 15;
 		}
 		
 		VFDPrintf("[%2ld]%4.0f",j, _IQtoF(g_sen[j].iq15_127_value));
@@ -97,7 +97,7 @@ void sensor_check_127(void)
 
 		#endif
 
-		if(SU==OFF)
+		if(!SU)
 		{	
 
 			StopCpuTimer0();
@@ -113,20 +113,20 @@ void max_min_check (void)
 	while(1)
 	{
 		#if 1
-		if(SR==OFF)
+		if(!SR)
 		{
 			j++;
 
-			if(j>15)
-				j=0;
+			if(j > 15)
+				j = 0;
 		}
 
-		else if(SL==OFF)
+		else if(!SL)
 		{
 			j--;
 			
-			if(j<0)
-				j=15;
+			if(j < 0)
+				j = 15;
 		}
   
 		VFDPrintf("M%2ld:%4.0f",j, _IQtoF(g_sen[ j ].iq15_4095_max_value));
@@ -134,7 +134,7 @@ void max_min_check (void)
 
 		#endif
 
-		if(SU == OFF)
+		if(!SU)
 			break;
 	}
 
@@ -143,7 +143,7 @@ void max_min_check (void)
 	while(1)
 	{
 		#if 1
-		if(SR == OFF)
+		if(!SR)
 		{
 			j++;
 
@@ -151,7 +151,7 @@ void max_min_check (void)
 				j = 0;
 		}
 
-		else if(SL == OFF)
+		else if(!SL)
 		{
 			j--;
 			
@@ -164,7 +164,7 @@ void max_min_check (void)
 
 		#endif
 
-		if(SU == OFF)
+		if(!SU)
 			break;
 	}
 }
@@ -199,11 +199,11 @@ void position_check(void)
 
 			g_pos.iq7_temp_pos = _IQ7div( g_pos.iq7_sum_of_sec, g_pos.iq7_sum );
 
-			if( g_pos.iq7_temp_pos >= POS_END )		
-				g_pos.iq7_temp_pos = POS_END;
+			if( g_pos.iq7_temp_pos >= iq7_POS_END )		
+				g_pos.iq7_temp_pos = iq7_POS_END;
 
-			else if( g_pos.iq7_temp_pos <= -POS_END )	
-				g_pos.iq7_temp_pos = -POS_END;
+			else if( g_pos.iq7_temp_pos <= -iq7_POS_END )	
+				g_pos.iq7_temp_pos = -iq7_POS_END;
 			
 			else;
 			
@@ -216,7 +216,7 @@ void position_check(void)
 			VFDPrintf("P:%5.0f",_IQ7toF(g_pos.iq7_temp_pos));
 		#endif
 
-		if(SU==OFF)
+		if(!SU)
 		{	
 			StopCpuTimer0();
 			break;

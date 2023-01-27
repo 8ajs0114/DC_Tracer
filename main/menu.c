@@ -23,13 +23,13 @@ void FUCKING_NULL(void)
 
 
 void (*menu_func[X][Y])( void )={   FUCKING_NULL,	Sensor_setting,	sensor_check_4095,	sensor_check_127,	FUCKING_NULL,
-							   FUCKING_NULL,	position_check,	max_min_check,		FUCKING_NULL,		FUCKING_NULL,/*line_info_check,*/
-							   FUCKING_NULL,	FUCKING_NULL,FUCKING_NULL,FUCKING_NULL/*search_race,		second_race,			change_advanced,		change_basic*/ 
-							};
+								   FUCKING_NULL,	position_check,	max_min_check,		FUCKING_NULL,		FUCKING_NULL,
+								   FUCKING_NULL,	search_race,		change_run_value,		change_handle_value,	FUCKING_NULL 
+								};
 
 char setting[X][Y][WORD_LENGTH]={ "Sensor__",	"Max_Min_",	"Val_4095",	"Val_0127",	"Blank___",
 				       			  "Check___",	"Pos_____",	"Mm______",	"Blank___",	"Line____",
-				        		  	  "Run_____",	"Search__",	"Advanced",	"Ch_Advan",	"Ch_Basic"
+				        		  	  "Search__",	"Run_____",	"Vel_Acc_",	"Handle__",	"PID_____"
 				      	  		    };
 				    
 void menu(void)
@@ -42,7 +42,7 @@ void menu(void)
 		VFDPrintf((char*)setting[int32_X][int32_Y]);
 		DELAY_US(100000);
 		
-		if (SR == OFF)
+		if (!SR)
 		{
 			int32_X++;
 			
@@ -55,7 +55,7 @@ void menu(void)
 			
 		}
 
-		else if (SL == OFF)
+		else if (!SL)
 		{
 			int32_X--;
 
@@ -68,7 +68,7 @@ void menu(void)
 			
 		}
 
-		else if (SD == OFF)
+		else if (!SD)
 		{
 			VFDPrintf("SUB___IN");
 			DELAY_US(100000);
@@ -77,7 +77,7 @@ void menu(void)
 			{		
 				VFDPrintf((char*)setting[int32_X][int32_Y]);
 				DELAY_US(100000);	
-				if (SR == OFF)
+				if (!SR)
 				{
 					int32_Y++;			
 
@@ -90,7 +90,7 @@ void menu(void)
 					
 				}
 
-				else if (SL == OFF)
+				else if (!SL)
 				{
 					int32_Y--;
 
@@ -102,7 +102,7 @@ void menu(void)
 					DELAY_US(100000);					
 				}
 
-				else if(SD==OFF) 
+				else if(!SD) 
 				{
 					menu_func[int32_X][int32_Y]();
 				}

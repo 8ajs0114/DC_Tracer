@@ -25,252 +25,241 @@ typedef enum
 	VELOCITY_PAGE,
    	ACCEL_PAGE,
     	DCCEL_PAGE,
-    	END_ACCEL_PAGE,
-    	HANDLE_PAGE,
-    	MARK_PAGE,
-    
-   	LINE_TURN_PAGE_1,
-	LINE_LDIST_PAGE_1,
-	LINE_RDIST_PAGE_1,
-	LINE_TURN_PAGE_2,
-	LINE_LDIST_PAGE_2,
-	LINE_RDIST_PAGE_2
+    	HACC_PAGE,
+    	HDCC_PAGE,
 } rom_e;
 		
-void maxmin_write_rom( void )
+void write_maxmin_rom( void )
 {
 	 int32 j;
-	 Uint16 write_buf[ _MAXMIN_BLOCK ];
+	 Uint16 write_maxmin[ _MAXMIN_BLOCK ];
 	 
-	 memset( (void * )write_buf ,0x00 , sizeof( write_buf ) );
+	 memset( (void * )write_maxmin ,0x00 , sizeof( write_maxmin ) );
 
 	 j = 0;
 
 	 //////////////////////////min sensor value saved////////////////////////////////
 	
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 0 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 0 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 0 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 0 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 1 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 1 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 1 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 1 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
 	 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 2 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 2 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 2 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 2 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 3 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 3 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 3 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 3 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 4 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 4 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 4 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 4 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 5 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 5 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 5 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 5 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 6 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 6 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 6 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 6 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 7 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 7 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 7 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 7 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
 	 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 8 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 8 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 8 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 8 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 9 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 9 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 9 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 9 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 10 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 10 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 10 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 10 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 11 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 11 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 11 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 11 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 12 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 12 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 12 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 12 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 13 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 13 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 13 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 13 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 14 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 14 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 14 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 14 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 15 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 15 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 15 ].iq15_4095_min_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 15 ].iq15_4095_min_value>>15) >> 8 ) & 0xff);
 
 	 //////////////////////////max sensor value saved////////////////////////////////
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 0 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 0 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 0 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 0 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 1 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 1 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 1 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 1 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
 	 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 2 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 2 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 2 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 2 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 3 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 3 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 3 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 3 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 4 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 4 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 4 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 4 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 5 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 5 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 5 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 5 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 6 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 6 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 6 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 6 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 7 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 7 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 7 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 7 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
 	 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 8 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 8 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 8 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 8 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 9 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 9 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 9 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 9 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 10 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 10 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 10 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 10 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 11 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 11 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 11 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 11 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 12 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 12 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 12 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 12 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 13 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 13 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 13 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 13 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 14 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 14 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 14 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 14 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
 
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 15 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
-	 write_buf[ j++ ] = (Uint16)(((g_sen[ 15 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 15 ].iq15_4095_max_value>>15) >> 0 ) & 0xff);  
+	 write_maxmin[ j++ ] = (Uint16)(((g_sen[ 15 ].iq15_4095_max_value>>15) >> 8 ) & 0xff);
 
 
-	 SpiWriteRom( ( Uint16 )( _MAXMIN_CTRL ) , 0 , ( Uint16 )( _MAXMIN_BLOCK ) , write_buf );
+	 SpiWriteRom( ( Uint16 )( _MAXMIN_CTRL ) , 0 , ( Uint16 )( _MAXMIN_BLOCK ) , write_maxmin );
 }
 
-void maxmin_read_rom( void )
+void read_maxmin_rom( void )
 {
-	
- int32 j;
+ 	int32 j;
  
- Uint16 read_buf[ _MAXMIN_BLOCK ];
+	 Uint16 read_maxmin[ _MAXMIN_BLOCK ];
 
- //memset( (void *)read_buf , 0x00 , sizeof( read_buf ) );
+	 //memset( (void *)read_maxmin , 0x00 , sizeof( read_maxmin ) );
 
- j = 0;
- SpiReadRom( ( Uint16 )( _MAXMIN_CTRL ) , 0 , ( Uint16 )( _MAXMIN_BLOCK ) , read_buf );
+ 	j = 0;
+ 	SpiReadRom( ( Uint16 )( _MAXMIN_CTRL ) , 0 , ( Uint16 )( _MAXMIN_BLOCK ) , read_maxmin );
 
- //////////////////////////min sensor value saved////////////////////////////////
+	//////////////////////////min sensor value saved////////////////////////////////
 
- g_sen[ 0 ].iq15_4095_min_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 0 ].iq15_4095_min_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
- 
- g_sen[ 1 ].iq15_4095_min_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 1 ].iq15_4095_min_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 0 ].iq15_4095_min_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 0 ].iq15_4095_min_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
+	 
+	 g_sen[ 1 ].iq15_4095_min_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 1 ].iq15_4095_min_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 2 ].iq15_4095_min_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 2 ].iq15_4095_min_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 2 ].iq15_4095_min_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 2 ].iq15_4095_min_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 3 ].iq15_4095_min_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 3 ].iq15_4095_min_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
- 
- g_sen[ 4 ].iq15_4095_min_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 4 ].iq15_4095_min_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
- 
- g_sen[ 5 ].iq15_4095_min_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 5 ].iq15_4095_min_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
- 
- g_sen[ 6 ].iq15_4095_min_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 6 ].iq15_4095_min_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
- 
- g_sen[ 7 ].iq15_4095_min_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 7 ].iq15_4095_min_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 3 ].iq15_4095_min_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 3 ].iq15_4095_min_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
+	 
+	 g_sen[ 4 ].iq15_4095_min_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 4 ].iq15_4095_min_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
+	 
+	 g_sen[ 5 ].iq15_4095_min_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 5 ].iq15_4095_min_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
+	 
+	 g_sen[ 6 ].iq15_4095_min_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 6 ].iq15_4095_min_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
+	 
+	 g_sen[ 7 ].iq15_4095_min_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 7 ].iq15_4095_min_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 8 ].iq15_4095_min_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 8 ].iq15_4095_min_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 8 ].iq15_4095_min_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 8 ].iq15_4095_min_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 9 ].iq15_4095_min_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 9 ].iq15_4095_min_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 9 ].iq15_4095_min_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 9 ].iq15_4095_min_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 10 ].iq15_4095_min_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 10 ].iq15_4095_min_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 10 ].iq15_4095_min_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 10 ].iq15_4095_min_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 11 ].iq15_4095_min_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 11 ].iq15_4095_min_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 11 ].iq15_4095_min_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 11 ].iq15_4095_min_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 12 ].iq15_4095_min_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 12 ].iq15_4095_min_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 12 ].iq15_4095_min_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 12 ].iq15_4095_min_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 13 ].iq15_4095_min_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 13 ].iq15_4095_min_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 13 ].iq15_4095_min_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 13 ].iq15_4095_min_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 14 ].iq15_4095_min_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 14 ].iq15_4095_min_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 14 ].iq15_4095_min_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 14 ].iq15_4095_min_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 15 ].iq15_4095_min_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 15 ].iq15_4095_min_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
- 
+	 g_sen[ 15 ].iq15_4095_min_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 15 ].iq15_4095_min_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
+	 //////////////////////////max sensor value saved////////////////////////////////
 
- //////////////////////////max sensor value saved////////////////////////////////
+	 g_sen[ 0 ].iq15_4095_max_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 0 ].iq15_4095_max_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 0 ].iq15_4095_max_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 0 ].iq15_4095_max_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 1 ].iq15_4095_max_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 1 ].iq15_4095_max_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 1 ].iq15_4095_max_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 1 ].iq15_4095_max_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 2 ].iq15_4095_max_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 2 ].iq15_4095_max_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 2 ].iq15_4095_max_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 2 ].iq15_4095_max_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 3 ].iq15_4095_max_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 3 ].iq15_4095_max_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 3 ].iq15_4095_max_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 3 ].iq15_4095_max_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 4 ].iq15_4095_max_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 4 ].iq15_4095_max_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 4 ].iq15_4095_max_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 4 ].iq15_4095_max_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 5 ].iq15_4095_max_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 5 ].iq15_4095_max_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 5 ].iq15_4095_max_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 5 ].iq15_4095_max_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 6 ].iq15_4095_max_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 6 ].iq15_4095_max_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 6 ].iq15_4095_max_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 6 ].iq15_4095_max_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 7 ].iq15_4095_max_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 7 ].iq15_4095_max_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 7 ].iq15_4095_max_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 7 ].iq15_4095_max_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 8 ].iq15_4095_max_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 8 ].iq15_4095_max_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 8 ].iq15_4095_max_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 8 ].iq15_4095_max_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 9 ].iq15_4095_max_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 9 ].iq15_4095_max_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 9 ].iq15_4095_max_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 9 ].iq15_4095_max_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 10 ].iq15_4095_max_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 10 ].iq15_4095_max_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 10 ].iq15_4095_max_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 10 ].iq15_4095_max_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 11 ].iq15_4095_max_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 11 ].iq15_4095_max_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 11 ].iq15_4095_max_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 11 ].iq15_4095_max_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 12 ].iq15_4095_max_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 12 ].iq15_4095_max_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 12 ].iq15_4095_max_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 12 ].iq15_4095_max_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 13 ].iq15_4095_max_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 13 ].iq15_4095_max_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 13 ].iq15_4095_max_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 13 ].iq15_4095_max_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 14 ].iq15_4095_max_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 14 ].iq15_4095_max_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 14 ].iq15_4095_max_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 14 ].iq15_4095_max_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 g_sen[ 15 ].iq15_4095_max_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
+	 g_sen[ 15 ].iq15_4095_max_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
- g_sen[ 15 ].iq15_4095_max_value = ((long)( ( read_buf[ j++ ] & 0xff ) << 0 ))<<15;
- g_sen[ 15 ].iq15_4095_max_value |= ((long)(( read_buf[ j++ ] & 0xff ) << 8 ))<<15;
+	 #if 1
+	 
+	 for(g_u16_repeat_const = 0; g_u16_repeat_const < 16; g_u16_repeat_const++)
+	 {
+		TxPrintf("[%d] MAX : %.0f , MIN : %.0f\n",g_u16_repeat_const,_IQtoF(g_sen[g_u16_repeat_const].iq15_4095_max_value),_IQtoF(g_sen[g_u16_repeat_const].iq15_4095_min_value));
+	 } //rom에 저장 여부 판단 
 
- #if 1
- 
- for(u16_repeat_const = 0; u16_repeat_const < 16; u16_repeat_const++)
- {
-	TxPrintf("[%d] MAX : %.0f , MIN : %.0f\n",u16_repeat_const,_IQtoF(g_sen[u16_repeat_const].iq15_4095_max_value),_IQtoF(g_sen[u16_repeat_const].iq15_4095_max_value));
- } //rom에 저장 여부 판단 
-
- #endif
+	 #endif
 }

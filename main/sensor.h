@@ -16,8 +16,8 @@
 #ifndef __SENSOR_H__
 #define __SENSOR_H__
 
-interrupt void SENSOR_TIMER_ISR(void);
-interrupt void ADC_TIMER_ISR(void);
+interrupt void SENSOR_ISR(void);
+interrupt void ADC_ISR(void);
 extern void Sensor_setting(void);
 extern void sen_vari_init(sen_t *p_sen);
 extern void make_position(position_t *p_pos, sen_t *p_sen);

@@ -1,6 +1,6 @@
 ;***************************************************************
 ;* TMS320C2000 C/C++ Codegen                         PC v4.1.3 *
-;* Date/Time created: Tue Jan 24 02:24:54 2023                 *
+;* Date/Time created: Fri Jan 27 16:44:59 2023                 *
 ;***************************************************************
 	.compiler_opts --mem_model:code=flat --mem_model:data=large --silicon_version=28 
 FP	.set	XAR2
@@ -13,8 +13,8 @@ DW$1	.dwtag  DW_TAG_variable, DW_AT_name("GpioCtrlRegs"), DW_AT_symbol_name("_Gp
 	.dwattr DW$1, DW_AT_type(*DW$T$51)
 	.dwattr DW$1, DW_AT_declaration(0x01)
 	.dwattr DW$1, DW_AT_external(0x01)
-;	..\Compiler\bin\opt2000.exe C:\Users\JS\AppData\Local\Temp\TI50010 C:\Users\JS\AppData\Local\Temp\TI5004 
-;	..\Compiler\bin\ac2000.exe --keep_unneeded_types -D_INLINE -DLARGE_MODEL -I..\include --version=28 --keep_unneeded_types --mem_model:code=flat --mem_model:data=large -m --i_output_file C:\Users\JS\AppData\Local\Temp\TI5002 --template_info_file C:\Users\JS\AppData\Local\Temp\TI5006 --object_file DSP280x_Gpio.obj --embed_opts 10 --call_assumptions=0 --mem_model:code=flat --mem_model:data=large --opt_for_speed --opt_level=3 --optimizer_comments --optimizer_interlist --program_level_compile 
+;	..\Compiler\bin\opt2000.exe C:\Users\JS\AppData\Local\Temp\TI97610 C:\Users\JS\AppData\Local\Temp\TI9764 
+;	..\Compiler\bin\ac2000.exe --keep_unneeded_types -D_INLINE -DLARGE_MODEL -I..\include --version=28 --keep_unneeded_types --mem_model:code=flat --mem_model:data=large -m --i_output_file C:\Users\JS\AppData\Local\Temp\TI9762 --template_info_file C:\Users\JS\AppData\Local\Temp\TI9766 --object_file DSP280x_Gpio.obj --embed_opts 10 --call_assumptions=0 --mem_model:code=flat --mem_model:data=large --opt_for_speed --opt_level=3 --optimizer_comments --optimizer_interlist --program_level_compile 
 	.sect	".text"
 	.global	_InitGpio
 
@@ -45,63 +45,63 @@ DW$2	.dwtag  DW_TAG_subprogram, DW_AT_name("InitGpio"), DW_AT_symbol_name("_Init
 ;***************************************************************
 _InitGpio:
 ;*** 26	-----------------------    asm(" EALLOW");
-;*** 65	-----------------------    GpioCtrlRegs.GPAMUX1.all = 1114112uL;
-;*** 105	-----------------------    GpioCtrlRegs.GPAMUX2.all = 0x50a0515uL;
-;*** 116	-----------------------    GpioCtrlRegs.GPBMUX1.all = 0uL;
-;*** 159	-----------------------    GpioCtrlRegs.GPADIR.all = 0x2ccd3fffuL;
-;*** 168	-----------------------    GpioCtrlRegs.GPBDIR.all = 7uL;
-;*** 183	-----------------------    GpioCtrlRegs.GPAPUD.all = 0xcccfffffuL;
-;*** 184	-----------------------    GpioCtrlRegs.GPBPUD.all = 0xffffffffuL;
-;*** 186	-----------------------    GpioCtrlRegs.GPAQSEL1.all = 0uL;
-;*** 187	-----------------------    GpioCtrlRegs.GPAQSEL2.all = 0uL;
-;*** 188	-----------------------    GpioCtrlRegs.GPBQSEL1.all = 0uL;
-;*** 190	-----------------------    asm(" EDIS");
-;*** 190	-----------------------    return;
+;*** 65	-----------------------    GpioCtrlRegs.GPAMUX1.all = 17uL;
+;*** 106	-----------------------    GpioCtrlRegs.GPAMUX2.all = 0x50a0515uL;
+;*** 117	-----------------------    GpioCtrlRegs.GPBMUX1.all = 0uL;
+;*** 160	-----------------------    GpioCtrlRegs.GPADIR.all = 0x2ccd3fffuL;
+;*** 169	-----------------------    GpioCtrlRegs.GPBDIR.all = 7uL;
+;*** 184	-----------------------    GpioCtrlRegs.GPAPUD.all = 0xcccfffffuL;
+;*** 185	-----------------------    GpioCtrlRegs.GPBPUD.all = 0xffffffffuL;
+;*** 187	-----------------------    GpioCtrlRegs.GPAQSEL1.all = 0uL;
+;*** 188	-----------------------    GpioCtrlRegs.GPAQSEL2.all = 0uL;
+;*** 189	-----------------------    GpioCtrlRegs.GPBQSEL1.all = 0uL;
+;*** 191	-----------------------    asm(" EDIS");
+;*** 191	-----------------------    return;
 	.dwcfa	0x1d, -2
 	.dwcfa	0x1c, 26, 0
 	.dwcfa	0x09, 40, 26
 	.dwpsn	"DSP280x_Gpio.c",26,4
  EALLOW
 	.dwpsn	"DSP280x_Gpio.c",65,2
-        MOVL      XAR4,#1114112         ; |65| 
+        MOVB      ACC,#17
         MOVW      DP,#_GpioCtrlRegs+6
-        MOVL      @_GpioCtrlRegs+6,XAR4 ; |65| 
-	.dwpsn	"DSP280x_Gpio.c",105,2
+        MOVL      @_GpioCtrlRegs+6,ACC  ; |65| 
+	.dwpsn	"DSP280x_Gpio.c",106,2
         MOV       PH,#1290
         MOV       PL,#1301
-        MOVL      @_GpioCtrlRegs+8,P    ; |105| 
-	.dwpsn	"DSP280x_Gpio.c",116,2
+        MOVL      @_GpioCtrlRegs+8,P    ; |106| 
+	.dwpsn	"DSP280x_Gpio.c",117,2
         MOVB      ACC,#0
-        MOVL      @_GpioCtrlRegs+22,ACC ; |116| 
-	.dwpsn	"DSP280x_Gpio.c",159,2
+        MOVL      @_GpioCtrlRegs+22,ACC ; |117| 
+	.dwpsn	"DSP280x_Gpio.c",160,2
         MOV       PH,#11469
         MOV       PL,#16383
-        MOVL      @_GpioCtrlRegs+10,P   ; |159| 
-	.dwpsn	"DSP280x_Gpio.c",168,2
+        MOVL      @_GpioCtrlRegs+10,P   ; |160| 
+	.dwpsn	"DSP280x_Gpio.c",169,2
         MOVB      ACC,#7
-        MOVL      @_GpioCtrlRegs+26,ACC ; |168| 
-	.dwpsn	"DSP280x_Gpio.c",183,2
+        MOVL      @_GpioCtrlRegs+26,ACC ; |169| 
+	.dwpsn	"DSP280x_Gpio.c",184,2
         MOV       PH,#52431
         MOV       PL,#65535
-        MOVL      @_GpioCtrlRegs+12,P   ; |183| 
-	.dwpsn	"DSP280x_Gpio.c",184,2
+        MOVL      @_GpioCtrlRegs+12,P   ; |184| 
+	.dwpsn	"DSP280x_Gpio.c",185,2
         MOV       PH,#65535
-        MOVL      @_GpioCtrlRegs+28,P   ; |184| 
-	.dwpsn	"DSP280x_Gpio.c",186,2
-        MOVB      ACC,#0
-        MOVL      @_GpioCtrlRegs+2,ACC  ; |186| 
+        MOVL      @_GpioCtrlRegs+28,P   ; |185| 
 	.dwpsn	"DSP280x_Gpio.c",187,2
-        MOVL      @_GpioCtrlRegs+4,ACC  ; |187| 
+        MOVB      ACC,#0
+        MOVL      @_GpioCtrlRegs+2,ACC  ; |187| 
 	.dwpsn	"DSP280x_Gpio.c",188,2
-        MOVL      @_GpioCtrlRegs+18,ACC ; |188| 
-	.dwpsn	"DSP280x_Gpio.c",190,2
+        MOVL      @_GpioCtrlRegs+4,ACC  ; |188| 
+	.dwpsn	"DSP280x_Gpio.c",189,2
+        MOVL      @_GpioCtrlRegs+18,ACC ; |189| 
+	.dwpsn	"DSP280x_Gpio.c",191,2
  EDIS
-	.dwpsn	"DSP280x_Gpio.c",191,1
+	.dwpsn	"DSP280x_Gpio.c",192,1
         SPM       #0
         LRETR
         ; return occurs
 	.dwattr DW$2, DW_AT_end_file("DSP280x_Gpio.c")
-	.dwattr DW$2, DW_AT_end_line(0xbf)
+	.dwattr DW$2, DW_AT_end_line(0xc0)
 	.dwattr DW$2, DW_AT_end_column(0x01)
 	.dwendentry
 	.dwendtag DW$2

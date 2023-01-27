@@ -15,4 +15,10 @@
 #ifndef __SEARCH_H__
 #define __SEARCH_H__
 
+extern void race_init(void);
+extern void search_race(void);
+extern void change_run_value(void);
+extern void change_handle_value (void);
+
+
 #endif
