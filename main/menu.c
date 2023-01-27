@@ -44,6 +44,8 @@ void menu(void)
 		
 		if (!SR)
 		{
+			RIGHT_LED = ON;
+			
 			int32_X++;
 			
 			if (int32_X > (X-1)) 
@@ -51,12 +53,15 @@ void menu(void)
 				int32_X = 0;
 			}
 			VFDPrintf((char*)setting[int32_X][int32_Y]);
-			DELAY_US(100000);	
+			DELAY_US(100000);
 			
+			RIGHT_LED = OFF;
 		}
 
 		else if (!SL)
 		{
+			LEFT_LED = ON;
+
 			int32_X--;
 
 			if (int32_X < 0) 
@@ -66,19 +71,26 @@ void menu(void)
 			VFDPrintf((char*)setting[int32_X][int32_Y]);
 			DELAY_US(100000);
 			
+			LEFT_LED = OFF;			
 		}
 
 		else if (!SD)
 		{
+			BUZZER = ON;
+			
 			VFDPrintf("SUB___IN");
 			DELAY_US(100000);
+
+			BUZZER = OFF;
 			
 			while (1)
-			{		
+			{			
 				VFDPrintf((char*)setting[int32_X][int32_Y]);
 				DELAY_US(100000);	
 				if (!SR)
 				{
+					RIGHT_LED = ON;
+
 					int32_Y++;			
 
 					if (int32_Y > (Y-1)) 
@@ -88,10 +100,13 @@ void menu(void)
 					VFDPrintf((char*)setting[int32_X][int32_Y]);
 					DELAY_US(100000);
 					
+					RIGHT_LED = OFF;					
 				}
 
 				else if (!SL)
 				{
+					LEFT_LED = ON;
+
 					int32_Y--;
 
 					if (int32_Y < 0) 
@@ -99,7 +114,9 @@ void menu(void)
 						int32_Y = (Y-1);
 					}
 					VFDPrintf((char*)setting[int32_X][int32_Y]);
-					DELAY_US(100000);					
+					DELAY_US(100000);	
+
+					LEFT_LED = OFF;
 				}
 
 				else if(!SD) 
@@ -107,11 +124,15 @@ void menu(void)
 					menu_func[int32_X][int32_Y]();
 				}
 
-				else if (SU == OFF)
+				else if (!SU)
 				{	
+					CENTER_LED = ON;
+					
 					int32_Y = 0;
 					VFDPrintf("SUB__OUT");
 					DELAY_US(100000);
+
+					CENTER_LED = OFF;
 					
 					break;
 				}

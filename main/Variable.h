@@ -106,33 +106,35 @@ typedef enum
 
 //------------------------------------------------------------//
 // MOTOR OUTPUT SETTING
-#define DIR_Left						GpioDataRegs.GPADAT.bit.GPIO1
-#define DIR_Right					GpioDataRegs.GPADAT.bit.GPIO3
-#define PWM_Left						LeftPwmRegs.CMPA.half.CMPA
-#define PWM_Right					RightPwmRegs.CMPA.half.CMPA
+#define DIR_LEFT_SET					GpioDataRegs.GPASET.bit.GPIO1
+#define DIR_LEFT_CLEAR				GpioDataRegs.GPACLEAR.bit.GPIO1
+#define DIR_RIGHT_SET				GpioDataRegs.GPASET.bit.GPIO3
+#define DIR_RIGHT_CLEAR				GpioDataRegs.GPACLEAR.bit.GPIO3
+#define PWM_LEFT						LeftPwmRegs.CMPA.half.CMPA
+#define PWM_RIGHT					RightPwmRegs.CMPA.half.CMPA
 
 //------------------------------------------------------------//
 // Motor Information
-// Number of Gear Teeth 		67
-// Number of Pinion Teeth 		20
-// Gear Ratio 					3.35
+// Number of Gear Teeth 			67
+// Number of Pinion Teeth 			20
+// Gear Ratio 						3.35
 
 //------------------------------------------------------------//
 // Encoder Information
-// LPR (Lines per revolution)	512
-// Fold							4	(Use two edges in each A, B channel => 4 edge) 
+// LPR (Lines per revolution)		512
+// Fold								4	(Use two edges in each A, B channel => 4 edge) 
 // 체배(Fold) : 한 신호에서 몇번 읽을지를 결정.
 //				입력되는 신호를 몇개의 엣지로 읽을 것인지로 결정. 
 
 //------------------------------------------------------------//
 // Wheel Information
-// Wheel Radius				17.25		mm
-// Wheel Diameter			34.5		mm	
+// Wheel Radius						17.25		mm
+// Wheel Diameter					34.5		mm	
 
 //------------------------------------------------------------//
 // Const
-// PI						3.14159265
-// Motor Interrupt Cycle	0.0005		s	(= 500us)
+// PI								3.14159265
+// Motor Interrupt Cycle			0.0005		s	(= 500us)
 
 //------------------------------------------------------------//
 // Calculation
@@ -150,13 +152,22 @@ typedef enum
 
 #define iq15_MAX_PID_OUT				_IQ15( 8800.0 )
 #define iq15_MIN_PID_OUT				_IQ15( -8800.0 )
-#define iq30_PWM_CONVERT				_IQ30( 0.2 )// PWM주파수 최대값
+#define iq30_PWM_CONVERT				_IQ30( 0.2 )			// PWM주파수 최대값
 
-#define iq28_kp						_IQ28( 0.80 ) // _IQ28( 0.37 ) 
-#define iq28_kd						_IQ28( 0.85 ) // _IQ28( 0.62 ) 
+#define iq28_kp						_IQ28( 0.80 ) 		// _IQ28( 0.37 ) 
+#define iq28_kd						_IQ28( 0.85 ) 		// _IQ28( 0.62 ) 
 
 //------------------------------------------------------------//
 // Handle Const
 #define iq16_HANDLE_CENTER 			_IQ16( 8000 )
+
+//------------------------------------------------------------//
+// Debug_Tool_Const
+#define	LEFT_LED					GpioDataRegs.GPBDAT.bit.GPIO33	// red
+#define	RIGHT_LED 					GpioDataRegs.GPADAT.bit.GPIO12	// red
+#define CENTER_LED					GpioDataRegs.GPADAT.bit.GPIO13	// white
+#define	BUZZER 						GpioDataRegs.GPADAT.bit.GPIO27	// buzzer
+
+
 
 

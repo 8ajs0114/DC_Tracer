@@ -175,10 +175,10 @@ interrupt void MOTOR_ISR (void)
 			if( R_motor.iq15_pid_out > iq15_MAX_PID_OUT )
 				R_motor.iq15_pid_out = iq15_MAX_PID_OUT;
 
-			GpioDataRegs.GPACLEAR.bit.GPIO3 = 1;	// right
+			DIR_RIGHT_CLEAR = 1;	// right
 
 			R_motor.iq15_pid_result = _IQ15mpyIQX( R_motor.iq15_pid_out , 15 , iq30_PWM_CONVERT , 30 );
-			PWM_Right =( Uint16 )( R_motor.iq15_pid_result >> 15 );
+			PWM_RIGHT =( Uint16 )( R_motor.iq15_pid_result >> 15 );
 		}
 		
 		else
@@ -186,10 +186,10 @@ interrupt void MOTOR_ISR (void)
 			if( R_motor.iq15_pid_out < iq15_MIN_PID_OUT )
 				R_motor.iq15_pid_out = iq15_MIN_PID_OUT;
 			
-			GpioDataRegs.GPASET.bit.GPIO3 = 1;	// right
+			DIR_RIGHT_SET = 1;	// right
 
 			R_motor.iq15_pid_result = _IQ15mpy(_IQ15mpyIQX( R_motor.iq15_pid_out , 15 , iq30_PWM_CONVERT , 30 ), _IQ( -1 ));
-			PWM_Right =( Uint16 )( R_motor.iq15_pid_result >> 15 );
+			PWM_RIGHT =( Uint16 )( R_motor.iq15_pid_result >> 15 );
 		}
 		
 		// Left
@@ -198,20 +198,20 @@ interrupt void MOTOR_ISR (void)
 			if( L_motor.iq15_pid_out > iq15_MAX_PID_OUT )
 				L_motor.iq15_pid_out = iq15_MAX_PID_OUT;
 		
-		GpioDataRegs.GPASET.bit.GPIO1 = 1;
+			DIR_LEFT_SET = 1;
 
 			L_motor.iq15_pid_result = _IQ15mpyIQX( L_motor.iq15_pid_out , 15 , iq30_PWM_CONVERT , 30 );
-			PWM_Left = ( Uint16 )( L_motor.iq15_pid_result >> 15 );
+			PWM_LEFT = ( Uint16 )( L_motor.iq15_pid_result >> 15 );
 		}
 		else
 		{
 			if( L_motor.iq15_pid_out < iq15_MIN_PID_OUT )
 				L_motor.iq15_pid_out = iq15_MIN_PID_OUT;
 			
-			GpioDataRegs.GPACLEAR.bit.GPIO1 = 1;
+			DIR_LEFT_CLEAR = 1;
 
 			L_motor.iq15_pid_result = _IQ15mpy(_IQ15mpyIQX( L_motor.iq15_pid_out , 15, iq30_PWM_CONVERT , 30 ), _IQ( -1 ) );
-			PWM_Left = ( Uint16 )( L_motor.iq15_pid_result >> 15 );
+			PWM_LEFT = ( Uint16 )( L_motor.iq15_pid_result >> 15 );
 		}		
 	}
 	

@@ -1,13 +1,6 @@
----- g_u32_target_velocity Matches (13 in 4 files) ----
-Main.c (main):	g_u32_target_velocity = 2000;
-Rom.c (main):    write_velocity[i++] = ((g_u32_target_velocity >> 0) & 0xff);
-Rom.c (main):    write_velocity[i++] = ((g_u32_target_velocity >> 8) & 0xff);
-Rom.c (main):    g_u32_target_velocity = ((read_velocity[i++] & 0xff) << 0);
-Rom.c (main):    g_u32_target_velocity |= ((read_velocity[i++] & 0xff ) << 8);
-Search.c (main)://	R_motor.iq15_target_velocity = L_motor.iq15_target_velocity = _IQ15(g_u32_target_velocity);
-Search.c (main):	move_to_move(280.0, 0.0, g_u32_target_velocity, g_u32_target_velocity, 3000);		
-Search.c (main):		TxPrintf("velocity : %d\t", g_u32_target_velocity);
-Search.c (main):	  	    	g_u32_target_velocity += 50;
-Search.c (main):	    		g_u32_target_velocity -= 50;
-Search.c (main):       	VFDPrintf("Vel %4lu",g_u32_target_velocity);
-Variable.h (main):											g_u32_target_velocity,
+---- pwm Matches (6 in 2 files) ----
+Main.c (main)://	pwm = 2000;
+Main.c (main)://	PWM_LEFT = pwm;
+Main.c (main)://	PWM_RIGHT = pwm;
+Main.c (main):		PWM_RIGHT = pwm;
+Variable.h (main):						 					pwm,

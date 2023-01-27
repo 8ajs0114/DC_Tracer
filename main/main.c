@@ -43,8 +43,8 @@ void Variable_Init( void )
 	g_pos.iq7_temp_pos = _IQ7(0.0);
 //	int16_repeat_const = 0;
 //	pwm = 2000;
-//	PWM_Left = pwm;
-//	PWM_Right = pwm;
+//	PWM_LEFT = pwm;
+//	PWM_RIGHT = pwm;
 
 	g_iq15_right_handle = _IQ15(1);
 	g_iq15_left_handle = _IQ15(1);
@@ -90,8 +90,8 @@ void main(void)
 /*		DIR_Left = OFF;
 		DIR_Right = ON;
 
-		PWM_Left = pwm;
-		PWM_Right = pwm;
+		PWM_LEFT = pwm;
+		PWM_RIGHT = pwm;
 */
 		//------------------------------------------------------------//
 		// encoder test

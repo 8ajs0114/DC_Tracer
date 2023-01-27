@@ -1,6 +1,6 @@
 ;***************************************************************
 ;* TMS320C2000 C/C++ Codegen                         PC v4.1.3 *
-;* Date/Time created: Fri Jan 27 16:45:01 2023                 *
+;* Date/Time created: Fri Jan 27 17:53:26 2023                 *
 ;***************************************************************
 	.compiler_opts --mem_model:code=flat --mem_model:data=large --silicon_version=28 
 FP	.set	XAR2
@@ -114,8 +114,8 @@ DW$30	.dwtag  DW_TAG_variable, DW_AT_name("LeftQepRegs"), DW_AT_symbol_name("_Le
 	.dwattr DW$30, DW_AT_type(*DW$T$155)
 	.dwattr DW$30, DW_AT_declaration(0x01)
 	.dwattr DW$30, DW_AT_external(0x01)
-;	..\Compiler\bin\opt2000.exe C:\Users\JS\AppData\Local\Temp\TI32010 C:\Users\JS\AppData\Local\Temp\TI3204 
-;	..\Compiler\bin\ac2000.exe --keep_unneeded_types -D_INLINE -DLARGE_MODEL -I..\include --version=28 --keep_unneeded_types --mem_model:code=flat --mem_model:data=large -m --i_output_file C:\Users\JS\AppData\Local\Temp\TI3202 --template_info_file C:\Users\JS\AppData\Local\Temp\TI3206 --object_file Motor.obj --embed_opts 10 --call_assumptions=0 --mem_model:code=flat --mem_model:data=large --opt_for_speed --opt_level=3 --optimizer_comments --optimizer_interlist --program_level_compile --silicon_version=28 
+;	..\Compiler\bin\opt2000.exe C:\Users\JS\AppData\Local\Temp\TI33610 C:\Users\JS\AppData\Local\Temp\TI3364 
+;	..\Compiler\bin\ac2000.exe --keep_unneeded_types -D_INLINE -DLARGE_MODEL -I..\include --version=28 --keep_unneeded_types --mem_model:code=flat --mem_model:data=large -m --i_output_file C:\Users\JS\AppData\Local\Temp\TI3362 --template_info_file C:\Users\JS\AppData\Local\Temp\TI3366 --object_file Motor.obj --embed_opts 10 --call_assumptions=0 --mem_model:code=flat --mem_model:data=large --opt_for_speed --opt_level=3 --optimizer_comments --optimizer_interlist --program_level_compile --silicon_version=28 
 	.sect	".text"
 	.global	_move_to_move
 
@@ -1438,7 +1438,7 @@ L22:
 ;*** 201	-----------------------    *(&GpioDataRegs+2L) |= 2u;
 ;*** 203	-----------------------    L_motor.iq15_pid_result = __IQxmpy(L_motor.iq15_pid_out, 214748368L, 2);
 ;*** 204	-----------------------    LeftPwmRegs.CMPA.half.CMPA = L_motor.iq15_pid_result>>15;
-	.dwpsn	"Motor.c",201,3
+	.dwpsn	"Motor.c",201,4
         MOVW      DP,#_GpioDataRegs+2
         OR        @_GpioDataRegs+2,#0x0002 ; |201| 
 	.dwpsn	"Motor.c",203,4
