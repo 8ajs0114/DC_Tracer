@@ -22,7 +22,6 @@
 
 interrupt void MOTOR_ISR (void)
 {
-		
 	g_Flag.motor_ISR_flag = ON;
 
 	Handle(); 
@@ -55,12 +54,20 @@ interrupt void MOTOR_ISR (void)
 	L_motor.iq27_distance_from_interrupt = _IQ27mpyIQX( ( int32 )( L_motor.int16_qep_value ) << 21 , 21 , iq30_DISTANCE_PER_TICK , 30 ); 
 
 	// Sum Distance
-	R_motor.iq15_distance_sum += ( R_motor.iq27_distance_from_interrupt >> 12 );
-	L_motor.iq15_distance_sum += ( L_motor.iq27_distance_from_interrupt >> 12 );
+	R_motor.iq15_distance_sum += ( L_motor.iq27_distance_from_interrupt >> 12 );
+	L_motor.iq15_distance_sum += ( R_motor.iq27_distance_from_interrupt >> 12 );
 	
 	// Gone Distance	
-	L_motor.iq15_gone_distance = R_motor.iq15_distance_sum;
-	R_motor.iq15_gone_distance = L_motor.iq15_distance_sum;;
+	L_motor.iq15_gone_distance += ( L_motor.iq27_distance_from_interrupt >> 12 );
+	R_motor.iq15_gone_distance += ( R_motor.iq27_distance_from_interrupt >> 12 );
+
+	// Mark Distance
+	L_motor.iq15_cross_distance += ( L_motor.iq27_distance_from_interrupt >> 12 );
+	R_motor.iq15_cross_distance += ( R_motor.iq27_distance_from_interrupt >> 12 );
+	L_motor.iq15_turnmark_distance += ( L_motor.iq27_distance_from_interrupt >> 12 );
+	R_motor.iq15_turnmark_distance += ( R_motor.iq27_distance_from_interrupt >> 12 );
+	L_motor.iq15_start_end_distance += ( L_motor.iq27_distance_from_interrupt >> 12 );
+	R_motor.iq15_start_end_distance += ( R_motor.iq27_distance_from_interrupt >> 12 );
 
 	// Ramnant Distance
 	R_motor.iq15_ramnant_distance=  R_motor.iq15_target_distance - R_motor.iq15_gone_distance;
@@ -70,12 +77,12 @@ interrupt void MOTOR_ISR (void)
 	// Velocity Calculation from Encoder, Distance Data
 	// Right Motor Velocity Checking
 	R_motor.iq15_current_velocity[ 1 ] = R_motor.iq15_current_velocity[ 0 ];
-	R_motor.iq15_current_velocity[ 0 ] = _IQ15mpyIQX( ( int32 )( R_motor.int16_qep_value ) << 21 , 21 , iq30_VELOCITY_PER_TICK , 26 ); // Pulse to V = QEP Value * {x/2048 * Wheel_R/Gear Rate}
+	R_motor.iq15_current_velocity[ 0 ] = _IQ15mpyIQX( ( int32 )( R_motor.int16_qep_value ) << 21 , 21 , iq26_VELOCITY_PER_TICK , 26 ); // Pulse to V = QEP Value * {x/2048 * Wheel_R/Gear Rate}
 	R_motor.iq15_current_velocity_average = ( R_motor.iq15_current_velocity[ 0 ] + R_motor.iq15_current_velocity[ 1 ] ) >> 1;
 	
 	// Left Motor Velocity Checking
 	L_motor.iq15_current_velocity[ 1 ] = L_motor.iq15_current_velocity[ 0 ];
-	L_motor.iq15_current_velocity[ 0 ] = _IQ15mpyIQX( ( int32 )( L_motor.int16_qep_value ) << 21 , 21 , iq30_VELOCITY_PER_TICK , 26 );
+	L_motor.iq15_current_velocity[ 0 ] = _IQ15mpyIQX( ( int32 )( L_motor.int16_qep_value ) << 21 , 21 , iq26_VELOCITY_PER_TICK , 26 );
 	L_motor.iq15_current_velocity_average = ( L_motor.iq15_current_velocity[ 0 ] + L_motor.iq15_current_velocity[ 1 ] ) >> 1;
 
 	//------------------------------------------------------------//
@@ -220,8 +227,8 @@ interrupt void MOTOR_ISR (void)
 
 void handle_ad_make( volatile _iq16 acc_rate , volatile _iq16 dec_rate ) //handle 비율 갱신 함수 -> 포지션에 따른 턴속도 조절시 사용
 {
-	g_iq16_han_accstep = _IQ16div( ( _IQ16( 1 ) -  acc_rate ) , iq16_HANDLE_CENTER );
-	g_iq16_han_decstep = _IQ16div( ( dec_rate - _IQ16( 1 ) ) , iq16_HANDLE_CENTER );
+	g_iq16_han_accstep = _IQ16div( ( _IQ16( 1 ) -  acc_rate ) , iq16_POSITION_CENTER );
+	g_iq16_han_decstep = _IQ16div( ( dec_rate - _IQ16( 1 ) ) , iq16_POSITION_CENTER );
 
 	g_iq16_han_accmax = acc_rate;
 	g_iq16_han_decmax = ( _IQ16( 2 ) - dec_rate );
@@ -229,29 +236,53 @@ void handle_ad_make( volatile _iq16 acc_rate , volatile _iq16 dec_rate ) //handl
 }
 void Handle(void)
 {
-	volatile _iq16 _iq16left_handle = _IQ16(0.0);
-	volatile _iq16 _iq16right_handle = _IQ16(0.0);
+	volatile _iq16 iq16_left_handle = _IQ16(0.0);
+	volatile _iq16 iq16_right_handle = _IQ16(0.0);
 
-	if( g_pos.iq7_temp_pos < _IQ7(0.0) )		//left
+	#if 1 //IIR+PID //position PID 
+	g_pos.iq7_pos_IIR_putted = g_pos.iq7_pos_IIR_putting;
+	g_pos.iq7_pos_IIR_putting = g_pos.iq7_temp_pos;
+	g_pos.iq7_pos_IIR_output = ( _IQ7mpy( PID_Kb, ( g_pos.iq7_pos_IIR_putted + g_pos.iq7_pos_IIR_putting ) ) - _IQ7mpy( PID_Ka, g_pos.iq7_past_pos[ 0 ] ) );
+
+	g_pos.iq7_past_pos[ 3 ] = g_pos.iq7_past_pos[ 2 ];
+	g_pos.iq7_past_pos[ 2 ] = g_pos.iq7_past_pos[ 1 ];
+	g_pos.iq7_past_pos[ 1 ] = g_pos.iq7_past_pos[ 0 ];
+	g_pos.iq7_past_pos[ 0 ] = g_pos.iq7_pos_IIR_output;
+	  
+	g_pos.iq7_position_proportion = _IQ7mpy( g_pos.iq7_past_pos[ 0 ], POS_KP_UP );
+	g_pos.iq7_position_derivate = _IQ7mpy( ( ( g_pos.iq7_past_pos[ 0 ] - g_pos.iq7_past_pos[ 3 ] ) + _IQ7mpy( _IQ7( 3.0 ), ( g_pos.iq7_past_pos[ 1 ] - g_pos.iq7_past_pos[ 2 ] ) ) ), POS_KD_UP);
+	g_pos.iq7_position_pid_out = g_pos.iq7_position_proportion + g_pos.iq7_position_derivate;
+	#endif
+
+	#if 1
+	if( g_pos.iq7_position_pid_out > iq7_POSITION_END )		
+		g_pos.iq7_position_pid_out = iq7_POSITION_END;		
+
+	else if( g_pos.iq7_position_pid_out < -iq7_POSITION_END ) 		
+		g_pos.iq7_position_pid_out = -iq7_POSITION_END;
+
+	else;
+	#endif
+
+	if( g_pos.iq7_position_pid_out < _IQ7(0.0) )		//left
 	{
-		_iq16left_handle = _IQ16mpy(g_iq16_han_decstep, ( iq16_HANDLE_CENTER + ( g_pos.iq7_temp_pos << 9 )) ) + g_iq16_han_decmax;
-		_iq16right_handle = _IQ16mpy( g_iq16_han_accstep , ( iq16_HANDLE_CENTER - ( g_pos.iq7_temp_pos << 9 )) ) + g_iq16_han_accmax;
+		iq16_left_handle = _IQ16mpy(g_iq16_han_decstep, ( iq16_POSITION_CENTER + ( g_pos.iq7_position_pid_out << 9 )) ) + g_iq16_han_decmax;
+		iq16_right_handle = _IQ16mpy( g_iq16_han_accstep , ( iq16_POSITION_CENTER - ( g_pos.iq7_position_pid_out << 9 )) ) + g_iq16_han_accmax;
 
-		if( _iq16left_handle < _IQ16(0.0) )	_iq16left_handle = _IQ16(0.0);
+		if( iq16_left_handle < _IQ16(0.0) )	iq16_left_handle = _IQ16(0.0);
 			
 	}
-	else
-	{		
-		_iq16left_handle = _IQ16mpy( g_iq16_han_accstep , iq16_HANDLE_CENTER + ( g_pos.iq7_temp_pos << 9 ) ) + g_iq16_han_accmax;
-		_iq16right_handle = _IQ16mpy( g_iq16_han_decstep , iq16_HANDLE_CENTER - ( g_pos.iq7_temp_pos << 9 ) ) + g_iq16_han_decmax;
 
-		if( _iq16right_handle < _IQ16(0.0) )	_iq16right_handle = _IQ16(0.0);
+	else												//right
+	{		
+		iq16_left_handle = _IQ16mpy( g_iq16_han_accstep , (iq16_POSITION_CENTER + ( g_pos.iq7_position_pid_out << 9 )) ) + g_iq16_han_accmax;
+		iq16_right_handle = _IQ16mpy( g_iq16_han_decstep , (iq16_POSITION_CENTER - ( g_pos.iq7_position_pid_out << 9 )) ) + g_iq16_han_decmax;
+
+		if( iq16_right_handle < _IQ16(0.0) )	iq16_right_handle = _IQ16(0.0);
 	}
 
-
-	g_iq15_left_handle = _iq16left_handle >> 1;
-	g_iq15_right_handle = _iq16right_handle >> 1;
-	
+	g_iq15_left_handle = iq16_left_handle >> 1;
+	g_iq15_right_handle = iq16_right_handle >> 1;
 }
 
 void move_to_move( volatile Uint32 dist, volatile Uint32 dec_dist, volatile Uint32 tar_vel, volatile Uint32 dec_vel, volatile Uint32 acc )
@@ -284,8 +315,3 @@ void move_to_end( volatile Uint32 dist, volatile Uint32 tar_vel, volatile Uint32
 	
 	StartCpuTimer2();
 }
-
-
-
-
-

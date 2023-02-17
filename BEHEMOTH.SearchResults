@@ -1,6 +1,4 @@
----- pwm Matches (6 in 2 files) ----
-Main.c (main)://	pwm = 2000;
-Main.c (main)://	PWM_LEFT = pwm;
-Main.c (main)://	PWM_RIGHT = pwm;
-Main.c (main):		PWM_RIGHT = pwm;
-Variable.h (main):						 					pwm,
+---- iq7_kp Matches (3 in 3 files) ----
+Main.c (main):	g_pos.iq7_kp = POS_KP_UP;
+Motor.c (main):	g_pos.iq7_position_proportion = _IQ7mpy( g_pos.iq7_past_pos[ 0 ], g_pos.iq7_kp );
+Struct.h (include):			iq7_kp,

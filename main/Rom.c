@@ -27,6 +27,14 @@ typedef enum
     	DCCEL_PAGE,
     	HACC_PAGE,
     	HDCC_PAGE,
+	MARK_PAGE,
+ 
+   	LINE_TURN_PAGE_1,
+	LINE_LDIST_PAGE_1,
+	LINE_RDIST_PAGE_1,
+	LINE_TURN_PAGE_2,
+	LINE_LDIST_PAGE_2,
+	LINE_RDIST_PAGE_2
 } rom_e;
 		
 void write_maxmin_rom( void )
@@ -254,7 +262,7 @@ void read_maxmin_rom( void )
 	 g_sen[ 15 ].iq15_4095_max_value = ((long)( ( read_maxmin[ j++ ] & 0xff ) << 0 ))<<15;
 	 g_sen[ 15 ].iq15_4095_max_value |= ((long)(( read_maxmin[ j++ ] & 0xff ) << 8 ))<<15;
 
-	 #if 1
+	 #if 0
 	 
 	 for(g_u16_repeat_const = 0; g_u16_repeat_const < 16; g_u16_repeat_const++)
 	 {
@@ -263,3 +271,106 @@ void read_maxmin_rom( void )
 
 	 #endif
 }
+
+void write_mark_cnt_rom( void )
+{
+	int16 i = 0;
+
+	Uint16 mark_sarr[ 2 ] = { 0, };
+
+	mark_sarr[ i++ ] = ( ( ( Uint32 )g_int32_turnmark_cnt) >> 0 ) & 0xff;
+	mark_sarr[ i++ ] = ( ( ( Uint32 )g_int32_turnmark_cnt) >> 8 ) & 0xff;
+
+	SpiWriteRom( ( Uint16 )MARK_PAGE, 0x00, (Uint16)2, mark_sarr);
+
+}
+
+void read_mark_cnt_rom( void )
+{
+	int16 i = 0;
+	Uint16 mark_larr[ 2 ] = { 0, };
+
+	SpiReadRom( ( Uint16 )MARK_PAGE, 0x00, (Uint16)2, mark_larr);
+
+	g_int32_total_cnt = ( int32 )( ( mark_larr[ i++ ] & 0xff ) << 0 );
+	g_int32_total_cnt |= ( int32 )( ( mark_larr[ i++ ] & 0xff ) << 8 );
+
+
+}
+
+void write_line_info_rom(void)
+{
+    
+	int16 i = 0, k = 0, l = 0, m = 0;
+
+	Uint16 turn_sarr[ LINE_INFO ] = { 0, };
+	Uint16 rdist_sarr[ LINE_INFO ] = { 0, };
+	Uint16 ldist_sarr[ LINE_INFO ] = { 0, };
+	
+	memset( (void * )turn_sarr , 0x00 , sizeof( turn_sarr) );
+   	memset( (void * )rdist_sarr, 0x00 , sizeof( rdist_sarr) );
+    	memset( (void * )ldist_sarr, 0x00 , sizeof( ldist_sarr) );
+
+	k = l = m = 0;
+
+	for(i=0; i<=g_int32_turnmark_cnt; i++)
+	{   
+		turn_sarr[k++] = ((Uint16)(search_info[i].int32_turnmark) >> 0) & 0xff;    
+		rdist_sarr[l++] = ((Uint16)(search_info[i].int32_R_dist) >> 0) & 0xff;
+		ldist_sarr[m++] = ((Uint16)(search_info[i].int32_L_dist) >> 0) & 0xff;
+	}
+
+	SpiWriteRom( ( Uint16 )LINE_TURN_PAGE_1, 0x00, ( Uint16 )LINE_INFO, turn_sarr );
+	SpiWriteRom( ( Uint16 )LINE_RDIST_PAGE_1, 0x00, ( Uint16 )LINE_INFO, rdist_sarr );
+	SpiWriteRom( ( Uint16 )LINE_LDIST_PAGE_1, 0x00, ( Uint16 )LINE_INFO, ldist_sarr );
+
+	k = l = m = 0;
+
+	for(i=0; i <= g_int32_turnmark_cnt; i++)
+	{
+		turn_sarr[k++] = ((Uint16)(search_info[i].int32_turnmark) >> 8) & 0xff;    
+		rdist_sarr[l++] = ((Uint16)(search_info[i].int32_R_dist) >> 8) & 0xff;
+		ldist_sarr[m++] = ((Uint16)(search_info[i].int32_L_dist) >> 8) & 0xff;
+	}
+
+	SpiWriteRom( ( Uint16 )LINE_TURN_PAGE_2, 0x00, ( Uint16 )LINE_INFO, turn_sarr );
+	SpiWriteRom( ( Uint16 )LINE_RDIST_PAGE_2, 0x00, ( Uint16 )LINE_INFO, rdist_sarr );
+	SpiWriteRom( ( Uint16 )LINE_LDIST_PAGE_2, 0x00, ( Uint16 )LINE_INFO, ldist_sarr );
+
+}
+
+void read_line_info_rom( void )
+{
+	int16 i = 0, k = 0, l = 0, m = 0;
+
+	Uint16 turn_larr[ MAX_PAGE ] = { 0, };	
+	Uint16 rdist_larr[ MAX_PAGE ] = { 0, };
+	Uint16 ldist_larr[ MAX_PAGE ] = { 0, };
+
+	SpiReadRom( ( Uint16 )LINE_TURN_PAGE_1, 0x00, ( Uint16 )LINE_INFO, turn_larr );	
+	SpiReadRom( ( Uint16 )LINE_RDIST_PAGE_1, 0x00, ( Uint16 )LINE_INFO, rdist_larr );
+	SpiReadRom( ( Uint16 )LINE_LDIST_PAGE_1, 0x00, ( Uint16 )LINE_INFO, ldist_larr );
+		
+	read_mark_cnt_rom();
+
+	k = l = m = 0;
+    	for(i=0; i<=g_int32_total_cnt; i++)
+    	{ 
+        	search_info[k++].int32_turnmark = (int32)((turn_larr[i] & 0xff) << 0);
+        	search_info[l++].int32_R_dist = (int32)((rdist_larr[i] & 0xff) << 0);
+        	search_info[m++].int32_L_dist = (int32)((ldist_larr[i] & 0xff) << 0);
+    	}
+    
+   	SpiReadRom( ( Uint16 )LINE_TURN_PAGE_2, 0x00, ( Uint16 )LINE_INFO, turn_larr );
+	SpiReadRom( ( Uint16 )LINE_RDIST_PAGE_2, 0x00, ( Uint16 )LINE_INFO, rdist_larr );
+	SpiReadRom( ( Uint16 )LINE_LDIST_PAGE_2, 0x00, ( Uint16 )LINE_INFO, ldist_larr);
+
+    	k = l = m = 0;
+    	for(i=0; i<=g_int32_total_cnt; i++)
+    	{ 
+       	search_info[k++].int32_turnmark |= (int32)((turn_larr[i] & 0xff) << 8);    
+		search_info[l++].int32_R_dist |= (int32)((rdist_larr[i] & 0xff) << 8);
+		search_info[m++].int32_L_dist |= (int32)((ldist_larr[i] & 0xff) << 8);
+	}
+}
+
