@@ -69,18 +69,18 @@ interrupt void SENSOR_ISR(void)
 {	
 	// sensor
 	PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
-	GpioDataRegs.GPASET.all =(ON_L << sen_arr[g_u32_sen_cnt ]);//push 1 to left depends on number which in array sen_arr.=>on
+	GpioDataRegs.GPASET.all =(ON_L << sen_arr[int32_sen_cnt ]);//push 1 to left depends on number which in array sen_arr.=>on
 
 	//ON_L=0000 0000 0000 0001
 	//each spot of number is same as gpio number which to control. If pin number is 1 it's on, if pin number is 0 it's off.
 	//(15~0)
 	
-	//already reseted "g_u32_sen_cnt" into "0" in main.c
+	//already reseted "int32_sen_cnt" into "0" in main.c
 
-	AdcRegs.ADCCHSELSEQ1.all = adc_arr[ g_u32_sen_cnt ];
-	AdcRegs.ADCCHSELSEQ2.all = adc_arr[ g_u32_sen_cnt + SEN_NUM ]; 
-	AdcRegs.ADCCHSELSEQ3.all = adc_arr[ g_u32_sen_cnt ];
-	AdcRegs.ADCCHSELSEQ4.all = adc_arr[ g_u32_sen_cnt + SEN_NUM ]; 
+	AdcRegs.ADCCHSELSEQ1.all = adc_arr[ int32_sen_cnt ];
+	AdcRegs.ADCCHSELSEQ2.all = adc_arr[ int32_sen_cnt + SEN_NUM ]; 
+	AdcRegs.ADCCHSELSEQ3.all = adc_arr[ int32_sen_cnt ];
+	AdcRegs.ADCCHSELSEQ4.all = adc_arr[ int32_sen_cnt + SEN_NUM ]; 
 	// 0,8 / 1,9 / 2,10 / 3,11 / 4,12 / 5,13 / 6,14 / 7,15 / 가 세트이므로 
 	// ADCCHSELSEQ1 과 ADCCHSELSEQ3이 세트 ADCCHSELSEQ2 과 ADCCHSELSEQ4가 세트로 수광을 받는다. 
 	
@@ -89,34 +89,34 @@ interrupt void SENSOR_ISR(void)
 
 interrupt void ADC_ISR(void)
 {
-	g_long_adc_sum_left = 0;
-	g_long_adc_sum_right = 0;
+	long_adc_sum_left = 0;
+	long_adc_sum_right = 0;
 	
 	PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
-	GpioDataRegs.GPACLEAR.all =(ON_L << sen_arr[g_u32_sen_cnt]);
+	GpioDataRegs.GPACLEAR.all =(ON_L << sen_arr[int32_sen_cnt]);
 
-	g_long_adc_sum_left += (long)AdcMirror.ADCRESULT0;
-	g_long_adc_sum_left += (long)AdcMirror.ADCRESULT1;
-	g_long_adc_sum_left += (long)AdcMirror.ADCRESULT2;
-	g_long_adc_sum_left += (long)AdcMirror.ADCRESULT3;	
+	long_adc_sum_left += (long)AdcMirror.ADCRESULT0;
+	long_adc_sum_left += (long)AdcMirror.ADCRESULT1;
+	long_adc_sum_left += (long)AdcMirror.ADCRESULT2;
+	long_adc_sum_left += (long)AdcMirror.ADCRESULT3;	
 	//about AdcRegs.ADCCHSELSEQ1
 	
-	g_long_adc_sum_right += (long)AdcMirror.ADCRESULT4;
-	g_long_adc_sum_right += (long)AdcMirror.ADCRESULT5;
-	g_long_adc_sum_right += (long)AdcMirror.ADCRESULT6;
-	g_long_adc_sum_right += (long)AdcMirror.ADCRESULT7;
+	long_adc_sum_right += (long)AdcMirror.ADCRESULT4;
+	long_adc_sum_right += (long)AdcMirror.ADCRESULT5;
+	long_adc_sum_right += (long)AdcMirror.ADCRESULT6;
+	long_adc_sum_right += (long)AdcMirror.ADCRESULT7;
 	//about AdcRegs.ADCCHSELSEQ2
 	
-	g_long_adc_sum_left += (long)AdcMirror.ADCRESULT8;
-	g_long_adc_sum_left += (long)AdcMirror.ADCRESULT9;
-	g_long_adc_sum_left += (long)AdcMirror.ADCRESULT10;
-	g_long_adc_sum_left += (long)AdcMirror.ADCRESULT11; 
+	long_adc_sum_left += (long)AdcMirror.ADCRESULT8;
+	long_adc_sum_left += (long)AdcMirror.ADCRESULT9;
+	long_adc_sum_left += (long)AdcMirror.ADCRESULT10;
+	long_adc_sum_left += (long)AdcMirror.ADCRESULT11; 
 	//about AdcRegs.ADCCHSELSEQ3
 	
-	g_long_adc_sum_right += (long)AdcMirror.ADCRESULT12;
-	g_long_adc_sum_right += (long)AdcMirror.ADCRESULT13;
-	g_long_adc_sum_right += (long)AdcMirror.ADCRESULT14;
-	g_long_adc_sum_right += (long)AdcMirror.ADCRESULT15;
+	long_adc_sum_right += (long)AdcMirror.ADCRESULT12;
+	long_adc_sum_right += (long)AdcMirror.ADCRESULT13;
+	long_adc_sum_right += (long)AdcMirror.ADCRESULT14;
+	long_adc_sum_right += (long)AdcMirror.ADCRESULT15;
 	//about AdcRegs.ADCCHSELSEQ4
 
 	// 수광값을 하나의 ADC레지스터로만 받으면 오류의 발생 위험으로 여러개의 레지스터에 받아 평균값을 저장한다.
@@ -127,55 +127,92 @@ interrupt void ADC_ISR(void)
 	AdcRegs.ADCTRL2.bit.RST_SEQ1 = 1; // adc 변환 종료, 순서 초기화 
 	AdcRegs.ADCST.bit.INT_SEQ1_CLR = 1; // adc interrupt 종료 
 	
-	g_sen[g_u32_sen_cnt].iq15_4095_value = g_long_adc_sum_left << 12; // 여러번 받은 값 평균 내는 중 . 형 변환중 사라지는거 생각 
-	g_sen[SEN_NUM + g_u32_sen_cnt ].iq15_4095_value = g_long_adc_sum_right << 12;	 //divide into 8(2^3)(R:15+L:14=R:1)
+	g_sen[ int32_sen_cnt ].iq15_4095_value = long_adc_sum_left << 12; // 여러번 받은 값 평균 내는 중 . 형 변환중 사라지는거 생각 
+	g_sen[ int32_sen_cnt + SEN_NUM ].iq15_4095_value = long_adc_sum_right << 12;	 //divide into 8(2^3)(R:15+L:14=R:1)
 	//if you move one spot right then you divide into 2, if you move on spot left then you multiple 2.
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//this erea divides (max-min)value into 127 , then make the sensor value into number between 0 to 127(128 steps). ps.I don't know why we divide into 127 but it's traditional.
+	//"int32_copmare_cnt" already reset into "0" in main.c
 
-	//"g_u32_copmare_cnt" already reset into "0" in main.c
-	
-	if( g_sen[ g_u32_copmare_cnt ].iq15_4095_value > g_sen[ g_u32_copmare_cnt ].iq15_4095_max_value )		
-		g_sen[ g_u32_copmare_cnt ].iq15_127_value = _IQ(127);
+	// Left Sensor Value - 1
+
+	if( g_sen[ int32_copmare_cnt ].iq15_4095_value > g_sen[ int32_copmare_cnt ].iq15_4095_max_value )		
+		g_sen[ int32_copmare_cnt ].iq15_127_value = _IQ(127);
 
 	//if sensor value is higher than max vlaue, make sensor value into max value.
 	
-	else if( g_sen[ g_u32_copmare_cnt ].iq15_4095_value < g_sen[ g_u32_copmare_cnt ].iq15_4095_min_value )	
-		g_sen[ g_u32_copmare_cnt ].iq15_127_value = _IQ(0);//_IQ=all of _Iq(number) => This can be changed into all _IQ
+	else if( g_sen[ int32_copmare_cnt ].iq15_4095_value < g_sen[ int32_copmare_cnt ].iq15_4095_min_value )	
+		g_sen[ int32_copmare_cnt ].iq15_127_value = _IQ(0);//_IQ=all of _Iq(number) => This can be changed into all _IQ
 
 	//if sensor value is lower than min vlaue, make sensor value into min value.
 		
 	else 
-		g_sen[ g_u32_copmare_cnt ].iq15_127_value = 
-		_IQ15mpy(_IQ15div( ( g_sen[ g_u32_copmare_cnt ].iq15_4095_value - g_sen[ g_u32_copmare_cnt ].iq15_4095_min_value ) , 
-		( g_sen[ g_u32_copmare_cnt ].iq15_4095_max_value - g_sen[ g_u32_copmare_cnt ].iq15_4095_min_value )) , _IQ(127));
+		g_sen[ int32_copmare_cnt ].iq15_127_value = 
+		_IQ15mpy(_IQ15div( ( g_sen[ int32_copmare_cnt ].iq15_4095_value - g_sen[ int32_copmare_cnt ].iq15_4095_min_value ) , 
+		( g_sen[ int32_copmare_cnt ].iq15_4095_max_value - g_sen[ int32_copmare_cnt ].iq15_4095_min_value )) , _IQ(127));
 		
 	//(sensor_value-min_value)/{(max_value-min_value)/127}=>can know where the sensor value is.
 	//(current-min value)			   width of each step of max to min value divide in 127
+/*
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Right Sensor Value - 1
+	//
+	if( g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_4095_value > g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_4095_max_value )		
+		g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_127_value = _IQ(127);
 
-	if(g_sen[ g_u32_copmare_cnt ].iq15_127_value < _IQ15(LIMIT_127_VALUE))
-		g_pos.u16_state &= g_sen[ g_u32_copmare_cnt ].u16_passive_arr;
+	//if sensor value is higher than max vlaue, make sensor value into max value.
 	
-	else if(g_sen[ g_u32_copmare_cnt ].iq15_127_value >= _IQ15(LIMIT_127_VALUE))
-		g_pos.u16_state |= g_sen[ g_u32_copmare_cnt ].u16_active_arr;
+	else if( g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_4095_value < g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_4095_min_value )	
+		g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_127_value = _IQ(0);//_IQ=all of _Iq(number) => This can be changed into all _IQ
+
+	//if sensor value is lower than min vlaue, make sensor value into min value.
+		
+	else 
+		g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_127_value = 
+		_IQ15mpy(_IQ15div( ( g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_4095_value - g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_4095_min_value ) , 
+		( g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_4095_max_value - g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_4095_min_value )) , _IQ(127));
+		
+	//(sensor_value-min_value)/{(max_value-min_value)/127}=>can know where the sensor value is.
+	//(current-min value)			   width of each step of max to min value divide in 127
+*/	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Left Sensor Value - 2
+
+	if(g_sen[ int32_copmare_cnt ].iq15_127_value < _IQ15(LIMIT_127_VALUE))
+		g_pos.u16_state &= g_sen[ int32_copmare_cnt ].u16_passive_arr;
+	
+	else if(g_sen[ int32_copmare_cnt ].iq15_127_value >= _IQ15(LIMIT_127_VALUE))
+		g_pos.u16_state |= g_sen[ int32_copmare_cnt ].u16_active_arr;
 	
 	else;
+/*	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Right Sensor Value - 2
+
+	if(g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_127_value < _IQ15(LIMIT_127_VALUE))
+		g_pos.u16_state &= g_sen[ int32_copmare_cnt + SEN_NUM ].u16_passive_arr;
 	
+	else if(g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_127_value >= _IQ15(LIMIT_127_VALUE))
+		g_pos.u16_state |= g_sen[ int32_copmare_cnt + SEN_NUM ].u16_active_arr;
+	
+	else;
+*/	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	g_u32_copmare_cnt++;			
+
+	int32_copmare_cnt++;			
 	
-	if(g_u32_copmare_cnt >= ADC_NUM)
-		g_u32_copmare_cnt = 0; 
+	if(int32_copmare_cnt >= ADC_NUM)
+		int32_copmare_cnt = 0; 
 
 	else;
 	
-	g_u32_sen_cnt++;
+	int32_sen_cnt++;
 
-	if(g_u32_sen_cnt >= SEN_NUM)
+	if(int32_sen_cnt >= SEN_NUM)
 	{	
-		g_u32_sen_cnt = 0;
+		int32_sen_cnt = 0;
 		StopCpuTimer0();
 	}
 
@@ -186,33 +223,36 @@ void Sensor_setting(void) // 받은값 중에 가장 큰 값을 MAX, 가장 작은 값을 MIN 으
 {	
 //	sen_vari_init(g_sen);
 
-	for(g_u16_repeat_const = 0; g_u16_repeat_const < ADC_NUM; g_u16_repeat_const++)
+	StartCpuTimer2();
+
+
+	for(u16_repeat_const = 0; u16_repeat_const < ADC_NUM; u16_repeat_const++)
 	{
-		g_sen[g_u16_repeat_const].iq15_4095_max_value=_IQ(0.0);
-		g_sen[g_u16_repeat_const].iq15_4095_min_value=_IQ(0.0);
+		g_sen[u16_repeat_const].iq15_4095_max_value=_IQ(0.0);
+		g_sen[u16_repeat_const].iq15_4095_min_value=_IQ(0.0);
 	}
 
-	g_u16_repeat_const = 0;
+	u16_repeat_const = 0;
 	
 	VFDPrintf("Set_Max_");
 
 	while( 1 )
 	{
-		if( g_sen[ g_u16_repeat_const ].iq15_4095_value >= g_sen[ g_u16_repeat_const ].iq15_4095_max_value )
-			g_sen[ g_u16_repeat_const ].iq15_4095_max_value = g_sen[ g_u16_repeat_const ].iq15_4095_value;
+		if( g_sen[ u16_repeat_const ].iq15_4095_value >= g_sen[ u16_repeat_const ].iq15_4095_max_value )
+			g_sen[ u16_repeat_const ].iq15_4095_max_value = g_sen[ u16_repeat_const ].iq15_4095_value;
 
 		#if 0
-		for (g_u16_repeat_const = 0; g_u16_repeat_const < 16 ; g_u16_repeat_const++)
+		for (u16_repeat_const = 0; u16_repeat_const < 16 ; u16_repeat_const++)
 		{
-			TxPrintf(" %4.0f\t", _IQtoF(g_sen[ g_u16_repeat_const ].iq17max_value));
+			TxPrintf(" %4.0f\t", _IQtoF(g_sen[ u16_repeat_const ].iq17max_value));
 		}
 		TxPrintf("\n");
 		#endif
 
-		g_u16_repeat_const++;
+		u16_repeat_const++;
 
-		if( g_u16_repeat_const > ADC_NUM ) 	
-			g_u16_repeat_const = 0;
+		if( u16_repeat_const > ADC_NUM ) 	
+			u16_repeat_const = 0;
 		
 		if(!SU)
 		{
@@ -222,28 +262,28 @@ void Sensor_setting(void) // 받은값 중에 가장 큰 값을 MAX, 가장 작은 값을 MIN 으
 		}
 	}
 
-	g_u16_repeat_const = 0;
+	u16_repeat_const = 0;
 	
 	VFDPrintf("Set_Min_");
 	DELAY_US(1000000);
 
 	while( 1 )
 	{
-		if( g_sen[ g_u16_repeat_const ].iq15_4095_value >=  g_sen[ g_u16_repeat_const ].iq15_4095_min_value )		
-			g_sen[ g_u16_repeat_const ].iq15_4095_min_value = g_sen[ g_u16_repeat_const ].iq15_4095_value;
+		if( g_sen[ u16_repeat_const ].iq15_4095_value >=  g_sen[ u16_repeat_const ].iq15_4095_min_value )		
+			g_sen[ u16_repeat_const ].iq15_4095_min_value = g_sen[ u16_repeat_const ].iq15_4095_value;
 		
 		#if 0
-				for (g_u16_repeat_const = 0; g_u16_repeat_const < 16 ; g_u16_repeat_const++)
+				for (u16_repeat_const = 0; u16_repeat_const < 16 ; u16_repeat_const++)
 				{
-					TxPrintf(" %4.0f\t",_IQtoF(g_sen[ g_u16_repeat_const ].iq17min_value));
+					TxPrintf(" %4.0f\t",_IQtoF(g_sen[ u16_repeat_const ].iq17min_value));
 				}
 				TxPrintf("\n");
 		#endif
 
-		g_u16_repeat_const++;
+		u16_repeat_const++;
 		
-		if( g_u16_repeat_const > ADC_NUM ) 	
-			g_u16_repeat_const = 0;
+		if( u16_repeat_const > ADC_NUM ) 	
+			u16_repeat_const = 0;
 
 		if(!SU)
 		{
@@ -256,10 +296,10 @@ void Sensor_setting(void) // 받은값 중에 가장 큰 값을 MAX, 가장 작은 값을 MIN 으
 	}
 
 	#if 1
-	for(g_u16_repeat_const = 0 ; g_u16_repeat_const < ADC_NUM;	g_u16_repeat_const++)
+	for(u16_repeat_const = 0 ; u16_repeat_const < ADC_NUM;	u16_repeat_const++)
 	{
-		g_sen[g_u16_repeat_const].iq15_4095_max_value -= _IQ15mpy(g_sen[g_u16_repeat_const].iq15_4095_max_value , _IQ(0.20) );
-		g_sen[g_u16_repeat_const].iq15_4095_min_value += _IQ15mpy(g_sen[g_u16_repeat_const].iq15_4095_min_value , _IQ(0.25) );
+		g_sen[u16_repeat_const].iq15_4095_max_value -= _IQ15mpy(g_sen[u16_repeat_const].iq15_4095_max_value , _IQ(0.20) );
+		g_sen[u16_repeat_const].iq15_4095_min_value += _IQ15mpy(g_sen[u16_repeat_const].iq15_4095_min_value , _IQ(0.25) );
 	}
 	
 	#endif
@@ -268,6 +308,9 @@ void Sensor_setting(void) // 받은값 중에 가장 큰 값을 MAX, 가장 작은 값을 MIN 으
 	DELAY_US(500000);
 	VFDPrintf("Comp_Rom");
 	DELAY_US(500000);
+
+	StopCpuTimer0();
+	StopCpuTimer2();
 	
 }
 
@@ -282,11 +325,11 @@ static void cross_check(position_t *p_pos, bit_field_flag_t *p_Flag, motor_t *p_
 	p_CM->iq15_cross_distance = (p_RM->iq15_cross_distance + p_LM->iq15_cross_distance) >> 1;
 	p_CM->iq15_turnmark_distance = (p_RM->iq15_turnmark_distance + p_LM->iq15_turnmark_distance) >> 1;
 
-	if( g_u16_sensor_enable & RIGHT_ENABLE )
-		state = STATE_CENTER + g_u16_sensor_state;
+	if( u16_sensor_enable & RIGHT_ENABLE )
+		state = STATE_CENTER + u16_sensor_state;
 	
-	else if (g_u16_sensor_enable & LEFT_ENABLE )
-		state = STATE_CENTER - g_u16_sensor_state;
+	else if (u16_sensor_enable & LEFT_ENABLE )
+		state = STATE_CENTER - u16_sensor_state;
 	
 	else
 		state = STATE_CENTER;   // Real Time Line Searching....
@@ -313,7 +356,16 @@ static void cross_check(position_t *p_pos, bit_field_flag_t *p_Flag, motor_t *p_
 			p_RM->iq15_cross_distance = _IQ15(0.0);
 			
 			p_Flag->cross_flag = OFF;
+			int32_cross_cnt++;
 			CENTER_LED = OFF;
+		}
+
+		else if(p_CM->iq15_cross_distance <= _IQ15(CROSS_ERROR_DIST) && p_Flag->turnmark_flag == ON)
+		{
+			p_Flag->turnmark_flag = OFF;
+			LEFT_LED = OFF;
+			RIGHT_LED = OFF;
+			BUZZER = OFF;
 		}
 
 		else;
@@ -329,18 +381,13 @@ static void cross_check(position_t *p_pos, bit_field_flag_t *p_Flag, motor_t *p_
 void sen_vari_init(sen_t *p_sen)
 
 {
-	int16 sen_value_setting= 0;
-
 	memset( ( void * )&g_sen , 0x00 , sizeof( sen_t) * 16 );
 	memset( ( void * )&g_pos, 0x00 , sizeof( position_t ) );
 	memset( ( void * )&g_rmark, 0x00 , sizeof( turnmark_t ) );
 	memset( ( void * )&g_lmark, 0x00 , sizeof( turnmark_t ) );	
 	//reset struct into "0" by using memory setting fuction
-	
-//	for( sen_value_setting = 0 ; sen_value_setting < ADC_NUM ; sen_value_setting++ )	
-//	(p_sen + sen_value_setting)->iq15_4095_min_value = _IQ(4095.0);
 
-	g_u16_sensor_enable = 0xffff;
+	u16_sensor_enable = 0xffff;
 
 	#if 1
 		(p_sen + 0)->iq7_weight = _IQ7(-14000);		(p_sen + 0)->u16_active_arr = 0x8000; 		(p_sen + 0)->u16_passive_arr = 0x7fff;
@@ -354,7 +401,7 @@ void sen_vari_init(sen_t *p_sen)
 		(p_sen + 7)->iq7_weight = _IQ7(-500);			(p_sen + 7)->u16_active_arr = 0x0100;			(p_sen + 7)->u16_passive_arr = 0xfeff;
 	
 		(p_sen + 8)->iq7_weight = _IQ7(500); 			(p_sen + 8)->u16_active_arr = 0x0080;			(p_sen + 8)->u16_passive_arr = 0xff7f;
-		(p_sen + 9)->iq7_weight = _IQ7(1500); 			(p_sen + 9)->u16_active_arr = 0x0040;			(p_sen + 9)->u16_passive_arr = 0xffbf;
+		(p_sen + 9)->iq7_weight = _IQ7(1500); 		(p_sen + 9)->u16_active_arr = 0x0040;			(p_sen + 9)->u16_passive_arr = 0xffbf;
 		(p_sen + 10)->iq7_weight = _IQ7(3500); 		(p_sen + 10)->u16_active_arr = 0x0020;		(p_sen + 10)->u16_passive_arr = 0xffdf;
 		(p_sen + 11)->iq7_weight = _IQ7(6120); 		(p_sen + 11)->u16_active_arr = 0x0010;		(p_sen + 11)->u16_passive_arr = 0xffef;
 	
@@ -374,12 +421,12 @@ void make_position(position_t *p_pos, sen_t *p_sen)
 	p_pos->iq15_sum = _IQ(0);
 	p_pos->iq7_sum_of_sec = _IQ7(0);
 	
-	p_pos->iq15_sum += (p_sen + g_u16_position_count + 0)->iq15_127_value;
-	p_pos->iq15_sum += (p_sen + g_u16_position_count + 1)->iq15_127_value;
-	p_pos->iq15_sum += (p_sen + g_u16_position_count + 2)->iq15_127_value;
-	p_pos->iq15_sum += (p_sen + g_u16_position_count + 3)->iq15_127_value;
+	p_pos->iq15_sum += (p_sen + u16_position_count + 0)->iq15_127_value;
+	p_pos->iq15_sum += (p_sen + u16_position_count + 1)->iq15_127_value;
+	p_pos->iq15_sum += (p_sen + u16_position_count + 2)->iq15_127_value;
+	p_pos->iq15_sum += (p_sen + u16_position_count + 3)->iq15_127_value;
 	//add four datas of sensors which are middle of the sensor board( 6,7,8,9)	
-	//g_sen[g_u16_position_count] is already reseted in main.c for 6
+	//g_sen[u16_position_count] is already reseted in main.c for 6
 	
 	p_pos->iq7_sum = p_pos->iq15_sum >> 8;
 	//change iq17 into iq7
@@ -388,24 +435,24 @@ void make_position(position_t *p_pos, sen_t *p_sen)
 	{
 		cross_check(&g_pos, &g_Flag, &L_motor, &C_motor, &R_motor);
 
-		p_pos->iq7_sum_of_sec += _IQ7mpyIQX( (p_sen + g_u16_position_count + 0)->iq7_weight, 7, (p_sen + g_u16_position_count + 0)->iq15_127_value, 15 );
-		p_pos->iq7_sum_of_sec += _IQ7mpyIQX( (p_sen + g_u16_position_count + 1)->iq7_weight, 7, (p_sen + g_u16_position_count + 1)->iq15_127_value, 15 );
-		p_pos->iq7_sum_of_sec += _IQ7mpyIQX( (p_sen + g_u16_position_count + 2)->iq7_weight, 7, (p_sen + g_u16_position_count + 2)->iq15_127_value, 15 );
-		p_pos->iq7_sum_of_sec += _IQ7mpyIQX( (p_sen + g_u16_position_count + 3)->iq7_weight, 7, (p_sen + g_u16_position_count + 3)->iq15_127_value, 15 );
+		p_pos->iq7_sum_of_sec += _IQ7mpyIQX( (p_sen + u16_position_count + 0)->iq7_weight, 7, (p_sen + u16_position_count + 0)->iq15_127_value, 15 );
+		p_pos->iq7_sum_of_sec += _IQ7mpyIQX( (p_sen + u16_position_count + 1)->iq7_weight, 7, (p_sen + u16_position_count + 1)->iq15_127_value, 15 );
+		p_pos->iq7_sum_of_sec += _IQ7mpyIQX( (p_sen + u16_position_count + 2)->iq7_weight, 7, (p_sen + u16_position_count + 2)->iq15_127_value, 15 );
+		p_pos->iq7_sum_of_sec += _IQ7mpyIQX( (p_sen + u16_position_count + 3)->iq7_weight, 7, (p_sen + u16_position_count + 3)->iq15_127_value, 15 );
 
 		//g_pos.iq7sum = g_pos.iq17sum >> 10;
 
-		p_pos->iq7_temp_pos = _IQ7div( p_pos->iq7_sum_of_sec, p_pos->iq7_sum );
+		p_pos->iq7_temp_position = _IQ7div( p_pos->iq7_sum_of_sec, p_pos->iq7_sum );
 
-		if( p_pos->iq7_temp_pos >= iq7_POSITION_END )		
-			p_pos->iq7_temp_pos = iq7_POSITION_END;
+		if( p_pos->iq7_temp_position >= iq7_POSITION_END )		
+			p_pos->iq7_temp_position = iq7_POSITION_END;
 
-		else if( p_pos->iq7_temp_pos <= -iq7_POSITION_END )		
-			p_pos->iq7_temp_pos = -iq7_POSITION_END;
+		else if( p_pos->iq7_temp_position <= -iq7_POSITION_END )		
+			p_pos->iq7_temp_position = -iq7_POSITION_END;
 		
 		else;
 		
-		p_pos->iq10_temp_position = p_pos->iq7_temp_pos<<3;
+		p_pos->iq10_temp_position = p_pos->iq7_temp_position<<3;
 		
 		position_enable(&g_pos, g_sen);		
 	}
@@ -415,125 +462,135 @@ void make_position(position_t *p_pos, sen_t *p_sen)
 
 void position_enable(position_t *p_pos, sen_t *p_sen)
  {
-	 if ( p_pos->iq7_temp_pos >= (p_sen + 15)->iq7_weight )
+	 if ( p_pos->iq7_temp_position >= (p_sen + 15)->iq7_weight )
 	 {
-		 g_u16_position_count = S_TWELVE;
-		 g_u16_sensor_state = EIGHT_SHIFT;
-		 g_u16_sensor_enable = 0xc000;	//1100 0000 0000 0000
+		 u16_position_count = S_TWELVE;
+		 u16_sensor_state = EIGHT_SHIFT;
+		 u16_sensor_enable = 0x0003;		 //0000 0000 0000 0011
 	 }
 	 
-	 else if ( p_pos->iq7_temp_pos < (p_sen + 0)->iq7_weight )
+	 else if ( p_pos->iq7_temp_position < (p_sen + 0)->iq7_weight )
 	 {
-		 g_u16_position_count = NONE;
-		 g_u16_sensor_state = EIGHT_SHIFT;
-		 g_u16_sensor_enable = 0x0003;		 //0000 0000 0000 0011		
+		 u16_position_count = NONE;
+		 u16_sensor_state = EIGHT_SHIFT;
+
+		 u16_sensor_enable = 0xc000;		//1100 0000 0000 0000
 	 }
 	 
-	 else if ( p_pos->iq7_temp_pos > (p_sen + 14)->iq7_weight )
+	 else if ( p_pos->iq7_temp_position > (p_sen + 14)->iq7_weight )
 	 {
-		 g_u16_position_count = S_TWELVE;
-		 g_u16_sensor_state = SEVEN_SHIFT;
-		 g_u16_sensor_enable = 0xe000;		 //1110 0000 0000 0000
+		 u16_position_count = S_TWELVE;
+		 u16_sensor_state = SEVEN_SHIFT;
+		 u16_sensor_enable = 0x0007;		 //0000 0000 0000 0111
 	 }
 	 
-	 else if ( p_pos->iq7_temp_pos < (p_sen + 1)->iq7_weight )
+	 else if ( p_pos->iq7_temp_position < (p_sen + 1)->iq7_weight )
 	 {
-		 g_u16_position_count = NONE;
-		 g_u16_sensor_state = SEVEN_SHIFT;
-		 g_u16_sensor_enable = 0x0007;		 //0000 0000 0000 0111
+		 u16_position_count = NONE;
+		 u16_sensor_state = SEVEN_SHIFT;
+		 u16_sensor_enable = 0xe000;		 //1110 0000 0000 0000
 	 }
 	 
 	 
-	 else if( p_pos->iq7_temp_pos > (p_sen + 13)->iq7_weight )
+	 else if( p_pos->iq7_temp_position > (p_sen + 13)->iq7_weight )
 	 {
-		 g_u16_position_count = S_TWELVE;
-		 g_u16_sensor_state = SIX_SHIFT;
-		 g_u16_sensor_enable = 0xf000;		 //1111 0000 0000 0000
+		 u16_position_count = S_TWELVE;
+		 u16_sensor_state = SIX_SHIFT;
+		 u16_sensor_enable = 0x000f;		 //0000 0000 0000 1111
 	 }
 
-	 else if( p_pos->iq7_temp_pos < (p_sen + 2)->iq7_weight )
+	 else if( p_pos->iq7_temp_position < (p_sen + 2)->iq7_weight )
 	 {
-		 g_u16_position_count = NONE;
-		 g_u16_sensor_state = SIX_SHIFT;
-		 g_u16_sensor_enable = 0x000f;		 //0000 0000 0000 1111
+		 u16_position_count = NONE;
+		 u16_sensor_state = SIX_SHIFT;
+		 u16_sensor_enable = 0xf000;		 //1111 0000 0000 0000
 	 }
 	 
-	 else if( p_pos->iq7_temp_pos > (p_sen + 12)->iq7_weight )
+	 else if( p_pos->iq7_temp_position > (p_sen + 12)->iq7_weight )
 	 {
-		 g_u16_position_count = S_ELEVEN;
-		 g_u16_sensor_state = FIVE_SHIFT;
-		 g_u16_sensor_enable = 0x7800;		 //0111 1000 0000 0000
+		 u16_position_count = S_ELEVEN;
+		 u16_sensor_state = FIVE_SHIFT;
+		 u16_sensor_enable = 0x001e;		 //0000 0000 0001 1110
 	 }
 	 
-	 else if( p_pos->iq7_temp_pos < (p_sen + 3)->iq7_weight ) 
+	 else if( p_pos->iq7_temp_position < (p_sen + 3)->iq7_weight ) 
 	 {
-		 g_u16_position_count = S_ONE;
-		 g_u16_sensor_state = FIVE_SHIFT;	 
-		 g_u16_sensor_enable = 0x001e;		 //0000 0000 0001 1110
+		 u16_position_count = S_ONE;
+		 u16_sensor_state = FIVE_SHIFT;	 
+		 u16_sensor_enable = 0x7800;		 //0111 1000 0000 0000
 	 }
 	 
-	 else if( p_pos->iq7_temp_pos > (p_sen + 11)->iq7_weight )
+	 else if( p_pos->iq7_temp_position > (p_sen + 11)->iq7_weight )
 	 {
-		 g_u16_position_count = S_TEN;
-		 g_u16_sensor_state = FOUR_SHIFT;
-		 g_u16_sensor_enable = 0x3c00;		 //0011 1100 0000 0000
+		 u16_position_count = S_TEN;
+		 u16_sensor_state = FOUR_SHIFT;
+		 u16_sensor_enable = 0x003c;		 //0000 0000 0011 1100
 	 }
 	 
-	 else if( p_pos->iq7_temp_pos < (p_sen + 4)->iq7_weight ) 
+	 else if( p_pos->iq7_temp_position < (p_sen + 4)->iq7_weight ) 
 	 {
-		 g_u16_position_count = S_TWO;
-		 g_u16_sensor_state = FOUR_SHIFT;
-		 g_u16_sensor_enable = 0x003c;		 //0000 0000 0011 1100
+		 u16_position_count = S_TWO;
+		 u16_sensor_state = FOUR_SHIFT;
+		 u16_sensor_enable = 0x3c00;		 //0011 1100 0000 0000
 	 }
 
-	 else if( p_pos->iq7_temp_pos > (p_sen + 10)->iq7_weight )
+	 else if( p_pos->iq7_temp_position > (p_sen + 10)->iq7_weight )
 	 {
-		 g_u16_position_count = S_NINE;
-		 g_u16_sensor_state = THREE_SHIFT;
-		 g_u16_sensor_enable = 0x1e00;		 //0001 1110 0000 0000
+		 u16_position_count = S_NINE;
+		 u16_sensor_state = THREE_SHIFT;
+		 u16_sensor_enable = 0x0078;		 //0000 0000 0111 1000
+
 	 }
 	 
-	 else if( p_pos->iq7_temp_pos < (p_sen + 5)->iq7_weight ) 
+	 else if( p_pos->iq7_temp_position < (p_sen + 5)->iq7_weight ) 
 	 {
-		 g_u16_position_count = S_THREE;
-		 g_u16_sensor_state = THREE_SHIFT;
-		 g_u16_sensor_enable = 0x0078;		 //0000 0000 0111 1000
+		 u16_position_count = S_THREE;
+		 u16_sensor_state = THREE_SHIFT;
+		 u16_sensor_enable = 0x1e00;		 //0001 1110 0000 0000
+
 	 }
 
-	 else if( p_pos->iq7_temp_pos > (p_sen + 9)->iq7_weight ) 
+	 else if( p_pos->iq7_temp_position > (p_sen + 9)->iq7_weight ) 
 	 {
-		 g_u16_position_count = S_EIGHT;
-		 g_u16_sensor_state = TWO_SHIFT;
-		 g_u16_sensor_enable = 0x0f00;		 //0000 1111 0000 0000
+		 u16_position_count = S_EIGHT;
+		 u16_sensor_state = TWO_SHIFT;
+		 u16_sensor_enable = 0x00f0;		 //0000 0000 1111 0000
+
 	 }
 	 
-	 else if( p_pos->iq7_temp_pos < (p_sen + 6)->iq7_weight ) 
+	 else if( p_pos->iq7_temp_position < (p_sen + 6)->iq7_weight ) 
 	 {
-		 g_u16_position_count = S_FOUR;
-		 g_u16_sensor_state = TWO_SHIFT;
-		 g_u16_sensor_enable = 0x00f0;		 //0000 0000 1111 0000
+		 u16_position_count = S_FOUR;
+		 u16_sensor_state = TWO_SHIFT;
+		 u16_sensor_enable = 0x0f00;		 //0000 1111 0000 0000
+
 	 }
 	 
-	 else if( p_pos->iq7_temp_pos > (p_sen + 8)->iq7_weight ) 
+	 else if( p_pos->iq7_temp_position > (p_sen + 8)->iq7_weight ) 
 	 {
-		 g_u16_position_count = S_SEVEN;
-		 g_u16_sensor_state = ONE_SHIFT;
-		 g_u16_sensor_enable = 0x0780;		 //0000 0111 1000 0000
+		 u16_position_count = S_SEVEN;
+		 u16_sensor_state = ONE_SHIFT;
+		 u16_sensor_enable = 0x01e0;		 //0000 0001 1110 0000
+
 	 }
 	 
-	 else if( p_pos->iq7_temp_pos < (p_sen + 7)->iq7_weight ) 
+	 else if( p_pos->iq7_temp_position < (p_sen + 7)->iq7_weight ) 
 	 {
-		 g_u16_position_count = S_FIVE;
-		 g_u16_sensor_state = ONE_SHIFT;		 
-		 g_u16_sensor_enable = 0x01e0;		 //0000 0001 1110 0000
+		 u16_position_count = S_FIVE;
+		 u16_sensor_state = ONE_SHIFT;		 
+		 u16_sensor_enable = 0x0780;		 //0000 0111 1000 0000
+
 	 }
 	 
 	 
-	 else if( p_pos->iq7_temp_pos >= (p_sen + 7)->iq7_weight &&	p_pos->iq7_temp_pos <= (p_sen + 8)->iq7_weight )
+	 else if( p_pos->iq7_temp_position >= (p_sen + 7)->iq7_weight &&	p_pos->iq7_temp_position <= (p_sen + 8)->iq7_weight )
 	 {
-		 g_u16_position_count = S_SIX;
-		 g_u16_sensor_state = NON_SHIFT;
-		 g_u16_sensor_enable = 0x03c0;		 //0000 0011 1100 0000
+		 u16_position_count = S_SIX;
+		 u16_sensor_state = NON_SHIFT;
+		 u16_sensor_enable = 0x03c0;		 //0000 0011 1100 0000
 	 }
- 
+	 
+	 else;
+
+ 	//u16_sensor_state = u16_sensor_enable & ~( RIGHT_ENABLE ) & ~( LEFT_ENABLE );
 }

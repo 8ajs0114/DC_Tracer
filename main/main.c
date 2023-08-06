@@ -12,7 +12,7 @@ void System_Init(void)
 	InitGpio();			// 입출력 포트 초기화	
 	InitCpuTimers();
 	
-	MemCopy(&RamfuncsLoadStart, 	&RamfuncsLoadEnd, 		&RamfuncsRunStart); 
+	MemCopy(&RamfuncsLoadStart, 	&RamfuncsLoadEnd, 	&RamfuncsRunStart); 
 	MemCopy(&RamfuncsLoadStart1, 	&RamfuncsLoadEnd1, 	&RamfuncsRunStart1);
 	
 	InitSci();			
@@ -35,47 +35,49 @@ void System_Init(void)
 
 void Variable_Init( void )
 {
-	g_u32_sen_cnt = 0;
-	g_u32_copmare_cnt = 0;
-	g_u16_position_count = 6;
+	int32_sen_cnt = 0;
+	int32_copmare_cnt = 0;
+	u16_position_count = 6;
 	
 	g_pos.iq10_temp_position = _IQ10(0.0);
-	g_pos.iq7_temp_pos = _IQ7(0.0);
+	g_pos.iq7_temp_position = _IQ7(0.0);
 	g_Flag.speed_up_flag = OFF;
 
-	g_int32_cross_cnt = 0;
-	g_int32_turnmark_cnt = 0;
+	int32_cross_cnt = 0;
+	int32_turnmark_cnt = 0;
 
-	g_float32_timer_cnt = 0;
-	g_u32_target_end_accel = 0;
+	float32_timer = 0;
+	float32_timer_cnt = 0;
 
-	g_iq15_right_handle = _IQ15(1);
-	g_iq15_left_handle = _IQ15(1);
+	iq15_right_handle = _IQ15(1);
+	iq15_left_handle = _IQ15(1);
 	
-	g_u32_target_velocity = 2200;	// 2000
-	g_u32_target_accel = 3400;		// 3600
-	g_u32_target_end_accel = 0;
-	g_u32_Max_velocity = 4000;
-	g_u32_Straight_Accelration = 3000;
+	iq15_target_velocity = _IQ15(2600);			// 2000
+	iq15_target_accel = _IQ15(4200);				//_IQ15(3400);		// 3600
+	iq15_target_end_accel = _IQ15(0);
+	iq15_Max_velocity = _IQ15(9000);
+	iq15_Straight_Acceleration = _IQ15(14000);
+	iq15_Max_Deccelerataion = _IQ15(10000);
+	iq15_end_distance = _IQ15(245);
 		
-	g_int32_handle_dcc = 270;		// 260
-	g_int32_handle_acc = 25;			// 23
+	int32_handle_dcc = 291;					//265;
+	int32_handle_acc = 52;						//42;
+	int32_turnmark_min = 100;
 
-	g_float32_acchandle = (float)g_int32_handle_acc;
-	g_float32_acchandle /= 100;
-	g_iq16_out_corner_limit = _IQ16(g_float32_acchandle);
+	float32_acchandle = (float)int32_handle_acc;
+	float32_acchandle /= 100;
+	iq16_out_corner_limit = _IQ16(float32_acchandle);
 
-	g_float32_dechandle = (float)g_int32_handle_dcc;
-	g_float32_dechandle /= 100;
-	g_iq16_in_corner_limit = _IQ16(g_float32_dechandle);
+	float32_dechandle = (float)int32_handle_dcc;
+	float32_dechandle /= 100;
+	iq16_in_corner_limit = _IQ16(float32_dechandle);
+
+	iq15_kp = _IQ15(82);							//_IQ15(62);
+	iq15_kd = _IQ15(90);							 //_IQ15(90);
 
 	memset( (void *)	&L_motor, 	0x00, sizeof(motor_t) );
 	memset( (void *)	&R_motor, 	0x00, sizeof(motor_t) );
 	memset( (void *)	&g_Flag, 	0x00, sizeof(bit_field_flag_t) );
-	
-	g_pos.iq7_kp = POS_KP_UP;
-	g_pos.iq7_ki = _IQ7( 0.3 );
-	g_pos.iq7_kd = POS_KD_UP;
 }
 
 void main(void)
@@ -83,11 +85,9 @@ void main(void)
 	System_Init();
 	Variable_Init();
 	sen_vari_init(g_sen);
-	StartCpuTimer2();
 	read_maxmin_rom();
-		
-	menu();
 
+	menu();
 }
 
 void Delay(Uint32 Cnt)
@@ -99,5 +99,3 @@ void Delay(Uint32 Cnt)
 		asm("	nop");	
 	}
 }
-
-

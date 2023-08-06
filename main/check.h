@@ -18,9 +18,9 @@
 extern void sensor_check_4095(void);
 extern void sensor_check_127(void);
 extern void max_min_check (void);
+extern void max_min_print (void);
 extern void position_check(void);
-
-
+extern void line_info_check (void);
 
 #endif
 

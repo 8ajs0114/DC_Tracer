@@ -26,11 +26,11 @@ void InitGpio(void)
    EALLOW;
 /*
 //   IO0 	- PWM A Left
-	GpioCtrlRegs.GPAMUX1.bit.GPIO0 = 0;		dir	1			
+	GpioCtrlRegs.GPAMUX1.bit.GPIO0 = 1;		dir	1			
 //   IO1 	- DIR A Left
 	GpioCtrlRegs.GPAMUX1.bit.GPIO1 = 0;		dir	1			  
 //   IO2 	- PWM B Right
-	GpioCtrlRegs.GPAMUX1.bit.GPIO2 = 0;		dir	1
+	GpioCtrlRegs.GPAMUX1.bit.GPIO2 = 1;		dir	1
 //   IO3 	- DIR B Right
 	GpioCtrlRegs.GPAMUX1.bit.GPIO3 = 0; 	dir 1
 	

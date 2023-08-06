@@ -22,14 +22,14 @@ void FUCKING_NULL(void)
 }
 
 
-void (*menu_func[X][Y])( void )={   FUCKING_NULL,	Sensor_setting,	sensor_check_4095,	sensor_check_127,	FUCKING_NULL,
-								   FUCKING_NULL,	position_check,	max_min_check,		FUCKING_NULL,		FUCKING_NULL,
-								   FUCKING_NULL,	search_race,		change_run_value,		change_handle_value,	FUCKING_NULL
+void (*menu_func[X][Y])( void )={   FUCKING_NULL,	Sensor_setting,	sensor_check_4095,	sensor_check_127,		FUCKING_NULL,		FUCKING_NULL,		FUCKING_NULL,
+								   FUCKING_NULL,	position_check,	max_min_check,		max_min_print,			line_info_check,		race_3D,			end_set,
+								   FUCKING_NULL,	search_race,		change_run_value,	change_handle_value,		change_PID_value,	change_run_value_2,	second_race	
 								};
 
-char setting[X][Y][WORD_LENGTH]={ "Sensor__",	"Max_Min_",	"Val_4095",	"Val_0127",	"Blank___",
-				       			  "Check___",	"Pos_____",	"Mm______",	"Blank___",	"Line____",
-				        		  	  "Search__",	"Run_____",	"Vel_Acc_",	"Handle__",	"PID_Set_"
+char setting[X][Y][WORD_LENGTH]={ "Sensor__",	"Max_Min_",	"Val_4095",	"Val_0127",	"Blank___",	"Blank___",	"Blank___",
+				       			  "Check___",	"Pos_____",	"Mm______",	"Mm_print",	"Line____",	"3D______",	"End Dist",
+				        		  	  "Search__",	"Run_____",	"Vel_Acc_",	"Handle__",	"PID_Set_",	"Vel_Acc2",	"Run_2nd_"	
 				      	  		    };
 				    
 void menu(void)

@@ -45,17 +45,14 @@ typedef volatile struct position
 {
 	_iq7		iq7_sum,
 			iq7_sum_of_sec,
-			iq7_temp_pos,
+			iq7_temp_position,
 			iq7_position_pid_out,
 			iq7_pos_IIR_putted,
 			iq7_pos_IIR_putting,
 			iq7_pos_IIR_output,
 			iq7_past_pos[4],
 			iq7_position_proportion,
-			iq7_position_derivate,
-			iq7_kp,
-			iq7_ki,
-			iq7_kd;
+			iq7_position_derivate;
 	
 	_iq10      iq10_temp_position;	
 	
@@ -100,8 +97,8 @@ typedef volatile struct motor
 
 	_iq27	iq27_distance_from_interrupt;
 
-	_iq28	iq28_kp,
-			iq28_kd;
+//	_iq28	iq28_kp,
+//			iq28_kd;
 }motor_t;
 
 __STRUCT_EXT__		motor_t		R_motor;
@@ -122,6 +119,10 @@ typedef volatile struct bit_field_flag
 	Uint16 	motor_ISR_flag:1;		// 12
 	Uint16 	motor_start:1; 		// 13
 	Uint16 	speed_up_flag:1;
+	Uint16	bushed_flag:1;
+	Uint16	uphill_flag:1;
+	Uint16	Line_out_flag:1;
+	Uint16	menu_flag:1;
 }bit_field_flag_t;
 
 __STRUCT_EXT__ bit_field_flag_t	g_Flag;
@@ -136,19 +137,17 @@ __STRUCT_EXT__ turnmark_t g_lmark;
 
 typedef struct first_race_info
 {
-	int32		int32_R_dist,
-			int32_L_dist,
-			int32_C_dist,
-			int32_D_dist,
-			
-			int32_turnmark,
+	int32	int32_turn_mark,
 			int32_turn_way,
-			int32_decel,
-			int32_max_vel;
+			int32_fast_mark;
 
-	_iq15 	iq15_temp_R_dist,
- 			iq15_temp_L_dist,
-			iq15_temp_C_dist;
+
+	_iq15 	iq15_right_dist,
+			iq15_left_dist,
+			iq15_center_dist,
+			iq15_decel_dist,
+			iq15_decel,
+			iq15_max_vel;
 }race_info;
 
 __STRUCT_EXT__ race_info search_info[256];
