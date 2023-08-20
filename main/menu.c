@@ -22,118 +22,90 @@ void FUCKING_NULL(void)
 }
 
 
-void (*menu_func[X][Y])( void )={   FUCKING_NULL,	Sensor_setting,	sensor_check_4095,	sensor_check_127,		FUCKING_NULL,		FUCKING_NULL,		FUCKING_NULL,
-								   FUCKING_NULL,	position_check,	max_min_check,		max_min_print,			line_info_check,		race_3D,			end_set,
-								   FUCKING_NULL,	search_race,		change_run_value,	change_handle_value,		change_PID_value,	change_run_value_2,	second_race	
+void (*menu_func[X][Y])( void )={   FUCKING_NULL,	Sensor_setting,		sensor_check_4095,	sensor_check_127,		FUCKING_NULL,		FUCKING_NULL,		FUCKING_NULL,
+								   FUCKING_NULL,	change_run_value,	change_PID_value	,	change_run_value_2,		end_set,			change_handle_value,	FUCKING_NULL,
+								   FUCKING_NULL,	position_check,		max_min_check,		max_min_print,			line_info_check,		set_zero,			FUCKING_NULL,
+								   FUCKING_NULL,	search_race,			second_race,		FUCKING_NULL,			FUCKING_NULL,		FUCKING_NULL,		race_3D	
 								};
 
-char setting[X][Y][WORD_LENGTH]={ "Sensor__",	"Max_Min_",	"Val_4095",	"Val_0127",	"Blank___",	"Blank___",	"Blank___",
-				       			  "Check___",	"Pos_____",	"Mm______",	"Mm_print",	"Line____",	"3D______",	"End Dist",
-				        		  	  "Search__",	"Run_____",	"Vel_Acc_",	"Handle__",	"PID_Set_",	"Vel_Acc2",	"Run_2nd_"	
-				      	  		    };
+char setting[X][Y][WORD_LENGTH]={ " Sensor ",			" MaxMin ",			"  4095  ",			"  0127  ",				"  NULL  ",			"  NULL  ",			"  NULL  ",
+								  " Set up ",			"Vel Acc1",			"   PD   ",			"Vel Acc2",				"End Dist",			" Handle ",			"  NULL  ",
+				       			  "  Test  ",			"Position",			"   Mm   ",			"Mm print",				"  Line  ",			"  Zero  ",			"  NULL  ",
+				        		  	  "  Race  ",			"Search  ",			"Straight",			"Big Turn",				"  EX45  ",			" EXS45S ",			"   3D   ",			
+				      	  		};
 				    
 void menu(void)
 {
-	int32 int32_X=0;
-	int32 int32_Y=0;
+	int32 int32_X	=	0;
+	int32 int32_Y	=	0;
 
-	while(1)
-	{ 	
-		VFDPrintf((char*)setting[int32_X][int32_Y]);
+	while( 1 )
+	{	
+		VFDPrintf( (char*)setting[ int32_X ][ int32_Y ] );
 		DELAY_US(100000);
 		
-		if (!SR)
+		if( !SR )
 		{
-//			RIGHT_LED = ON;
-			
 			int32_X++;
 			
-			if (int32_X > (X-1)) 
-			{
-				int32_X = 0;
-			}
-			VFDPrintf((char*)setting[int32_X][int32_Y]);
-			DELAY_US(100000);
+			if( int32_X > (X-1) )	int32_X = 0;
+			else;
 			
-//			RIGHT_LED = OFF;
+			VFDPrintf( (char*)setting[ int32_X ][ int32_Y ] );
+			DELAY_US(100000);
 		}
 
-		else if (!SL)
+		else if(!SL)
 		{
-//			LEFT_LED = ON;
-
 			int32_X--;
 
-			if (int32_X < 0) 
-			{
-				int32_X = (X-1);
-			}
-			VFDPrintf((char*)setting[int32_X][int32_Y]);
-			DELAY_US(100000);
+			if( int32_X < 0 )		int32_X = (X-1);
+			else;
 			
-//			LEFT_LED = OFF;			
+			VFDPrintf((char*)setting[int32_X][int32_Y]);
+			DELAY_US(100000);	
 		}
 
-		else if (!SD)
-		{
-//			BUZZER = ON;
-			
+		else if( !SD )
+		{			
 			VFDPrintf("SUB___IN");
 			DELAY_US(100000);
-
-//			BUZZER = OFF;
 			
 			while (1)
 			{			
-				VFDPrintf((char*)setting[int32_X][int32_Y]);
+				VFDPrintf( (char*)setting[ int32_X ][ int32_Y ] );
 				DELAY_US(100000);	
-				if (!SR)
+				
+				if( !SR )
 				{
-//					RIGHT_LED = ON;
-
 					int32_Y++;			
 
-					if (int32_Y > (Y-1)) 
-					{
-						int32_Y= 0;
-					}
-					VFDPrintf((char*)setting[int32_X][int32_Y]);
-					DELAY_US(100000);
+					if( int32_Y > (Y-1) )		int32_Y = 0;
+					else;
 					
-//					RIGHT_LED = OFF;					
+					VFDPrintf( (char*)setting[ int32_X ][ int32_Y ] );
+					DELAY_US(100000);
 				}
 
-				else if (!SL)
+				else if( !SL )
 				{
-//					LEFT_LED = ON;
-
 					int32_Y--;
 
-					if (int32_Y < 0) 
-					{
-						int32_Y = (Y-1);
-					}
-					VFDPrintf((char*)setting[int32_X][int32_Y]);
-					DELAY_US(100000);	
-
-//					LEFT_LED = OFF;
-				}
-
-				else if(!SD) 
-				{
-					menu_func[int32_X][int32_Y]();
-				}
-
-				else if (!SU)
-				{	
-//					CENTER_LED = ON;
+					if( int32_Y < 0 )			int32_Y = (Y-1);
+					else;
 					
+					VFDPrintf( (char*)setting[ int32_X ][ int32_Y ] );
+					DELAY_US(100000);	
+				}
+
+				else if( !SD )		menu_func[ int32_X ][ int32_Y ]();
+
+				else if( !SU )
+				{	
 					int32_Y = 0;
+					
 					VFDPrintf("SUB__OUT");
 					DELAY_US(100000);
-
-//					CENTER_LED = OFF;
-					
 					break;
 				}
 

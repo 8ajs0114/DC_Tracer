@@ -29,11 +29,4 @@ extern void if_start_end(bit_field_flag_t *p_Flag, motor_t *p_LM,	motor_t *p_CM,
 extern void if_lineout(bit_field_flag_t* p_Flag);
 extern void line_save(race_info *p_info);
 extern void line_calculation(race_info *p_info);
-extern void race_3D (void)	;
-extern void if_start_end_3D (bit_field_flag_t *p_Flag, motor_t *p_LM,	motor_t *p_CM,	motor_t *p_RM, turnmark_t *p_lmark, turnmark_t *p_rmark, race_info *p_info)	;
-extern void if_lineout_3D(bit_field_flag_t *p_Flag, motor_t *p_LM,  motor_t *p_CM, motor_t *p_RM);
-extern void Handle_3D(position_t *p_pos, motor_t *p_LM,	motor_t *p_RM)	;
-
-
-
 #endif

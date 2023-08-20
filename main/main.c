@@ -17,6 +17,7 @@ void System_Init(void)
 	
 	InitSci();			
 	InitSpi();
+	
 	InitPieCtrl();		// PIE 제어 레지스터 초기화 동작
 	IER = 0x0000;		// 인터럽트 인에이블 레지스터 클리어
 	IFR = 0x0000;		// 인터럽트 플래그 레지스터 클리어
@@ -35,16 +36,16 @@ void System_Init(void)
 
 void Variable_Init( void )
 {
-	int32_sen_cnt = 0;
-	int32_copmare_cnt = 0;
+	int32_sen_count = 0;
+	int32_copmare_count = 0;
 	u16_position_count = 6;
 	
 	g_pos.iq10_temp_position = _IQ10(0.0);
 	g_pos.iq7_temp_position = _IQ7(0.0);
 	g_Flag.speed_up_flag = OFF;
 
-	int32_cross_cnt = 0;
-	int32_turnmark_cnt = 0;
+	int32_cross_count = 0;
+	int32_turnmark_count = 0;
 
 	float32_timer = 0;
 	float32_timer_cnt = 0;
@@ -55,14 +56,14 @@ void Variable_Init( void )
 	iq15_target_velocity = _IQ15(2600);			// 2000
 	iq15_target_accel = _IQ15(4200);				//_IQ15(3400);		// 3600
 	iq15_target_end_accel = _IQ15(0);
-	iq15_Max_velocity = _IQ15(9000);
-	iq15_Straight_Acceleration = _IQ15(14000);
-	iq15_Max_Deccelerataion = _IQ15(10000);
+	iq15_Max_velocity = _IQ15(5000);
+	iq15_Straight_Acceleration = _IQ15(12000);
+	iq15_Max_Acceleration = _IQ15(16000);
 	iq15_end_distance = _IQ15(245);
 		
-	int32_handle_dcc = 291;					//265;
-	int32_handle_acc = 52;						//42;
-	int32_turnmark_min = 100;
+	int32_handle_dcc = 291;//261;//180					//265;
+	int32_handle_acc =52;//132;//102						//42;
+	int32_turnmark_minimum_count = 40;
 
 	float32_acchandle = (float)int32_handle_acc;
 	float32_acchandle /= 100;
@@ -72,12 +73,12 @@ void Variable_Init( void )
 	float32_dechandle /= 100;
 	iq16_in_corner_limit = _IQ16(float32_dechandle);
 
-	iq15_kp = _IQ15(82);							//_IQ15(62);
-	iq15_kd = _IQ15(90);							 //_IQ15(90);
+	iq15_kp = _IQ15(82);//18							//_IQ15(62);
+	iq15_kd = _IQ15(90);	//27						 //_IQ15(90);
 
 	memset( (void *)	&L_motor, 	0x00, sizeof(motor_t) );
 	memset( (void *)	&R_motor, 	0x00, sizeof(motor_t) );
-	memset( (void *)	&g_Flag, 	0x00, sizeof(bit_field_flag_t) );
+	memset( (void *)	&g_Flag,	0x00, sizeof(bit_field_flag_t) );
 }
 
 void main(void)
@@ -86,7 +87,8 @@ void main(void)
 	Variable_Init();
 	sen_vari_init(g_sen);
 	read_maxmin_rom();
-
+	read_mark_limit_rom();
+	
 	menu();
 }
 

@@ -34,8 +34,9 @@ typedef enum
 	LINE_RDIST_PAGE_1,
 	LINE_TURN_PAGE_2,
 	LINE_LDIST_PAGE_2,
-	LINE_RDIST_PAGE_2
-} rom_e;
+	LINE_RDIST_PAGE_2,
+	MARK_LIMIT_PAGE
+	} rom_e;
 		
 void write_maxmin_rom( void )
 {
@@ -262,9 +263,9 @@ void read_maxmin_rom( void )
 
 	 #if 0
 	 
-	 for(u16_repeat_const = 0; u16_repeat_const < 16; u16_repeat_const++)
+	 for(int32_repeat_count = 0; int32_repeat_count < 16; int32_repeat_count++)
 	 {
-		TxPrintf("[%d] MAX : %.0f , MIN : %.0f\n",u16_repeat_const,_IQtoF(g_sen[u16_repeat_const].iq15_4095_max_value),_IQtoF(g_sen[u16_repeat_const].iq15_4095_min_value));
+		TxPrintf("[%d] MAX : %.0f , MIN : %.0f\n",int32_repeat_count,_IQtoF(g_sen[int32_repeat_count].iq15_4095_max_value),_IQtoF(g_sen[int32_repeat_count].iq15_4095_min_value));
 	 } //rom에 저장 여부 판단 
 
 	 #endif
@@ -276,8 +277,8 @@ void write_mark_cnt_rom( void )
 
 	Uint16 mark_sarr[ 2 ] = { 0, };
 
-	mark_sarr[ i++ ] = ( Uint32 )(((int32_turnmark_cnt) >> 0 ) & 0xff);
-	mark_sarr[ i++ ] = ( Uint32 )(((int32_turnmark_cnt) >> 8 ) & 0xff);
+	mark_sarr[ i++ ] = ( Uint32 )(((int32_turnmark_count) >> 0 ) & 0xff);
+	mark_sarr[ i++ ] = ( Uint32 )(((int32_turnmark_count) >> 8 ) & 0xff);
 
 	SpiWriteRom( ( Uint16 )MARK_PAGE, 0x00, (Uint16)2, mark_sarr);
 
@@ -290,8 +291,8 @@ void read_mark_cnt_rom( void )
 
 	SpiReadRom( ( Uint16 )MARK_PAGE, 0x00, (Uint16)2, mark_larr);
 
-	int32_total_cnt = ( int32 )( ( mark_larr[ i++ ] & 0xff ) << 0 );
-	int32_total_cnt |= ( int32 )( ( mark_larr[ i++ ] & 0xff ) << 8 );
+	int32_total_count = ( int32 )( ( mark_larr[ i++ ] & 0xff ) << 0 );
+	int32_total_count |= ( int32 )( ( mark_larr[ i++ ] & 0xff ) << 8 );
 
 
 }
@@ -311,7 +312,7 @@ void write_line_info_rom(void)
 
 	k = l = m = 0;
 
-	for(i=0; i<=int32_turnmark_cnt; i++)
+	for(i=0; i<=int32_turnmark_count; i++)
 	{   
 		turn_sarr[k++] = (Uint16)(((search_info[i].int32_turn_mark) >> 0) & 0xff);    
 		rdist_sarr[l++] = (Uint16)(((search_info[i].iq15_right_dist >> 15) >> 0) & 0xff);
@@ -324,7 +325,7 @@ void write_line_info_rom(void)
 
 	k = l = m = 0;
 
-	for(i=0; i <= int32_turnmark_cnt; i++)
+	for(i=0; i <= int32_turnmark_count; i++)
 	{
 		turn_sarr[k++] = (Uint16)(((search_info[i].int32_turn_mark) >> 8) & 0xff);    
 		rdist_sarr[l++] = (Uint16)(((search_info[i].iq15_right_dist >> 15) >> 8) & 0xff);
@@ -352,7 +353,7 @@ void read_line_info_rom( void )
 	read_mark_cnt_rom();
 
 	k = l = m = 0;
-    	for(i=0; i<=int32_total_cnt; i++)
+    	for(i=0; i<=int32_total_count; i++)
     	{ 
         	search_info[k++].int32_turn_mark = (int32)((turn_larr[i] & 0xff) << 0);
         	search_info[l++].iq15_right_dist = ((long)((rdist_larr[i] & 0xff) << 0)) << 15;
@@ -364,10 +365,37 @@ void read_line_info_rom( void )
 	SpiReadRom( ( Uint16 )LINE_LDIST_PAGE_2, 0x00, ( Uint16 )LINE_INFO, ldist_larr);
 
     	k = l = m = 0;
-    	for(i=0; i<=int32_total_cnt; i++)
+    	for(i=0; i<=int32_total_count; i++)
     	{ 
        	search_info[k++].int32_turn_mark |= (int32)((turn_larr[i] & 0xff) << 8);    
 		search_info[l++].iq15_right_dist |= ((long)((rdist_larr[i] & 0xff) << 8)) << 15;
 		search_info[m++].iq15_left_dist |= ((long)((ldist_larr[i] & 0xff) << 8)) << 15;
 	}
 }
+
+void write_mark_limit_rom( void )
+{
+	int16 i = 0;
+
+	Uint16 mark_sarr[ 2 ] = { 0, };
+
+	mark_sarr[ i++ ] = ((int32_turnmark_minimum_count) >> 0 ) & 0xff;
+	mark_sarr[ i++ ] = ((int32_turnmark_minimum_count) >> 8 ) & 0xff;
+
+	SpiWriteRom( ( Uint16 )MARK_LIMIT_PAGE, 0x00, (Uint16)2, mark_sarr);
+
+}
+
+void read_mark_limit_rom( void )
+{
+	int16 i = 0;
+	Uint16 mark_larr[ 2 ] = { 0, };
+
+	SpiReadRom( ( Uint16 )MARK_LIMIT_PAGE, 0x00, (Uint16)2, mark_larr);
+
+	int32_turnmark_minimum_count = ( mark_larr[ i++ ] & 0xff ) << 0;
+	int32_turnmark_minimum_count |= ( mark_larr[ i++ ] & 0xff ) << 8;
+
+
+}
+

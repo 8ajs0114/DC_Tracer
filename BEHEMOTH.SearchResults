@@ -1,29 +1,5 @@
----- u32_copmare_cnt Matches (36 in 0 files) ----
-Main.c (main):	u32_copmare_cnt = 0;
-Sensor.c (main):	//"u32_copmare_cnt" already reset into "0" in main.c
-Sensor.c (main):	if( g_sen[ u32_copmare_cnt ].iq15_4095_value > g_sen[ u32_copmare_cnt ].iq15_4095_max_value )		
-Sensor.c (main):		g_sen[ u32_copmare_cnt ].iq15_127_value = _IQ(127);
-Sensor.c (main):	else if( g_sen[ u32_copmare_cnt ].iq15_4095_value < g_sen[ u32_copmare_cnt ].iq15_4095_min_value )	
-Sensor.c (main):		g_sen[ u32_copmare_cnt ].iq15_127_value = _IQ(0);//_IQ=all of _Iq(number) => This can be changed into all _IQ
-Sensor.c (main):		g_sen[ u32_copmare_cnt ].iq15_127_value = 
-Sensor.c (main):		_IQ15mpy(_IQ15div( ( g_sen[ u32_copmare_cnt ].iq15_4095_value - g_sen[ u32_copmare_cnt ].iq15_4095_min_value ) , 
-Sensor.c (main):		( g_sen[ u32_copmare_cnt ].iq15_4095_max_value - g_sen[ u32_copmare_cnt ].iq15_4095_min_value )) , _IQ(127));
-Sensor.c (main):	if( g_sen[ u32_copmare_cnt + SEN_NUM ].iq15_4095_value > g_sen[ u32_copmare_cnt + SEN_NUM ].iq15_4095_max_value )		
-Sensor.c (main):		g_sen[ u32_copmare_cnt + SEN_NUM ].iq15_127_value = _IQ(127);
-Sensor.c (main):	else if( g_sen[ u32_copmare_cnt + SEN_NUM ].iq15_4095_value < g_sen[ u32_copmare_cnt + SEN_NUM ].iq15_4095_min_value )	
-Sensor.c (main):		g_sen[ u32_copmare_cnt + SEN_NUM ].iq15_127_value = _IQ(0);//_IQ=all of _Iq(number) => This can be changed into all _IQ
-Sensor.c (main):		g_sen[ u32_copmare_cnt + SEN_NUM ].iq15_127_value = 
-Sensor.c (main):		_IQ15mpy(_IQ15div( ( g_sen[ u32_copmare_cnt + SEN_NUM ].iq15_4095_value - g_sen[ u32_copmare_cnt + SEN_NUM ].iq15_4095_min_value ) , 
-Sensor.c (main):		( g_sen[ u32_copmare_cnt + SEN_NUM ].iq15_4095_max_value - g_sen[ u32_copmare_cnt + SEN_NUM ].iq15_4095_min_value )) , _IQ(127));
-Sensor.c (main):	if(g_sen[ u32_copmare_cnt ].iq15_127_value < _IQ15(LIMIT_127_VALUE))
-Sensor.c (main):		g_pos.u16_state &= g_sen[ u32_copmare_cnt ].u16_passive_arr;
-Sensor.c (main):	else if(g_sen[ u32_copmare_cnt ].iq15_127_value >= _IQ15(LIMIT_127_VALUE))
-Sensor.c (main):		g_pos.u16_state |= g_sen[ u32_copmare_cnt ].u16_active_arr;
-Sensor.c (main):	if(g_sen[ u32_copmare_cnt + SEN_NUM ].iq15_127_value < _IQ15(LIMIT_127_VALUE))
-Sensor.c (main):		g_pos.u16_state &= g_sen[ u32_copmare_cnt + SEN_NUM ].u16_passive_arr;
-Sensor.c (main):	else if(g_sen[ u32_copmare_cnt + SEN_NUM ].iq15_127_value >= _IQ15(LIMIT_127_VALUE))
-Sensor.c (main):		g_pos.u16_state |= g_sen[ u32_copmare_cnt + SEN_NUM ].u16_active_arr;
-Sensor.c (main):	u32_copmare_cnt++;			
-Sensor.c (main):	if(u32_copmare_cnt >= ADC_NUM)
-Sensor.c (main):		u32_copmare_cnt = 0; 
-Variable.h (main):											u32_copmare_cnt;
+---- state_table Matches (7 in 1 files) ----
+Sensor.c (main):volatile Uint16 state_table[] = 
+Sensor.c (main):	if( ( p_pos->u16_state & state_table[ state - 1 ] ) == state_table[ state - 1] ||
+Sensor.c (main):		( p_pos->u16_state & state_table[ state + 1 ] ) == state_table[ state + 1] ||
+Sensor.c (main):		( p_pos->u16_state & state_table[ state ] ) == state_table[ state ] )// 0000 0000 0000 0000   state central right & left one sensor sensing.

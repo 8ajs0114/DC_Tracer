@@ -26,15 +26,15 @@
 
 //------------------------------------------------------------//
 // Sensor
-__VARIABLE_EXT__			 	int32 		int32_sen_cnt,
+__VARIABLE_EXT__			 	int32 		int32_sen_count,
 											int32_repeat_const,
-											int32_copmare_cnt,
+											int32_copmare_count,
 											int32_handle_acc,
 											int32_handle_dcc,
-											int32_turnmark_cnt,
-											int32_total_cnt,
-											int32_cross_cnt,
-											int32_turnmark_min;
+											int32_turnmark_count,
+											int32_total_count,
+											int32_cross_count,
+											int32_turnmark_minimum_count;
 
 __VARIABLE_EXT__  				float32 		float32_acchandle,
 											float32_dechandle,
@@ -66,7 +66,7 @@ __VARIABLE_EXT__				_iq15		iq15_right_handle,
 											iq15_target_end_accel,
 											iq15_Straight_Acceleration,
 											iq15_Max_velocity,
-											iq15_Max_Deccelerataion,
+											iq15_Max_Acceleration,
 											iq15_end_distance;
 
 
@@ -102,7 +102,7 @@ typedef enum
 
 //------------------------------------------------------------//
 // MENU ARRAY CONST
-#define 	X 									3
+#define 	X 									4
 #define 	Y 									7
 #define 	WORD_LENGTH 							9
 
@@ -116,8 +116,8 @@ typedef enum
 //------------------------------------------------------------//
 // SENSOR STATE CONST
 #define 	LIMIT_127_VALUE						50
-#define 	iq7_POSITION_END 					_IQ7(14000)
-#define 	iq16_POSITION_CENTER 				_IQ16( 7000 )
+#define 	iq7_POSITION_END 					_IQ7( 14000 )//6268
+#define 	iq16_POSITION_CENTER 				_IQ16( 7000 )//3134
 
 #define 	LEFT_ENABLE							0xfc00				// 1111 1100 0000 0000
 #define 	RIGHT_ENABLE						0x003f				// 0000 0000 0011 1111
@@ -126,23 +126,14 @@ typedef enum
 #define 	LEFT_MARK_CHECK						0xf000				// 1111 0000 0000 0000
 #define 	RIGHT_MARK_CHECK					0x000f				// 0000 0000 0000 1111
 
-// HANDLE PID CONST
-#define	iq7_PID_Kb							_IQ7(0.1116352117046)		//(W_cut *  F_dt) / (2.0 + W_cut * F_dt)
-#define	iq7_PID_Ka							_IQ7(-0.776729576590)
-#define 	iq7_POS_KP_UP						_IQ7( 1.5 )
-#define 	iq7_POS_KP_DOWN						_IQ7( 0.2 )
-#define 	iq7_POS_KD_UP						_IQ7( 4.4 )
-#define 	iq7_POS_KD_DOWN						_IQ7( 3.4 )
-
-
 //------------------------------------------------------------//
 // MOVE DISTANCE CONST
-#define 	START_CHECK_DIST					60
-#define 	TURN_CHECK_DIST						80
-#define	MOVE_START_DIST						120
-#define 	TURN_ERROR_DIST						5
-#define 	CROSS_CHECK_DIST					100
-#define 	CROSS_ERROR_DIST					30
+#define 	START_CHECK_DIST					60//26.86567//
+#define 	TURN_CHECK_DIST						80//35.8209//
+#define	MOVE_START_DIST						120//53.73134//
+#define 	TURN_ERROR_DIST						5//2.23881//
+#define 	CROSS_CHECK_DIST					100//44.77612//
+#define 	CROSS_ERROR_DIST					30//13.43284//
 
 
 //------------------------------------------------------------//
@@ -175,9 +166,9 @@ typedef enum
 
 //------------------------------------------------------------//
 // Motor Information
-// Number of Gear Teeth 					67
+// Number of Gear Teeth 					30
 // Number of Pinion Teeth 					20
-// Gear Ratio 								3.35
+// Gear Ratio 								1.5
 
 //------------------------------------------------------------//
 // Encoder Information
@@ -188,8 +179,8 @@ typedef enum
 
 //------------------------------------------------------------//
 // Wheel Information
-// Wheel Radius								17.25		mm
-// Wheel Diameter							34.5		mm	
+// Wheel Radius								17			mm
+// Wheel Diameter							34			mm	
 
 //------------------------------------------------------------//
 // Const
@@ -198,26 +189,44 @@ typedef enum
 
 //------------------------------------------------------------//
 // Calculation
-// Tick per Turn  = LPR x Fold x Gear Ratio = 6,860.8
-// Distance per Turn = 2 x PI x Wheel Radius = PI x Wheel Diameter = 108.384946425						mm
-// Distance per Tick = Distance per Turn / Tick per Turn = 0.01579771257360657649253731343284			mm
-// Velocity per Tick = Distance per Tick / Motor Interrupt Cycle = 31.595425147213152985074626865672	mm/s
+// Tick per Turn  = LPR x Fold x Gear Ratio = 3072
+// Distance per Turn = 2 x PI x Wheel Radius = PI x Wheel Diameter = 106.8141501						mm
+// Distance per Tick = Distance per Turn / Tick per Turn = 0.03477023115234375							mm
+// Velocity per Tick = Distance per Tick / Motor Interrupt Cycle = 69.5404623046875						mm/s
 
 //------------------------------------------------------------//
 // MOTOR VALUE DEFINITION
 #define 	iq30_MOTOR_INTERRUPT_CYCLE			_IQ30(0.0005)
-//#define iq30_TICK_PER_TURN				_IQ30(6,860.8)
-#define 	iq30_DISTANCE_PER_TICK				_IQ30(0.01579771257360657649253731343284)
-#define 	iq26_VELOCITY_PER_TICK				_IQ26(31.595425147213152985074626865672)
+//#define iq30_TICK_PER_TURN				_IQ30(3072)
+#define 	iq30_DISTANCE_PER_TICK				_IQ30(0.015568760)//0.034770231
+#define 	iq24_VELOCITY_PER_TICK				_IQ24(31.137520435)//69.5404623
 
-#define 	iq15_MAX_PID_OUT					_IQ15( 8800.0 )
-#define 	iq15_MIN_PID_OUT					_IQ15( -8800.0 )
+#define 	iq15_MAX_PID_OUT					_IQ15( 8800.0 )//4029
+#define 	iq15_MIN_PID_OUT					_IQ15( -8800.0 )//-4029
 #define 	iq30_PWM_CONVERT					_IQ30( 0.2 )			// PWM주파수 최대값
 
-//#define 	iq28_kp								_IQ28( 0.21 ) 		// 0.37, 0.80
-//#define 	iq28_kd								_IQ28( 0.90 ) 		// 0.62, 0.85  
+#define 	iq15_rkp							_IQ15( 0.50 )		//40//50//20
+#define 	iq15_rkd							_IQ15( 0.61 )		//54//61//50
+#define 	iq15_lkp							_IQ15( 0.52 ) 		//40//52//18	
+#define 	iq15_lkd							_IQ15( 0.58 )		//54//58//49
+/*
+#define 	iq26_rki							_IQ26( 0.0007 )
+#define 	iq26_lki							_IQ26( 0.0007 )
+#define iq15_i_max							_IQ15(5.0)
+#define iq15_i_min							_IQ15(-5.0)
+*/
+
 __VARIABLE_EXT__					_iq15	iq15_kp,
 											iq15_kd;	
+
+// HANDLE PID CONST
+#define	iq7_PID_Kb							_IQ7(0.1116352117046)		//(W_cut *  F_dt) / (2.0 + W_cut * F_dt)
+#define	iq7_PID_Ka							_IQ7(-0.776729576590)
+#define 	iq7_POS_KP_UP						_IQ7( 1.5 )//0.67
+//#define 	iq7_POS_KP_DOWN						_IQ7( 0.2 )
+#define 	iq7_POS_KD_UP						_IQ7( 4.4 )//1.97
+//#define 	iq7_POS_KD_DOWN						_IQ7( 3.4 )
+
 //------------------------------------------------------------//
 // Debug Tool Const (LED,Piezo Buzzer)
 #define	LEFT_LED							GpioDataRegs.GPBDAT.bit.GPIO33	// red

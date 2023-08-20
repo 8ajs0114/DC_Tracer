@@ -92,10 +92,11 @@ typedef volatile struct motor
 	
 			iq15_proportional,
 			iq15_derivative,
+			iq15_integral,
 			iq15_pid_out,
 			iq15_pid_result;
 
-	_iq27	iq27_distance_from_interrupt;
+	_iq25	iq25_distance_from_interrupt;
 
 //	_iq28	iq28_kp,
 //			iq28_kd;

@@ -1,3 +1,4 @@
+
 //###########################################################################
 //
 // FILE		: check.c
@@ -243,7 +244,7 @@ void line_info_check (void)
 	TxPrintf("\n");
 	
 	#if 1
-    	for(u16_repeat_const = 0; u16_repeat_const <= int32_total_cnt; u16_repeat_const++)
+    	for(u16_repeat_const = 0; u16_repeat_const <= int32_total_count; u16_repeat_const++)
     	{ 
     		TxPrintf("%3d ~%3d |\t ",u16_repeat_const,u16_repeat_const+1);
 		TxPrintf("L_Dist : %4f\t",_IQtoF(search_info[u16_repeat_const].iq15_left_dist));
@@ -257,8 +258,15 @@ void line_info_check (void)
 	}
 
 	TxPrintf("End_Dcc : %4f\t",_IQtoF(iq15_target_end_accel));
-	TxPrintf("Turn_Cnt : %4ld\t",int32_total_cnt);
+	TxPrintf("Turn_Cnt : %4ld\t",int32_total_count);
 	#endif
 
 }
 
+void set_zero (void)
+{
+	race_init(&g_Flag,&L_motor,&C_motor,&R_motor);
+
+	handle_ad_make(iq16_out_corner_limit, iq16_in_corner_limit);
+	move_to_move(_IQ15(1000), _IQ15(0), _IQ15(0), _IQ15(0), _IQ15(5000));
+}

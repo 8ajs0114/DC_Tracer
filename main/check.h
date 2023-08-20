@@ -21,6 +21,7 @@ extern void max_min_check (void);
 extern void max_min_print (void);
 extern void position_check(void);
 extern void line_info_check (void);
+extern void set_zero (void);
 
 #endif
 

@@ -18,12 +18,12 @@ OUTPUT TRANSLATION MAP
    OUTPUT FILES: a_Behemoth.hex [b0..b15]
 
    CONTENTS: 003e8000..003e8001   codestart Data Width=2   
-             003e8002..003eb637   .text Data Width=2   
-             003eb638..003ec0e8   .econst Data Width=2   
-             003ec0e9..003ec368   VFD_FONT Data Width=2   
-             003ec369..003ec535   IQmath Data Width=2   
-             003ec536..003ec68b   .cinit Data Width=2   
-             003ec68c..003ec6ae   ramfuncs Data Width=2   
+             003e8002..003eb6e1   .text Data Width=2   
+             003eb6e2..003ec1b0   .econst Data Width=2   
+             003ec1b1..003ec430   VFD_FONT Data Width=2   
+             003ec431..003ec5fd   IQmath Data Width=2   
+             003ec5fe..003ec7a0   .cinit Data Width=2   
+             003ec7a1..003ec7c3   ramfuncs Data Width=2   
 
 --------------------------------------------------------------------------------
 00000000..003fffff  Page=1  Memory Width=16  ROM Width=16  "*DEFAULT PAGE 1*"

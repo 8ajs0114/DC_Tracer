@@ -69,18 +69,18 @@ interrupt void SENSOR_ISR(void)
 {	
 	// sensor
 	PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
-	GpioDataRegs.GPASET.all =(ON_L << sen_arr[int32_sen_cnt ]);//push 1 to left depends on number which in array sen_arr.=>on
+	GpioDataRegs.GPASET.all =(ON_L << sen_arr[int32_sen_count ]);//push 1 to left depends on number which in array sen_arr.=>on
 
 	//ON_L=0000 0000 0000 0001
 	//each spot of number is same as gpio number which to control. If pin number is 1 it's on, if pin number is 0 it's off.
 	//(15~0)
 	
-	//already reseted "int32_sen_cnt" into "0" in main.c
+	//already reseted "int32_sen_count" into "0" in main.c
 
-	AdcRegs.ADCCHSELSEQ1.all = adc_arr[ int32_sen_cnt ];
-	AdcRegs.ADCCHSELSEQ2.all = adc_arr[ int32_sen_cnt + SEN_NUM ]; 
-	AdcRegs.ADCCHSELSEQ3.all = adc_arr[ int32_sen_cnt ];
-	AdcRegs.ADCCHSELSEQ4.all = adc_arr[ int32_sen_cnt + SEN_NUM ]; 
+	AdcRegs.ADCCHSELSEQ1.all = adc_arr[ int32_sen_count ];
+	AdcRegs.ADCCHSELSEQ2.all = adc_arr[ int32_sen_count + SEN_NUM ]; 
+	AdcRegs.ADCCHSELSEQ3.all = adc_arr[ int32_sen_count ];
+	AdcRegs.ADCCHSELSEQ4.all = adc_arr[ int32_sen_count + SEN_NUM ]; 
 	// 0,8 / 1,9 / 2,10 / 3,11 / 4,12 / 5,13 / 6,14 / 7,15 / 가 세트이므로 
 	// ADCCHSELSEQ1 과 ADCCHSELSEQ3이 세트 ADCCHSELSEQ2 과 ADCCHSELSEQ4가 세트로 수광을 받는다. 
 	
@@ -93,7 +93,7 @@ interrupt void ADC_ISR(void)
 	long_adc_sum_right = 0;
 	
 	PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
-	GpioDataRegs.GPACLEAR.all =(ON_L << sen_arr[int32_sen_cnt]);
+	GpioDataRegs.GPACLEAR.all =(ON_L << sen_arr[int32_sen_count]);
 
 	long_adc_sum_left += (long)AdcMirror.ADCRESULT0;
 	long_adc_sum_left += (long)AdcMirror.ADCRESULT1;
@@ -127,30 +127,30 @@ interrupt void ADC_ISR(void)
 	AdcRegs.ADCTRL2.bit.RST_SEQ1 = 1; // adc 변환 종료, 순서 초기화 
 	AdcRegs.ADCST.bit.INT_SEQ1_CLR = 1; // adc interrupt 종료 
 	
-	g_sen[ int32_sen_cnt ].iq15_4095_value = long_adc_sum_left << 12; // 여러번 받은 값 평균 내는 중 . 형 변환중 사라지는거 생각 
-	g_sen[ int32_sen_cnt + SEN_NUM ].iq15_4095_value = long_adc_sum_right << 12;	 //divide into 8(2^3)(R:15+L:14=R:1)
+	g_sen[ int32_sen_count ].iq15_4095_value = long_adc_sum_left << 12; // 여러번 받은 값 평균 내는 중 . 형 변환중 사라지는거 생각 
+	g_sen[ int32_sen_count + SEN_NUM ].iq15_4095_value = long_adc_sum_right << 12;	 //divide into 8(2^3)(R:15+L:14=R:1)
 	//if you move one spot right then you divide into 2, if you move on spot left then you multiple 2.
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//this erea divides (max-min)value into 127 , then make the sensor value into number between 0 to 127(128 steps). ps.I don't know why we divide into 127 but it's traditional.
-	//"int32_copmare_cnt" already reset into "0" in main.c
+	//"int32_copmare_count" already reset into "0" in main.c
 
 	// Left Sensor Value - 1
 
-	if( g_sen[ int32_copmare_cnt ].iq15_4095_value > g_sen[ int32_copmare_cnt ].iq15_4095_max_value )		
-		g_sen[ int32_copmare_cnt ].iq15_127_value = _IQ(127);
+	if( g_sen[ int32_copmare_count ].iq15_4095_value > g_sen[ int32_copmare_count ].iq15_4095_max_value )		
+		g_sen[ int32_copmare_count ].iq15_127_value = _IQ(127);
 
 	//if sensor value is higher than max vlaue, make sensor value into max value.
 	
-	else if( g_sen[ int32_copmare_cnt ].iq15_4095_value < g_sen[ int32_copmare_cnt ].iq15_4095_min_value )	
-		g_sen[ int32_copmare_cnt ].iq15_127_value = _IQ(0);//_IQ=all of _Iq(number) => This can be changed into all _IQ
+	else if( g_sen[ int32_copmare_count ].iq15_4095_value < g_sen[ int32_copmare_count ].iq15_4095_min_value )	
+		g_sen[ int32_copmare_count ].iq15_127_value = _IQ(0);//_IQ=all of _Iq(number) => This can be changed into all _IQ
 
 	//if sensor value is lower than min vlaue, make sensor value into min value.
 		
 	else 
-		g_sen[ int32_copmare_cnt ].iq15_127_value = 
-		_IQ15mpy(_IQ15div( ( g_sen[ int32_copmare_cnt ].iq15_4095_value - g_sen[ int32_copmare_cnt ].iq15_4095_min_value ) , 
-		( g_sen[ int32_copmare_cnt ].iq15_4095_max_value - g_sen[ int32_copmare_cnt ].iq15_4095_min_value )) , _IQ(127));
+		g_sen[ int32_copmare_count ].iq15_127_value = 
+		_IQ15mpy(_IQ15div( ( g_sen[ int32_copmare_count ].iq15_4095_value - g_sen[ int32_copmare_count ].iq15_4095_min_value ) , 
+		( g_sen[ int32_copmare_count ].iq15_4095_max_value - g_sen[ int32_copmare_count ].iq15_4095_min_value )) , _IQ(127));
 		
 	//(sensor_value-min_value)/{(max_value-min_value)/127}=>can know where the sensor value is.
 	//(current-min value)			   width of each step of max to min value divide in 127
@@ -158,20 +158,20 @@ interrupt void ADC_ISR(void)
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Right Sensor Value - 1
 	//
-	if( g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_4095_value > g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_4095_max_value )		
-		g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_127_value = _IQ(127);
+	if( g_sen[ int32_copmare_count + SEN_NUM ].iq15_4095_value > g_sen[ int32_copmare_count + SEN_NUM ].iq15_4095_max_value )		
+		g_sen[ int32_copmare_count + SEN_NUM ].iq15_127_value = _IQ(127);
 
 	//if sensor value is higher than max vlaue, make sensor value into max value.
 	
-	else if( g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_4095_value < g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_4095_min_value )	
-		g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_127_value = _IQ(0);//_IQ=all of _Iq(number) => This can be changed into all _IQ
+	else if( g_sen[ int32_copmare_count + SEN_NUM ].iq15_4095_value < g_sen[ int32_copmare_count + SEN_NUM ].iq15_4095_min_value )	
+		g_sen[ int32_copmare_count + SEN_NUM ].iq15_127_value = _IQ(0);//_IQ=all of _Iq(number) => This can be changed into all _IQ
 
 	//if sensor value is lower than min vlaue, make sensor value into min value.
 		
 	else 
-		g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_127_value = 
-		_IQ15mpy(_IQ15div( ( g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_4095_value - g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_4095_min_value ) , 
-		( g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_4095_max_value - g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_4095_min_value )) , _IQ(127));
+		g_sen[ int32_copmare_count + SEN_NUM ].iq15_127_value = 
+		_IQ15mpy(_IQ15div( ( g_sen[ int32_copmare_count + SEN_NUM ].iq15_4095_value - g_sen[ int32_copmare_count + SEN_NUM ].iq15_4095_min_value ) , 
+		( g_sen[ int32_copmare_count + SEN_NUM ].iq15_4095_max_value - g_sen[ int32_copmare_count + SEN_NUM ].iq15_4095_min_value )) , _IQ(127));
 		
 	//(sensor_value-min_value)/{(max_value-min_value)/127}=>can know where the sensor value is.
 	//(current-min value)			   width of each step of max to min value divide in 127
@@ -179,40 +179,40 @@ interrupt void ADC_ISR(void)
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Left Sensor Value - 2
 
-	if(g_sen[ int32_copmare_cnt ].iq15_127_value < _IQ15(LIMIT_127_VALUE))
-		g_pos.u16_state &= g_sen[ int32_copmare_cnt ].u16_passive_arr;
+	if(g_sen[ int32_copmare_count ].iq15_127_value < _IQ15(LIMIT_127_VALUE))
+		g_pos.u16_state &= g_sen[ int32_copmare_count ].u16_passive_arr;
 	
-	else if(g_sen[ int32_copmare_cnt ].iq15_127_value >= _IQ15(LIMIT_127_VALUE))
-		g_pos.u16_state |= g_sen[ int32_copmare_cnt ].u16_active_arr;
+	else if(g_sen[ int32_copmare_count ].iq15_127_value >= _IQ15(LIMIT_127_VALUE))
+		g_pos.u16_state |= g_sen[ int32_copmare_count ].u16_active_arr;
 	
 	else;
 /*	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Right Sensor Value - 2
 
-	if(g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_127_value < _IQ15(LIMIT_127_VALUE))
-		g_pos.u16_state &= g_sen[ int32_copmare_cnt + SEN_NUM ].u16_passive_arr;
+	if(g_sen[ int32_copmare_count + SEN_NUM ].iq15_127_value < _IQ15(LIMIT_127_VALUE))
+		g_pos.u16_state &= g_sen[ int32_copmare_count + SEN_NUM ].u16_passive_arr;
 	
-	else if(g_sen[ int32_copmare_cnt + SEN_NUM ].iq15_127_value >= _IQ15(LIMIT_127_VALUE))
-		g_pos.u16_state |= g_sen[ int32_copmare_cnt + SEN_NUM ].u16_active_arr;
+	else if(g_sen[ int32_copmare_count + SEN_NUM ].iq15_127_value >= _IQ15(LIMIT_127_VALUE))
+		g_pos.u16_state |= g_sen[ int32_copmare_count + SEN_NUM ].u16_active_arr;
 	
 	else;
 */	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	int32_copmare_cnt++;			
+	int32_copmare_count++;			
 	
-	if(int32_copmare_cnt >= ADC_NUM)
-		int32_copmare_cnt = 0; 
+	if(int32_copmare_count >= ADC_NUM)
+		int32_copmare_count = 0; 
 
 	else;
 	
-	int32_sen_cnt++;
+	int32_sen_count++;
 
-	if(int32_sen_cnt >= SEN_NUM)
+	if(int32_sen_count >= SEN_NUM)
 	{	
-		int32_sen_cnt = 0;
+		int32_sen_count = 0;
 		StopCpuTimer0();
 	}
 
@@ -356,7 +356,7 @@ static void cross_check(position_t *p_pos, bit_field_flag_t *p_Flag, motor_t *p_
 			p_RM->iq15_cross_distance = _IQ15(0.0);
 			
 			p_Flag->cross_flag = OFF;
-			int32_cross_cnt++;
+			int32_cross_count++;
 			CENTER_LED = OFF;
 		}
 
@@ -387,7 +387,7 @@ void sen_vari_init(sen_t *p_sen)
 	memset( ( void * )&g_lmark, 0x00 , sizeof( turnmark_t ) );	
 	//reset struct into "0" by using memory setting fuction
 
-	u16_sensor_enable = 0xffff;
+	u16_sensor_enable = 0x0000;
 
 	#if 1
 		(p_sen + 0)->iq7_weight = _IQ7(-14000);		(p_sen + 0)->u16_active_arr = 0x8000; 		(p_sen + 0)->u16_passive_arr = 0x7fff;
@@ -409,6 +409,31 @@ void sen_vari_init(sen_t *p_sen)
 		(p_sen + 13)->iq7_weight = _IQ7(9625);		(p_sen + 13)->u16_active_arr = 0x0004;		(p_sen + 13)->u16_passive_arr = 0xfffb;
 		(p_sen + 14)->iq7_weight = _IQ7(11000);		(p_sen + 14)->u16_active_arr = 0x0002;		(p_sen + 14)->u16_passive_arr = 0xfffd;
 		(p_sen + 15)->iq7_weight = _IQ7(14000);		(p_sen + 15)->u16_active_arr = 0x0001;		(p_sen + 15)->u16_passive_arr = 0xfffe;
+	//	make sesor weight into vlaue => usually 16000	if sensor is active 1 on that sen 		if sensor is passive 0 on that sen
+	//  1000 0000 0000 0000 = g_sen[0].active 			0111 1111 1111 1111 = g_sen[0].passive
+	//  right is +16000, left is -16000                 left is 0, right is 15					left is 0, right is 15	
+	#endif
+
+	#if 0
+		(p_sen + 0)->iq7_weight = _IQ7(-6268);		(p_sen + 0)->u16_active_arr = 0x8000; 		(p_sen + 0)->u16_passive_arr = 0x7fff;
+		(p_sen + 1)->iq7_weight = _IQ7(-4925);		(p_sen + 1)->u16_active_arr = 0x4000; 		(p_sen + 1)->u16_passive_arr = 0xbfff;
+		(p_sen + 2)->iq7_weight = _IQ7(-4309);		(p_sen + 2)->u16_active_arr = 0x2000; 		(p_sen + 2)->u16_passive_arr = 0xdfff;
+		(p_sen + 3)->iq7_weight = _IQ7(-3528);		(p_sen + 3)->u16_active_arr = 0x1000; 		(p_sen + 3)->u16_passive_arr = 0xefff;	
+	
+		(p_sen + 4)->iq7_weight = _IQ7(-2740); 		(p_sen + 4)->u16_active_arr = 0x0800; 		(p_sen + 4)->u16_passive_arr = 0xf7ff;	
+		(p_sen + 5)->iq7_weight = _IQ7(-1567); 		(p_sen + 5)->u16_active_arr = 0x0400; 		(p_sen + 5)->u16_passive_arr = 0xfbff;	
+		(p_sen + 6)->iq7_weight = _IQ7(-671);		(p_sen + 6)->u16_active_arr = 0x0200;			(p_sen + 6)->u16_passive_arr = 0xfdff; 
+		(p_sen + 7)->iq7_weight = _IQ7(-223);			(p_sen + 7)->u16_active_arr = 0x0100;			(p_sen + 7)->u16_passive_arr = 0xfeff;
+	
+		(p_sen + 8)->iq7_weight = _IQ7(223); 			(p_sen + 8)->u16_active_arr = 0x0080;			(p_sen + 8)->u16_passive_arr = 0xff7f;
+		(p_sen + 9)->iq7_weight = _IQ7(671); 		(p_sen + 9)->u16_active_arr = 0x0040;			(p_sen + 9)->u16_passive_arr = 0xffbf;
+		(p_sen + 10)->iq7_weight = _IQ7(1567); 		(p_sen + 10)->u16_active_arr = 0x0020;		(p_sen + 10)->u16_passive_arr = 0xffdf;
+		(p_sen + 11)->iq7_weight = _IQ7(2740); 		(p_sen + 11)->u16_active_arr = 0x0010;		(p_sen + 11)->u16_passive_arr = 0xffef;
+	
+		(p_sen + 12)->iq7_weight = _IQ7(3528);		(p_sen + 12)->u16_active_arr = 0x0008;		(p_sen + 12)->u16_passive_arr = 0xfff7;
+		(p_sen + 13)->iq7_weight = _IQ7(4309);		(p_sen + 13)->u16_active_arr = 0x0004;		(p_sen + 13)->u16_passive_arr = 0xfffb;
+		(p_sen + 14)->iq7_weight = _IQ7(4925);		(p_sen + 14)->u16_active_arr = 0x0002;		(p_sen + 14)->u16_passive_arr = 0xfffd;
+		(p_sen + 15)->iq7_weight = _IQ7(6268);		(p_sen + 15)->u16_active_arr = 0x0001;		(p_sen + 15)->u16_passive_arr = 0xfffe;
 	//	make sesor weight into vlaue => usually 16000	if sensor is active 1 on that sen 		if sensor is passive 0 on that sen
 	//  1000 0000 0000 0000 = g_sen[0].active 			0111 1111 1111 1111 = g_sen[0].passive
 	//  right is +16000, left is -16000                 left is 0, right is 15					left is 0, right is 15	
