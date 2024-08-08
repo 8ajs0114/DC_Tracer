@@ -111,7 +111,7 @@ void InitGpio(void)
 	GpioCtrlRegs.GPBMUX1.bit.GPIO32 = 0;	dir	1
 //   IO33 - LED Left
 	GpioCtrlRegs.GPBMUX1.bit.GPIO33 = 0;	dir	1
-//   IO34 - 
+//   IO34 - LED Accel 
 	GpioCtrlRegs.GPBMUX1.bit.GPIO34 = 0;	dir	1
 //mux 	0000 0000 / 0000 0000 / 0000 0000 / 0000 0000/ */
 	GpioCtrlRegs.GPBMUX1.all = 0x0;

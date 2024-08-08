@@ -33,7 +33,7 @@ interrupt void MOTOR_ISR (void)
 	L_motor.u16_qep_count = ( Uint16 )LeftQepRegs.QPOSCNT;
 	
 	// Reset ( value = 0 )
-	RightQepRegs.QEPCTL.bit.SWI 	= 1;
+	RightQepRegs.QEPCTL.bit.SWI	= 1;
 	LeftQepRegs.QEPCTL.bit.SWI	= 1;
 	
   	// Getting QEP Value from u16_qep_count
@@ -53,12 +53,9 @@ interrupt void MOTOR_ISR (void)
 	R_motor.iq25_distance_from_interrupt = _IQ25mpyIQX( (( int32 )( R_motor.int16_qep_value )) << 20, 20, iq30_DISTANCE_PER_TICK, 30 ); 
 	L_motor.iq25_distance_from_interrupt = _IQ25mpyIQX( (( int32 )( L_motor.int16_qep_value )) << 20, 20, iq30_DISTANCE_PER_TICK, 30 ); 
 
-//	R_motor.iq25_distance_from_interrupt = _IQ25div(_IQ25mpy(R_motor.iq25_distance_from_interrupt, _IQ25(1.5)),_IQ25(3.35));	
-//	L_motor.iq25_distance_from_interrupt = _IQ25div(_IQ25mpy(L_motor.iq25_distance_from_interrupt, _IQ25(1.5)),_IQ25(3.35));
-
 	// Sum Distance
-	R_motor.iq15_distance_sum 		+= ( L_motor.iq25_distance_from_interrupt >> 10 );
-	L_motor.iq15_distance_sum 		+= ( R_motor.iq25_distance_from_interrupt >> 10 );
+	R_motor.iq15_distance_sum 		+= ( R_motor.iq25_distance_from_interrupt >> 10 );
+	L_motor.iq15_distance_sum 		+= ( L_motor.iq25_distance_from_interrupt >> 10 );
 	
 	// Gone Distance	
 	L_motor.iq15_gone_distance 		+= ( L_motor.iq25_distance_from_interrupt >> 10 );
@@ -69,8 +66,8 @@ interrupt void MOTOR_ISR (void)
 	R_motor.iq15_cross_distance 		+= ( R_motor.iq25_distance_from_interrupt >> 10 );
 	L_motor.iq15_turnmark_distance 	+= ( L_motor.iq25_distance_from_interrupt >> 10 );
 	R_motor.iq15_turnmark_distance 	+= ( R_motor.iq25_distance_from_interrupt >> 10 );
-	L_motor.iq15_start_end_distance += ( L_motor.iq25_distance_from_interrupt >> 10 );
-	R_motor.iq15_start_end_distance += ( R_motor.iq25_distance_from_interrupt >> 10);
+	L_motor.iq15_start_end_distance 	+= ( L_motor.iq25_distance_from_interrupt >> 10 );
+	R_motor.iq15_start_end_distance 	+= ( R_motor.iq25_distance_from_interrupt >> 10);
 
 	// Ramnant Distance
 	R_motor.iq15_ramnant_distance	= R_motor.iq15_target_distance - R_motor.iq15_gone_distance;
@@ -79,34 +76,34 @@ interrupt void MOTOR_ISR (void)
 	//------------------------------------------------------------//
 	// Velocity Calculation from Encoder, Distance Data
 	// Right Motor Velocity Checking
-	R_motor.iq15_current_velocity[ 1 ] 		= R_motor.iq15_current_velocity[ 0 ];
-	R_motor.iq15_current_velocity[ 0 ] 		= _IQ15mpyIQX( (( int32 )( R_motor.int16_qep_value )) << 20, 20, iq24_VELOCITY_PER_TICK, 24 ); // Pulse to V = QEP Value * {x/2048 * Wheel_R/Gear Rate}
-	R_motor.iq15_current_velocity_average 	= ( R_motor.iq15_current_velocity[ 0 ] + R_motor.iq15_current_velocity[ 1 ] ) >> 1;
+	R_motor.iq15_current_velocity[ 1 ] 	= R_motor.iq15_current_velocity[ 0 ];
+	R_motor.iq15_current_velocity[ 0 ] 	= _IQ15mpyIQX( (( int32 )( R_motor.int16_qep_value )) << 20, 20, iq24_VELOCITY_PER_TICK, 24 ); // Pulse to V = QEP Value * {x/2048 * Wheel_R/Gear Rate}
+	R_motor.iq15_current_velocity_average = ( R_motor.iq15_current_velocity[ 0 ] + R_motor.iq15_current_velocity[ 1 ] ) >> 1;
 	
 	// Left Motor Velocity Checking
-	L_motor.iq15_current_velocity[ 1 ] 		= L_motor.iq15_current_velocity[ 0 ];
-	L_motor.iq15_current_velocity[ 0 ] 		= _IQ15mpyIQX( (( int32 )( L_motor.int16_qep_value )) << 20, 20, iq24_VELOCITY_PER_TICK, 24 );
+	L_motor.iq15_current_velocity[ 1 ] 	= L_motor.iq15_current_velocity[ 0 ];
+	L_motor.iq15_current_velocity[ 0 ] 	= _IQ15mpyIQX( (( int32 )( L_motor.int16_qep_value )) << 20, 20, iq24_VELOCITY_PER_TICK, 24 );
 	L_motor.iq15_current_velocity_average 	= ( L_motor.iq15_current_velocity[ 0 ] + L_motor.iq15_current_velocity[ 1 ] ) >> 1;
 
 	//------------------------------------------------------------//
 	//Decel Flag Activating
 	if( R_motor.u16_decel_flag == ON )
 	{		
-		if(R_motor.iq15_decel_distance >= _IQ15abs( R_motor.iq15_ramnant_distance ) )
+		if(R_motor.iq15_decel_distance 	>= _IQ15abs( R_motor.iq15_ramnant_distance ) )
 		{
 			R_motor.iq15_target_velocity 	= R_motor.iq15_decel_velocity;
 			L_motor.iq15_target_velocity 	= L_motor.iq15_decel_velocity;
-			R_motor.u16_decel_flag 			= L_motor.u16_decel_flag 		= OFF;
+			R_motor.u16_decel_flag 		= L_motor.u16_decel_flag 		= OFF;
 		}
 		else;
 	}
 	else if( L_motor.u16_decel_flag == ON )
 	{
-		if(L_motor.iq15_decel_distance >= _IQ15abs( L_motor.iq15_ramnant_distance ) )
+		if(L_motor.iq15_decel_distance 	>= _IQ15abs( L_motor.iq15_ramnant_distance ) )
 		{
 			R_motor.iq15_target_velocity 	= R_motor.iq15_decel_velocity;
 			L_motor.iq15_target_velocity 	= L_motor.iq15_decel_velocity;
-			R_motor.u16_decel_flag 			= L_motor.u16_decel_flag 		= OFF;
+			R_motor.u16_decel_flag 		= L_motor.u16_decel_flag 		= OFF;
 		}
 		else;
 	}
@@ -145,23 +142,25 @@ interrupt void MOTOR_ISR (void)
 	}	
 	else;
 
+	//test
 	//iq15_right_handle = _IQ15(1);
 	//iq15_left_handle = _IQ15(1);
 
 
 	//------------------------------------------------------------//
+//test ver.1
+#if 1
 	// PID Control - R
-//	R_motor.iq15_ramnant_velocity_sum 	-= 	R_motor.iq15_ramnant_velocity[ 3 ];
-	R_motor.iq15_ramnant_velocity[ 3 ] 	= 	R_motor.iq15_ramnant_velocity[ 2 ];
-	R_motor.iq15_ramnant_velocity[ 2 ] 	= 	R_motor.iq15_ramnant_velocity[ 1 ];	
-	R_motor.iq15_ramnant_velocity[ 1 ] 	= 	R_motor.iq15_ramnant_velocity[ 0 ];
-	R_motor.iq15_ramnant_velocity[ 0 ] 	= 	_IQ15mpy(R_motor.iq15_next_velocity , iq15_right_handle)- R_motor.iq15_current_velocity_average;
-//	R_motor.iq15_ramnant_velocity_sum 	+= 	R_motor.iq15_ramnant_velocity[ 0 ]; 
+	R_motor.iq15_ramnant_velocity_sum	-=	R_motor.iq15_ramnant_velocity[ 3 ];
+	R_motor.iq15_ramnant_velocity[ 3 ]	=	R_motor.iq15_ramnant_velocity[ 2 ];
+	R_motor.iq15_ramnant_velocity[ 2 ]	=	R_motor.iq15_ramnant_velocity[ 1 ]; 
+	R_motor.iq15_ramnant_velocity[ 1 ]	=	R_motor.iq15_ramnant_velocity[ 0 ];
+	R_motor.iq15_ramnant_velocity[ 0 ]	=	_IQ15mpy(R_motor.iq15_next_velocity , iq15_right_handle)- R_motor.iq15_current_velocity_average;
+	R_motor.iq15_ramnant_velocity_sum	+=	R_motor.iq15_ramnant_velocity[ 0 ]; 
 		
-	R_motor.iq15_proportional 			= 	_IQ15mpy(iq15_kp, R_motor.iq15_ramnant_velocity[ 0 ]);
-	R_motor.iq15_derivative 				= 	_IQ15mpy( iq15_kd,  R_motor.iq15_ramnant_velocity[ 0 ] - R_motor.iq15_ramnant_velocity[ 3 ] + 
-							  	  		  	_IQ15mpy( ( R_motor.iq15_ramnant_velocity[ 1 ] - R_motor.iq15_ramnant_velocity[ 2 ] ) , _IQ15( 3 ) ) );
-//	R_motor.iq15_integral				=	_IQ15mpyIQX(iq26_rki, 26, R_motor.iq15_ramnant_velocity_sum, 15);
+	R_motor.iq15_proportional			=	_IQ15mpy(iq15_rkp, R_motor.iq15_ramnant_velocity[ 0 ]);
+	R_motor.iq15_derivative 				=	_IQ15mpy( iq15_rkd,  R_motor.iq15_ramnant_velocity[ 0 ] - R_motor.iq15_ramnant_velocity[ 3 ] + ( R_motor.iq15_ramnant_velocity[ 1 ] - R_motor.iq15_ramnant_velocity[ 2 ] ) << 1 );
+//	R_motor.iq15_integral				=	_IQ15mpyIQX(iq15_rki, 26, R_motor.iq15_ramnant_velocity_sum, 15);
 
 //	if( R_motor.iq15_integral > iq15_i_max )		R_motor.iq15_integral = iq15_i_max;
 //	else if( R_motor.iq15_integral < iq15_i_min )	R_motor.iq15_integral = iq15_i_min;
@@ -170,26 +169,105 @@ interrupt void MOTOR_ISR (void)
 	R_motor.iq15_pid_out += R_motor.iq15_proportional + R_motor.iq15_derivative;
 
 	// PID Control - L
-//	L_motor.iq15_ramnant_velocity_sum 	-= 	L_motor.iq15_ramnant_velocity[ 3 ];
-	L_motor.iq15_ramnant_velocity[ 3 ] 	= 	L_motor.iq15_ramnant_velocity[ 2 ];
-	L_motor.iq15_ramnant_velocity[ 2 ] 	= 	L_motor.iq15_ramnant_velocity[ 1 ];	
-	L_motor.iq15_ramnant_velocity[ 1 ] 	= 	L_motor.iq15_ramnant_velocity[ 0 ];
-	L_motor.iq15_ramnant_velocity[ 0 ] 	= 	_IQ15mpy(L_motor.iq15_next_velocity , iq15_left_handle )- L_motor.iq15_current_velocity_average;
-//	L_motor.iq15_ramnant_velocity_sum 	+= 	L_motor.iq15_ramnant_velocity[ 0 ]; 
+	L_motor.iq15_ramnant_velocity_sum	-=	L_motor.iq15_ramnant_velocity[ 3 ];
+	L_motor.iq15_ramnant_velocity[ 3 ]	=	L_motor.iq15_ramnant_velocity[ 2 ];
+	L_motor.iq15_ramnant_velocity[ 2 ]	=	L_motor.iq15_ramnant_velocity[ 1 ]; 
+	L_motor.iq15_ramnant_velocity[ 1 ]	=	L_motor.iq15_ramnant_velocity[ 0 ];
+	L_motor.iq15_ramnant_velocity[ 0 ]	=	_IQ15mpy(L_motor.iq15_next_velocity , iq15_left_handle )- L_motor.iq15_current_velocity_average;
+	L_motor.iq15_ramnant_velocity_sum	+=	L_motor.iq15_ramnant_velocity[ 0 ]; 
 
-	L_motor.iq15_proportional 			= 	_IQ15mpy( iq15_kp, L_motor.iq15_ramnant_velocity[ 0 ]);
-	L_motor.iq15_derivative 				= 	_IQ15mpy( iq15_kd,  L_motor.iq15_ramnant_velocity[ 0 ] - L_motor.iq15_ramnant_velocity[ 3 ]  + 
-							  	  			_IQ15mpy( ( L_motor.iq15_ramnant_velocity[ 1 ] - L_motor.iq15_ramnant_velocity[ 2 ] ) , _IQ15( 3 ) ) );
-//	L_motor.iq15_integral				=	_IQ15mpyIQX(iq26_lki, 26, L_motor.iq15_ramnant_velocity_sum, 15);
+	L_motor.iq15_proportional			=	_IQ15mpy( iq15_lkp, L_motor.iq15_ramnant_velocity[ 0 ]);
+	L_motor.iq15_derivative 				=	_IQ15mpy( iq15_lkd,  L_motor.iq15_ramnant_velocity[ 0 ] - L_motor.iq15_ramnant_velocity[ 3 ] + ( L_motor.iq15_ramnant_velocity[ 1 ] - L_motor.iq15_ramnant_velocity[ 2 ] ) << 1 );
+//	L_motor.iq15_integral				=	_IQ15mpyIQX(iq15_lki, 26, L_motor.iq15_ramnant_velocity_sum, 15);
 
 //	if( L_motor.iq15_integral > iq15_i_max )		L_motor.iq15_integral = iq15_i_max;
 //	else if( L_motor.iq15_integral < iq15_i_min )	L_motor.iq15_integral = iq15_i_min;
 	
 //	L_motor.iq15_pid_out += L_motor.iq15_proportional + L_motor.iq15_derivative + L_motor.iq15_integral;	
 	L_motor.iq15_pid_out += L_motor.iq15_proportional + L_motor.iq15_derivative;
+#endif
 
+//test ver.2
+#if 0
+	// PID Control - R
+	R_motor.iq15_ramnant_velocity_sum	-=	R_motor.iq15_ramnant_velocity[ 3 ];
+	R_motor.iq15_ramnant_velocity[ 3 ]	=	R_motor.iq15_ramnant_velocity[ 2 ];
+	R_motor.iq15_ramnant_velocity[ 2 ]	=	R_motor.iq15_ramnant_velocity[ 1 ]; 
+	R_motor.iq15_ramnant_velocity[ 1 ]	=	R_motor.iq15_ramnant_velocity[ 0 ];
+	R_motor.iq15_ramnant_velocity[ 0 ]	=	_IQ15mpy(R_motor.iq15_next_velocity , iq15_right_handle)- R_motor.iq15_current_velocity_average;
+	R_motor.iq15_ramnant_velocity_sum	+=	R_motor.iq15_ramnant_velocity[ 0 ]; 
+		
+	R_motor.iq15_proportional			=	_IQ15mpy(iq15_rkp, R_motor.iq15_ramnant_velocity[ 0 ]);
+	R_motor.iq15_derivative 				=	_IQ15mpy(iq15_rkd, R_motor.iq15_ramnant_velocity[ 0 ] - R_motor.iq15_ramnant_velocity[ 3 ] + ( R_motor.iq15_ramnant_velocity[ 1 ] - R_motor.iq15_ramnant_velocity[ 2 ] ) << 1 );
+//	R_motor.iq15_integral				=	_IQ15mpyIQX(iq15_rki, 26, R_motor.iq15_ramnant_velocity_sum, 15);
 
+//	if( R_motor.iq15_integral > iq15_i_max )		R_motor.iq15_integral = iq15_i_max;
+//	else if( R_motor.iq15_integral < iq15_i_min )	R_motor.iq15_integral = iq15_i_min;
 	
+//	R_motor.iq15_pid_out += R_motor.iq15_proportional + R_motor.iq15_derivative + R_motor.iq15_integral;
+	R_motor.iq15_pid_out += R_motor.iq15_proportional + R_motor.iq15_derivative;
+
+	// PID Control - L
+	L_motor.iq15_ramnant_velocity_sum	-=	L_motor.iq15_ramnant_velocity[ 3 ];
+	L_motor.iq15_ramnant_velocity[ 3 ]	=	L_motor.iq15_ramnant_velocity[ 2 ];
+	L_motor.iq15_ramnant_velocity[ 2 ]	=	L_motor.iq15_ramnant_velocity[ 1 ]; 
+	L_motor.iq15_ramnant_velocity[ 1 ]	=	L_motor.iq15_ramnant_velocity[ 0 ];
+	L_motor.iq15_ramnant_velocity[ 0 ]	=	_IQ15mpy(L_motor.iq15_next_velocity , iq15_left_handle )- L_motor.iq15_current_velocity_average;
+	L_motor.iq15_ramnant_velocity_sum	+=	L_motor.iq15_ramnant_velocity[ 0 ]; 
+
+	L_motor.iq15_proportional			=	_IQ15mpy( iq15_lkp, L_motor.iq15_ramnant_velocity[ 0 ]);
+	L_motor.iq15_derivative 				=	_IQ15mpy( iq15_lkd,  L_motor.iq15_ramnant_velocity[ 0 ] - L_motor.iq15_ramnant_velocity[ 3 ] + ( L_motor.iq15_ramnant_velocity[ 1 ] - L_motor.iq15_ramnant_velocity[ 2 ] ) << 1 );
+//	L_motor.iq15_integral				=	_IQ15mpyIQX(iq15_lki, 26, L_motor.iq15_ramnant_velocity_sum, 15);
+
+//	if( L_motor.iq15_integral > iq15_i_max )		L_motor.iq15_integral = iq15_i_max;
+//	else if( L_motor.iq15_integral < iq15_i_min )	L_motor.iq15_integral = iq15_i_min;
+	
+//	L_motor.iq15_pid_out += L_motor.iq15_proportional + L_motor.iq15_derivative + L_motor.iq15_integral;	
+	L_motor.iq15_pid_out += L_motor.iq15_proportional + L_motor.iq15_derivative;
+#endif
+
+//test ver.3
+#if 0
+	// PID Control - R
+	R_motor.iq15_ramnant_velocity_sum			-=	R_motor.iq15_ramnant_velocity[ 3 ];
+	R_motor.iq15_ramnant_velocity[ 3 ]			=	R_motor.iq15_ramnant_velocity[ 2 ];
+	R_motor.iq15_ramnant_velocity[ 2 ]			=	R_motor.iq15_ramnant_velocity[ 1 ]; 
+	R_motor.iq15_ramnant_velocity[ 1 ]			=	R_motor.iq15_ramnant_velocity[ 0 ];
+	R_motor.iq15_ramnant_velocity[ 0 ]			=	_IQ15mpy(R_motor.iq15_next_velocity , iq15_right_handle)- R_motor.iq15_current_velocity_average;
+	R_motor.iq15_ramnant_velocity_sum			+=	R_motor.iq15_ramnant_velocity[ 0 ]; 
+	R_motor.iq15_ramnant_velocity_average[ 1 ] 	=	R_motor.iq15_ramnant_velocity_average[ 0 ];
+	R_motor.iq15_ramnant_velocity_average[ 0 ] 	=	R_motor.iq15_ramnant_velocity_sum >> 2;
+		
+	R_motor.iq15_proportional					=	_IQ15mpy( iq15_rkp, R_motor.iq15_ramnant_velocity_average[ 0 ] );
+	R_motor.iq15_derivative 						=	_IQ15mpy( iq15_rkd, _IQ15mpy( ( R_motor.iq15_ramnant_velocity_average[ 0 ] - R_motor.iq15_ramnant_velocity_average[ 1 ] ), _IQ15(2000) ) );
+	R_motor.iq15_integral						=	_IQ15mpy( iq15_rki, _IQ15mpy( R_motor.iq15_ramnant_velocity_average[ 0 ], _IQ15(0.0005) ) );
+
+	if( R_motor.iq15_integral > iq15_i_max )		R_motor.iq15_integral = iq15_i_max;
+	else if( R_motor.iq15_integral < iq15_i_min )	R_motor.iq15_integral = iq15_i_min;
+	
+	R_motor.iq15_pid_out += R_motor.iq15_proportional + R_motor.iq15_derivative + R_motor.iq15_integral;	
+
+
+	// PID Control - L
+	L_motor.iq15_ramnant_velocity_sum			-=	L_motor.iq15_ramnant_velocity[ 3 ];
+	L_motor.iq15_ramnant_velocity[ 3 ]			=	L_motor.iq15_ramnant_velocity[ 2 ];
+	L_motor.iq15_ramnant_velocity[ 2 ]			=	L_motor.iq15_ramnant_velocity[ 1 ]; 
+	L_motor.iq15_ramnant_velocity[ 1 ]			=	L_motor.iq15_ramnant_velocity[ 0 ];
+	L_motor.iq15_ramnant_velocity[ 0 ]			=	_IQ15mpy(L_motor.iq15_next_velocity , iq15_left_handle )- L_motor.iq15_current_velocity_average;
+	L_motor.iq15_ramnant_velocity_sum			+=	L_motor.iq15_ramnant_velocity[ 0 ]; 
+	L_motor.iq15_ramnant_velocity_average[ 1 ] 	=	L_motor.iq15_ramnant_velocity_average[ 0 ];
+	L_motor.iq15_ramnant_velocity_average[ 0 ] 	=	L_motor.iq15_ramnant_velocity_sum >> 2;
+		
+	L_motor.iq15_proportional				=		_IQ15mpy( iq15_lkp, L_motor.iq15_ramnant_velocity_average[ 0 ] );
+	L_motor.iq15_derivative 					=		_IQ15mpy( iq15_lkd, _IQ15mpy( ( L_motor.iq15_ramnant_velocity_average[ 0 ] - L_motor.iq15_ramnant_velocity_average[ 1 ] ), _IQ15(2000) ) );
+	L_motor.iq15_integral						=		_IQ15mpy( iq15_lki, _IQ15mpy( L_motor.iq15_ramnant_velocity_average[ 0 ], _IQ15(0.0005) ) );
+
+	if( L_motor.iq15_integral > iq15_i_max )		L_motor.iq15_integral = iq15_i_max;
+	else if( L_motor.iq15_integral < iq15_i_min )	L_motor.iq15_integral = iq15_i_min;
+	
+	L_motor.iq15_pid_out += L_motor.iq15_proportional + L_motor.iq15_derivative + L_motor.iq15_integral;	
+#endif
+
 	//------------------------------------------------------------//
 	// PID Range Setting
 	// Right
@@ -237,10 +315,6 @@ interrupt void MOTOR_ISR (void)
 			L_motor.iq15_pid_result = _IQ15mpy(_IQ15mpyIQX( L_motor.iq15_pid_out , 15, iq30_PWM_CONVERT , 30 ), _IQ( -1 ) );
 		}
 
-		
-//		R_motor.iq15_pid_result = _IQ15div(_IQ15mpy(R_motor.iq15_pid_result, _IQ15(1.5)),_IQ15(3.35));	
-//		L_motor.iq15_pid_result = _IQ15div(_IQ15mpy(L_motor.iq15_pid_result, _IQ15(1.5)),_IQ15(3.35));
-
 		PWM_RIGHT =( Uint16 )( R_motor.iq15_pid_result >> 15 );		
 		PWM_LEFT = ( Uint16 )( L_motor.iq15_pid_result >> 15 );
 	}
@@ -276,9 +350,9 @@ void Handle(position_t *p_pos)
 	p_pos->iq7_past_pos[ 1 ] 		= p_pos->iq7_past_pos[ 0 ];
 	p_pos->iq7_past_pos[ 0 ]	 		= p_pos->iq7_pos_IIR_output;
 	  
-	p_pos->iq7_position_proportion 	= _IQ7mpy( p_pos->iq7_past_pos[ 0 ], iq7_POS_KP_UP );
+	p_pos->iq7_position_proportion 	= _IQ7mpy( p_pos->iq7_past_pos[ 0 ], iq7_position_kp );
 	p_pos->iq7_position_derivate 	= _IQ7mpy( ( ( p_pos->iq7_past_pos[ 0 ] - p_pos->iq7_past_pos[ 3 ] ) + 
-								  	   _IQ7mpy( _IQ7( 3.0 ), ( p_pos->iq7_past_pos[ 1 ] - p_pos->iq7_past_pos[ 2 ] ) ) ), iq7_POS_KD_UP);
+								  	   _IQ7mpy( _IQ7( 3.0 ), ( p_pos->iq7_past_pos[ 1 ] - p_pos->iq7_past_pos[ 2 ] ) ) ), iq7_position_kd);
 	p_pos->iq7_position_pid_out 		= p_pos->iq7_position_proportion + p_pos->iq7_position_derivate;
 
 	if(  p_pos->iq7_position_pid_out > iq7_POSITION_END )			 p_pos->iq7_position_pid_out = iq7_POSITION_END;		
@@ -305,7 +379,7 @@ void Handle(position_t *p_pos)
 	}
 
 	iq15_left_handle 	= iq16_left_handle >> 1;
-	iq15_right_handle 	= iq16_right_handle >> 1;
+	iq15_right_handle	= iq16_right_handle >> 1;
 }
 
 void move_to_move( volatile _iq15 dist, volatile _iq15 dec_dist, volatile _iq15 tar_vel, volatile _iq15 dec_vel, volatile _iq15 acc )
@@ -313,9 +387,9 @@ void move_to_move( volatile _iq15 dist, volatile _iq15 dec_dist, volatile _iq15 
 	StopCpuTimer2();
 
 	R_motor.iq15_target_accel	 	= L_motor.iq15_target_accel 		= acc;
-	R_motor.iq15_target_distance 	= L_motor.iq15_target_distance 	= dist;
+	R_motor.iq15_target_distance 		= L_motor.iq15_target_distance 	= dist;
 	R_motor.iq15_decel_distance 		= L_motor.iq15_decel_distance 	= dec_dist;
-	R_motor.iq15_target_velocity	= L_motor.iq15_target_velocity	= tar_vel;
+	R_motor.iq15_target_velocity		= L_motor.iq15_target_velocity	= tar_vel;
 	R_motor.iq15_decel_velocity 		= L_motor.iq15_decel_velocity 	= dec_vel;
 	R_motor.u16_decel_flag 			= L_motor.u16_decel_flag 		= ON;
 	g_Flag.move_state 				= ON;
@@ -328,9 +402,9 @@ void move_to_end( volatile _iq15 dist, volatile _iq15 tar_vel, volatile _iq15 ac
 	StopCpuTimer2();
 	
 	R_motor.iq15_target_accel 		= L_motor.iq15_target_accel 		= acc;
-	R_motor.iq15_target_distance 	= L_motor.iq15_target_distance 	= dist;
+	R_motor.iq15_target_distance 		= L_motor.iq15_target_distance 	= dist;
 	R_motor.iq15_decel_distance 		= L_motor.iq15_decel_distance 	= dist;
-	R_motor.iq15_target_velocity	= L_motor.iq15_target_velocity 	= tar_vel;
+	R_motor.iq15_target_velocity		= L_motor.iq15_target_velocity 	= tar_vel;
   	R_motor.iq15_decel_velocity 		= L_motor.iq15_decel_velocity 	= _IQ15(0.0);
 	R_motor.u16_decel_flag 			= L_motor.u16_decel_flag 		= ON;
 	g_Flag.move_state 				= OFF;

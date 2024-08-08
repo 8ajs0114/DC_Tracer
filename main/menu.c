@@ -22,17 +22,17 @@ void FUCKING_NULL(void)
 }
 
 
-void (*menu_func[X][Y])( void )={   FUCKING_NULL,	Sensor_setting,		sensor_check_4095,	sensor_check_127,		FUCKING_NULL,		FUCKING_NULL,		FUCKING_NULL,
-								   FUCKING_NULL,	change_run_value,	change_PID_value	,	change_run_value_2,		end_set,			change_handle_value,	FUCKING_NULL,
-								   FUCKING_NULL,	position_check,		max_min_check,		max_min_print,			line_info_check,		set_zero,			FUCKING_NULL,
-								   FUCKING_NULL,	search_race,			second_race,		FUCKING_NULL,			FUCKING_NULL,		FUCKING_NULL,		race_3D	
+void (*menu_func[X][Y])( void )={ 	FUCKING_NULL,	Sensor_setting,		sensor_check_4095,	sensor_check_127,	FUCKING_NULL,		FUCKING_NULL,		
+								  	FUCKING_NULL,	change_run_value,	change_run_value_2,	end_set,				change_PID_value,	change_handle_value,	
+								   	FUCKING_NULL,	position_check,		max_min_check,		max_min_print,		line_info_check,		set_zero	,									   	
+									FUCKING_NULL,	search_race,			second_race,			bigturn_race,			FUCKING_NULL,		FUCKING_NULL		 
 								};
 
-char setting[X][Y][WORD_LENGTH]={ " Sensor ",			" MaxMin ",			"  4095  ",			"  0127  ",				"  NULL  ",			"  NULL  ",			"  NULL  ",
-								  " Set up ",			"Vel Acc1",			"   PD   ",			"Vel Acc2",				"End Dist",			" Handle ",			"  NULL  ",
-				       			  "  Test  ",			"Position",			"   Mm   ",			"Mm print",				"  Line  ",			"  Zero  ",			"  NULL  ",
-				        		  	  "  Race  ",			"Search  ",			"Straight",			"Big Turn",				"  EX45  ",			" EXS45S ",			"   3D   ",			
-				      	  		};
+char setting[X][Y][WORD_LENGTH]={ 	" Sensor ",		" MaxMin ",			"  4095  ",			"  0127  ",			"  NULL  ",			"  NULL  ",
+								  	" Set up ",		"Vel Acc1",			"Vel Acc2",			"End Dist",			"   PD   ",			" Handle ",
+				       			  	"  Test  ",		"Position",			"MAX min ",			"Mm print",			"  Line  ",			"  Zero  ",				       			  	
+									"  Race  ", 		"Search  ", 			"Straight", 			"Big Turn", 			"  EX45  ", 			" EXS45S " 		
+				      	  			};
 				    
 void menu(void)
 {

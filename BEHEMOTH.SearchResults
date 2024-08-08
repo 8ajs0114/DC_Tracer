@@ -1,5 +1,10 @@
----- state_table Matches (7 in 1 files) ----
-Sensor.c (main):volatile Uint16 state_table[] = 
-Sensor.c (main):	if( ( p_pos->u16_state & state_table[ state - 1 ] ) == state_table[ state - 1] ||
-Sensor.c (main):		( p_pos->u16_state & state_table[ state + 1 ] ) == state_table[ state + 1] ||
-Sensor.c (main):		( p_pos->u16_state & state_table[ state ] ) == state_table[ state ] )// 0000 0000 0000 0000   state central right & left one sensor sensing.
+---- iq15_kp Matches (10 in 4 files) ----
+Control.c (main):		if(!SR)			iq15_kp +=  _IQ15(1);
+Control.c (main):		else if(!SL) 		iq15_kp -=  _IQ15(1);
+Control.c (main):       	VFDPrintf("P   %4f",_IQtoF(iq15_kp));
+Control.c (main):		if(!SR)			iq15_kp +=  _IQ15(1);
+Control.c (main):		else if(!SL) 		iq15_kp -=  _IQ15(1);
+Control.c (main):       	VFDPrintf("P   %4f",_IQtoF(iq15_kp));
+Main.c (main):	iq15_kp							= _IQ15( 0.50 );
+Search.c (main):	iq15_kp = _IQ15div(iq15_kp, _IQ15(100));
+Variable.h (main):											iq15_kp,

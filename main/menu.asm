@@ -1,6 +1,6 @@
 ;***************************************************************
 ;* TMS320C2000 C/C++ Codegen                         PC v4.1.3 *
-;* Date/Time created: Sat Aug 19 11:22:43 2023                 *
+;* Date/Time created: Thu Aug 08 03:36:38 2024                 *
 ;***************************************************************
 	.compiler_opts --mem_model:code=flat --mem_model:data=large --silicon_version=28 
 FP	.set	XAR2
@@ -22,29 +22,25 @@ DW$CU	.dwtag  DW_TAG_compile_unit
 	.field  	_sensor_check_127,32		; _menu_func[0][3] @ 96
 	.field  	_FUCKING_NULL,32		; _menu_func[0][4] @ 128
 	.field  	_FUCKING_NULL,32		; _menu_func[0][5] @ 160
-	.field  	_FUCKING_NULL,32		; _menu_func[0][6] @ 192
-	.field  	_FUCKING_NULL,32		; _menu_func[1][0] @ 224
-	.field  	_change_run_value,32		; _menu_func[1][1] @ 256
-	.field  	_change_PID_value,32		; _menu_func[1][2] @ 288
-	.field  	_change_run_value_2,32		; _menu_func[1][3] @ 320
-	.field  	_end_set,32		; _menu_func[1][4] @ 352
-	.field  	_change_handle_value,32		; _menu_func[1][5] @ 384
-	.field  	_FUCKING_NULL,32		; _menu_func[1][6] @ 416
-	.field  	_FUCKING_NULL,32		; _menu_func[2][0] @ 448
-	.field  	_position_check,32		; _menu_func[2][1] @ 480
-	.field  	_max_min_check,32		; _menu_func[2][2] @ 512
-	.field  	_max_min_print,32		; _menu_func[2][3] @ 544
-	.field  	_line_info_check,32		; _menu_func[2][4] @ 576
-	.field  	_set_zero,32		; _menu_func[2][5] @ 608
-	.field  	_FUCKING_NULL,32		; _menu_func[2][6] @ 640
-	.field  	_FUCKING_NULL,32		; _menu_func[3][0] @ 672
-	.field  	_search_race,32		; _menu_func[3][1] @ 704
-	.field  	_second_race,32		; _menu_func[3][2] @ 736
-	.field  	_FUCKING_NULL,32		; _menu_func[3][3] @ 768
-	.field  	_FUCKING_NULL,32		; _menu_func[3][4] @ 800
-	.field  	_FUCKING_NULL,32		; _menu_func[3][5] @ 832
-	.field  	_race_3D,32		; _menu_func[3][6] @ 864
-IR_1:	.set	56
+	.field  	_FUCKING_NULL,32		; _menu_func[1][0] @ 192
+	.field  	_change_run_value,32		; _menu_func[1][1] @ 224
+	.field  	_change_run_value_2,32		; _menu_func[1][2] @ 256
+	.field  	_end_set,32		; _menu_func[1][3] @ 288
+	.field  	_change_PID_value,32		; _menu_func[1][4] @ 320
+	.field  	_change_handle_value,32		; _menu_func[1][5] @ 352
+	.field  	_FUCKING_NULL,32		; _menu_func[2][0] @ 384
+	.field  	_position_check,32		; _menu_func[2][1] @ 416
+	.field  	_max_min_check,32		; _menu_func[2][2] @ 448
+	.field  	_max_min_print,32		; _menu_func[2][3] @ 480
+	.field  	_line_info_check,32		; _menu_func[2][4] @ 512
+	.field  	_set_zero,32		; _menu_func[2][5] @ 544
+	.field  	_FUCKING_NULL,32		; _menu_func[3][0] @ 576
+	.field  	_search_race,32		; _menu_func[3][1] @ 608
+	.field  	_second_race,32		; _menu_func[3][2] @ 640
+	.field  	_bigturn_race,32		; _menu_func[3][3] @ 672
+	.field  	_FUCKING_NULL,32		; _menu_func[3][4] @ 704
+	.field  	_FUCKING_NULL,32		; _menu_func[3][5] @ 736
+IR_1:	.set	48
 
 	.sect	".cinit"
 	.align	1
@@ -104,228 +100,192 @@ IR_1:	.set	56
 	.field  	32,16			; _setting[0][5][6] @ 816
 	.field  	32,16			; _setting[0][5][7] @ 832
 	.field  	0,16			; _setting[0][5][8] @ 848
-	.field  	32,16			; _setting[0][6][0] @ 864
-	.field  	32,16			; _setting[0][6][1] @ 880
-	.field  	78,16			; _setting[0][6][2] @ 896
-	.field  	85,16			; _setting[0][6][3] @ 912
-	.field  	76,16			; _setting[0][6][4] @ 928
-	.field  	76,16			; _setting[0][6][5] @ 944
-	.field  	32,16			; _setting[0][6][6] @ 960
-	.field  	32,16			; _setting[0][6][7] @ 976
-	.field  	0,16			; _setting[0][6][8] @ 992
-	.field  	32,16			; _setting[1][0][0] @ 1008
-	.field  	83,16			; _setting[1][0][1] @ 1024
-	.field  	101,16			; _setting[1][0][2] @ 1040
-	.field  	116,16			; _setting[1][0][3] @ 1056
-	.field  	32,16			; _setting[1][0][4] @ 1072
-	.field  	117,16			; _setting[1][0][5] @ 1088
-	.field  	112,16			; _setting[1][0][6] @ 1104
-	.field  	32,16			; _setting[1][0][7] @ 1120
-	.field  	0,16			; _setting[1][0][8] @ 1136
-	.field  	86,16			; _setting[1][1][0] @ 1152
-	.field  	101,16			; _setting[1][1][1] @ 1168
-	.field  	108,16			; _setting[1][1][2] @ 1184
-	.field  	32,16			; _setting[1][1][3] @ 1200
-	.field  	65,16			; _setting[1][1][4] @ 1216
-	.field  	99,16			; _setting[1][1][5] @ 1232
-	.field  	99,16			; _setting[1][1][6] @ 1248
-	.field  	49,16			; _setting[1][1][7] @ 1264
-	.field  	0,16			; _setting[1][1][8] @ 1280
-	.field  	32,16			; _setting[1][2][0] @ 1296
-	.field  	32,16			; _setting[1][2][1] @ 1312
-	.field  	32,16			; _setting[1][2][2] @ 1328
-	.field  	80,16			; _setting[1][2][3] @ 1344
-	.field  	68,16			; _setting[1][2][4] @ 1360
-	.field  	32,16			; _setting[1][2][5] @ 1376
-	.field  	32,16			; _setting[1][2][6] @ 1392
-	.field  	32,16			; _setting[1][2][7] @ 1408
-	.field  	0,16			; _setting[1][2][8] @ 1424
-	.field  	86,16			; _setting[1][3][0] @ 1440
-	.field  	101,16			; _setting[1][3][1] @ 1456
-	.field  	108,16			; _setting[1][3][2] @ 1472
-	.field  	32,16			; _setting[1][3][3] @ 1488
-	.field  	65,16			; _setting[1][3][4] @ 1504
-	.field  	99,16			; _setting[1][3][5] @ 1520
-	.field  	99,16			; _setting[1][3][6] @ 1536
-	.field  	50,16			; _setting[1][3][7] @ 1552
-	.field  	0,16			; _setting[1][3][8] @ 1568
-	.field  	69,16			; _setting[1][4][0] @ 1584
-	.field  	110,16			; _setting[1][4][1] @ 1600
-	.field  	100,16			; _setting[1][4][2] @ 1616
-	.field  	32,16			; _setting[1][4][3] @ 1632
-	.field  	68,16			; _setting[1][4][4] @ 1648
-	.field  	105,16			; _setting[1][4][5] @ 1664
-	.field  	115,16			; _setting[1][4][6] @ 1680
-	.field  	116,16			; _setting[1][4][7] @ 1696
-	.field  	0,16			; _setting[1][4][8] @ 1712
-	.field  	32,16			; _setting[1][5][0] @ 1728
-	.field  	72,16			; _setting[1][5][1] @ 1744
-	.field  	97,16			; _setting[1][5][2] @ 1760
-	.field  	110,16			; _setting[1][5][3] @ 1776
-	.field  	100,16			; _setting[1][5][4] @ 1792
-	.field  	108,16			; _setting[1][5][5] @ 1808
-	.field  	101,16			; _setting[1][5][6] @ 1824
-	.field  	32,16			; _setting[1][5][7] @ 1840
-	.field  	0,16			; _setting[1][5][8] @ 1856
-	.field  	32,16			; _setting[1][6][0] @ 1872
-	.field  	32,16			; _setting[1][6][1] @ 1888
-	.field  	78,16			; _setting[1][6][2] @ 1904
-	.field  	85,16			; _setting[1][6][3] @ 1920
-	.field  	76,16			; _setting[1][6][4] @ 1936
-	.field  	76,16			; _setting[1][6][5] @ 1952
-	.field  	32,16			; _setting[1][6][6] @ 1968
-	.field  	32,16			; _setting[1][6][7] @ 1984
-	.field  	0,16			; _setting[1][6][8] @ 2000
-	.field  	32,16			; _setting[2][0][0] @ 2016
-	.field  	32,16			; _setting[2][0][1] @ 2032
-	.field  	84,16			; _setting[2][0][2] @ 2048
-	.field  	101,16			; _setting[2][0][3] @ 2064
-	.field  	115,16			; _setting[2][0][4] @ 2080
-	.field  	116,16			; _setting[2][0][5] @ 2096
-	.field  	32,16			; _setting[2][0][6] @ 2112
-	.field  	32,16			; _setting[2][0][7] @ 2128
-	.field  	0,16			; _setting[2][0][8] @ 2144
-	.field  	80,16			; _setting[2][1][0] @ 2160
-	.field  	111,16			; _setting[2][1][1] @ 2176
-	.field  	115,16			; _setting[2][1][2] @ 2192
-	.field  	105,16			; _setting[2][1][3] @ 2208
-	.field  	116,16			; _setting[2][1][4] @ 2224
-	.field  	105,16			; _setting[2][1][5] @ 2240
-	.field  	111,16			; _setting[2][1][6] @ 2256
-	.field  	110,16			; _setting[2][1][7] @ 2272
-	.field  	0,16			; _setting[2][1][8] @ 2288
-	.field  	32,16			; _setting[2][2][0] @ 2304
-	.field  	32,16			; _setting[2][2][1] @ 2320
-	.field  	32,16			; _setting[2][2][2] @ 2336
-	.field  	77,16			; _setting[2][2][3] @ 2352
-	.field  	109,16			; _setting[2][2][4] @ 2368
-	.field  	32,16			; _setting[2][2][5] @ 2384
-	.field  	32,16			; _setting[2][2][6] @ 2400
-	.field  	32,16			; _setting[2][2][7] @ 2416
-	.field  	0,16			; _setting[2][2][8] @ 2432
-	.field  	77,16			; _setting[2][3][0] @ 2448
-	.field  	109,16			; _setting[2][3][1] @ 2464
-	.field  	32,16			; _setting[2][3][2] @ 2480
-	.field  	112,16			; _setting[2][3][3] @ 2496
-	.field  	114,16			; _setting[2][3][4] @ 2512
-	.field  	105,16			; _setting[2][3][5] @ 2528
-	.field  	110,16			; _setting[2][3][6] @ 2544
-	.field  	116,16			; _setting[2][3][7] @ 2560
-	.field  	0,16			; _setting[2][3][8] @ 2576
-	.field  	32,16			; _setting[2][4][0] @ 2592
-	.field  	32,16			; _setting[2][4][1] @ 2608
-	.field  	76,16			; _setting[2][4][2] @ 2624
-	.field  	105,16			; _setting[2][4][3] @ 2640
-	.field  	110,16			; _setting[2][4][4] @ 2656
-	.field  	101,16			; _setting[2][4][5] @ 2672
-	.field  	32,16			; _setting[2][4][6] @ 2688
-	.field  	32,16			; _setting[2][4][7] @ 2704
-	.field  	0,16			; _setting[2][4][8] @ 2720
-	.field  	32,16			; _setting[2][5][0] @ 2736
-	.field  	32,16			; _setting[2][5][1] @ 2752
-	.field  	90,16			; _setting[2][5][2] @ 2768
-	.field  	101,16			; _setting[2][5][3] @ 2784
-	.field  	114,16			; _setting[2][5][4] @ 2800
-	.field  	111,16			; _setting[2][5][5] @ 2816
-	.field  	32,16			; _setting[2][5][6] @ 2832
-	.field  	32,16			; _setting[2][5][7] @ 2848
-	.field  	0,16			; _setting[2][5][8] @ 2864
-	.field  	32,16			; _setting[2][6][0] @ 2880
-	.field  	32,16			; _setting[2][6][1] @ 2896
-	.field  	78,16			; _setting[2][6][2] @ 2912
-	.field  	85,16			; _setting[2][6][3] @ 2928
-	.field  	76,16			; _setting[2][6][4] @ 2944
-	.field  	76,16			; _setting[2][6][5] @ 2960
-	.field  	32,16			; _setting[2][6][6] @ 2976
-	.field  	32,16			; _setting[2][6][7] @ 2992
-	.field  	0,16			; _setting[2][6][8] @ 3008
-	.field  	32,16			; _setting[3][0][0] @ 3024
-	.field  	32,16			; _setting[3][0][1] @ 3040
-	.field  	82,16			; _setting[3][0][2] @ 3056
-	.field  	97,16			; _setting[3][0][3] @ 3072
-	.field  	99,16			; _setting[3][0][4] @ 3088
-	.field  	101,16			; _setting[3][0][5] @ 3104
-	.field  	32,16			; _setting[3][0][6] @ 3120
-	.field  	32,16			; _setting[3][0][7] @ 3136
-	.field  	0,16			; _setting[3][0][8] @ 3152
-	.field  	83,16			; _setting[3][1][0] @ 3168
-	.field  	101,16			; _setting[3][1][1] @ 3184
-	.field  	97,16			; _setting[3][1][2] @ 3200
-	.field  	114,16			; _setting[3][1][3] @ 3216
-	.field  	99,16			; _setting[3][1][4] @ 3232
-	.field  	104,16			; _setting[3][1][5] @ 3248
-	.field  	32,16			; _setting[3][1][6] @ 3264
-	.field  	32,16			; _setting[3][1][7] @ 3280
-	.field  	0,16			; _setting[3][1][8] @ 3296
-	.field  	83,16			; _setting[3][2][0] @ 3312
-	.field  	116,16			; _setting[3][2][1] @ 3328
-	.field  	114,16			; _setting[3][2][2] @ 3344
-	.field  	97,16			; _setting[3][2][3] @ 3360
-	.field  	105,16			; _setting[3][2][4] @ 3376
-	.field  	103,16			; _setting[3][2][5] @ 3392
-	.field  	104,16			; _setting[3][2][6] @ 3408
-	.field  	116,16			; _setting[3][2][7] @ 3424
-	.field  	0,16			; _setting[3][2][8] @ 3440
-	.field  	66,16			; _setting[3][3][0] @ 3456
-	.field  	105,16			; _setting[3][3][1] @ 3472
-	.field  	103,16			; _setting[3][3][2] @ 3488
-	.field  	32,16			; _setting[3][3][3] @ 3504
-	.field  	84,16			; _setting[3][3][4] @ 3520
-	.field  	117,16			; _setting[3][3][5] @ 3536
-	.field  	114,16			; _setting[3][3][6] @ 3552
-	.field  	110,16			; _setting[3][3][7] @ 3568
-	.field  	0,16			; _setting[3][3][8] @ 3584
-	.field  	32,16			; _setting[3][4][0] @ 3600
-	.field  	32,16			; _setting[3][4][1] @ 3616
-	.field  	69,16			; _setting[3][4][2] @ 3632
-	.field  	88,16			; _setting[3][4][3] @ 3648
-	.field  	52,16			; _setting[3][4][4] @ 3664
-	.field  	53,16			; _setting[3][4][5] @ 3680
-	.field  	32,16			; _setting[3][4][6] @ 3696
-	.field  	32,16			; _setting[3][4][7] @ 3712
-	.field  	0,16			; _setting[3][4][8] @ 3728
-	.field  	32,16			; _setting[3][5][0] @ 3744
-	.field  	69,16			; _setting[3][5][1] @ 3760
-	.field  	88,16			; _setting[3][5][2] @ 3776
-	.field  	83,16			; _setting[3][5][3] @ 3792
-	.field  	52,16			; _setting[3][5][4] @ 3808
-	.field  	53,16			; _setting[3][5][5] @ 3824
-	.field  	83,16			; _setting[3][5][6] @ 3840
-	.field  	32,16			; _setting[3][5][7] @ 3856
-	.field  	0,16			; _setting[3][5][8] @ 3872
-	.field  	32,16			; _setting[3][6][0] @ 3888
-	.field  	32,16			; _setting[3][6][1] @ 3904
-	.field  	32,16			; _setting[3][6][2] @ 3920
-	.field  	51,16			; _setting[3][6][3] @ 3936
-	.field  	68,16			; _setting[3][6][4] @ 3952
-	.field  	32,16			; _setting[3][6][5] @ 3968
-	.field  	32,16			; _setting[3][6][6] @ 3984
-	.field  	32,16			; _setting[3][6][7] @ 4000
-	.field  	0,16			; _setting[3][6][8] @ 4016
-IR_2:	.set	252
+	.field  	32,16			; _setting[1][0][0] @ 864
+	.field  	83,16			; _setting[1][0][1] @ 880
+	.field  	101,16			; _setting[1][0][2] @ 896
+	.field  	116,16			; _setting[1][0][3] @ 912
+	.field  	32,16			; _setting[1][0][4] @ 928
+	.field  	117,16			; _setting[1][0][5] @ 944
+	.field  	112,16			; _setting[1][0][6] @ 960
+	.field  	32,16			; _setting[1][0][7] @ 976
+	.field  	0,16			; _setting[1][0][8] @ 992
+	.field  	86,16			; _setting[1][1][0] @ 1008
+	.field  	101,16			; _setting[1][1][1] @ 1024
+	.field  	108,16			; _setting[1][1][2] @ 1040
+	.field  	32,16			; _setting[1][1][3] @ 1056
+	.field  	65,16			; _setting[1][1][4] @ 1072
+	.field  	99,16			; _setting[1][1][5] @ 1088
+	.field  	99,16			; _setting[1][1][6] @ 1104
+	.field  	49,16			; _setting[1][1][7] @ 1120
+	.field  	0,16			; _setting[1][1][8] @ 1136
+	.field  	86,16			; _setting[1][2][0] @ 1152
+	.field  	101,16			; _setting[1][2][1] @ 1168
+	.field  	108,16			; _setting[1][2][2] @ 1184
+	.field  	32,16			; _setting[1][2][3] @ 1200
+	.field  	65,16			; _setting[1][2][4] @ 1216
+	.field  	99,16			; _setting[1][2][5] @ 1232
+	.field  	99,16			; _setting[1][2][6] @ 1248
+	.field  	50,16			; _setting[1][2][7] @ 1264
+	.field  	0,16			; _setting[1][2][8] @ 1280
+	.field  	69,16			; _setting[1][3][0] @ 1296
+	.field  	110,16			; _setting[1][3][1] @ 1312
+	.field  	100,16			; _setting[1][3][2] @ 1328
+	.field  	32,16			; _setting[1][3][3] @ 1344
+	.field  	68,16			; _setting[1][3][4] @ 1360
+	.field  	105,16			; _setting[1][3][5] @ 1376
+	.field  	115,16			; _setting[1][3][6] @ 1392
+	.field  	116,16			; _setting[1][3][7] @ 1408
+	.field  	0,16			; _setting[1][3][8] @ 1424
+	.field  	32,16			; _setting[1][4][0] @ 1440
+	.field  	32,16			; _setting[1][4][1] @ 1456
+	.field  	32,16			; _setting[1][4][2] @ 1472
+	.field  	80,16			; _setting[1][4][3] @ 1488
+	.field  	68,16			; _setting[1][4][4] @ 1504
+	.field  	32,16			; _setting[1][4][5] @ 1520
+	.field  	32,16			; _setting[1][4][6] @ 1536
+	.field  	32,16			; _setting[1][4][7] @ 1552
+	.field  	0,16			; _setting[1][4][8] @ 1568
+	.field  	32,16			; _setting[1][5][0] @ 1584
+	.field  	72,16			; _setting[1][5][1] @ 1600
+	.field  	97,16			; _setting[1][5][2] @ 1616
+	.field  	110,16			; _setting[1][5][3] @ 1632
+	.field  	100,16			; _setting[1][5][4] @ 1648
+	.field  	108,16			; _setting[1][5][5] @ 1664
+	.field  	101,16			; _setting[1][5][6] @ 1680
+	.field  	32,16			; _setting[1][5][7] @ 1696
+	.field  	0,16			; _setting[1][5][8] @ 1712
+	.field  	32,16			; _setting[2][0][0] @ 1728
+	.field  	32,16			; _setting[2][0][1] @ 1744
+	.field  	84,16			; _setting[2][0][2] @ 1760
+	.field  	101,16			; _setting[2][0][3] @ 1776
+	.field  	115,16			; _setting[2][0][4] @ 1792
+	.field  	116,16			; _setting[2][0][5] @ 1808
+	.field  	32,16			; _setting[2][0][6] @ 1824
+	.field  	32,16			; _setting[2][0][7] @ 1840
+	.field  	0,16			; _setting[2][0][8] @ 1856
+	.field  	80,16			; _setting[2][1][0] @ 1872
+	.field  	111,16			; _setting[2][1][1] @ 1888
+	.field  	115,16			; _setting[2][1][2] @ 1904
+	.field  	105,16			; _setting[2][1][3] @ 1920
+	.field  	116,16			; _setting[2][1][4] @ 1936
+	.field  	105,16			; _setting[2][1][5] @ 1952
+	.field  	111,16			; _setting[2][1][6] @ 1968
+	.field  	110,16			; _setting[2][1][7] @ 1984
+	.field  	0,16			; _setting[2][1][8] @ 2000
+	.field  	77,16			; _setting[2][2][0] @ 2016
+	.field  	65,16			; _setting[2][2][1] @ 2032
+	.field  	88,16			; _setting[2][2][2] @ 2048
+	.field  	32,16			; _setting[2][2][3] @ 2064
+	.field  	109,16			; _setting[2][2][4] @ 2080
+	.field  	105,16			; _setting[2][2][5] @ 2096
+	.field  	110,16			; _setting[2][2][6] @ 2112
+	.field  	32,16			; _setting[2][2][7] @ 2128
+	.field  	0,16			; _setting[2][2][8] @ 2144
+	.field  	77,16			; _setting[2][3][0] @ 2160
+	.field  	109,16			; _setting[2][3][1] @ 2176
+	.field  	32,16			; _setting[2][3][2] @ 2192
+	.field  	112,16			; _setting[2][3][3] @ 2208
+	.field  	114,16			; _setting[2][3][4] @ 2224
+	.field  	105,16			; _setting[2][3][5] @ 2240
+	.field  	110,16			; _setting[2][3][6] @ 2256
+	.field  	116,16			; _setting[2][3][7] @ 2272
+	.field  	0,16			; _setting[2][3][8] @ 2288
+	.field  	32,16			; _setting[2][4][0] @ 2304
+	.field  	32,16			; _setting[2][4][1] @ 2320
+	.field  	76,16			; _setting[2][4][2] @ 2336
+	.field  	105,16			; _setting[2][4][3] @ 2352
+	.field  	110,16			; _setting[2][4][4] @ 2368
+	.field  	101,16			; _setting[2][4][5] @ 2384
+	.field  	32,16			; _setting[2][4][6] @ 2400
+	.field  	32,16			; _setting[2][4][7] @ 2416
+	.field  	0,16			; _setting[2][4][8] @ 2432
+	.field  	32,16			; _setting[2][5][0] @ 2448
+	.field  	32,16			; _setting[2][5][1] @ 2464
+	.field  	90,16			; _setting[2][5][2] @ 2480
+	.field  	101,16			; _setting[2][5][3] @ 2496
+	.field  	114,16			; _setting[2][5][4] @ 2512
+	.field  	111,16			; _setting[2][5][5] @ 2528
+	.field  	32,16			; _setting[2][5][6] @ 2544
+	.field  	32,16			; _setting[2][5][7] @ 2560
+	.field  	0,16			; _setting[2][5][8] @ 2576
+	.field  	32,16			; _setting[3][0][0] @ 2592
+	.field  	32,16			; _setting[3][0][1] @ 2608
+	.field  	82,16			; _setting[3][0][2] @ 2624
+	.field  	97,16			; _setting[3][0][3] @ 2640
+	.field  	99,16			; _setting[3][0][4] @ 2656
+	.field  	101,16			; _setting[3][0][5] @ 2672
+	.field  	32,16			; _setting[3][0][6] @ 2688
+	.field  	32,16			; _setting[3][0][7] @ 2704
+	.field  	0,16			; _setting[3][0][8] @ 2720
+	.field  	83,16			; _setting[3][1][0] @ 2736
+	.field  	101,16			; _setting[3][1][1] @ 2752
+	.field  	97,16			; _setting[3][1][2] @ 2768
+	.field  	114,16			; _setting[3][1][3] @ 2784
+	.field  	99,16			; _setting[3][1][4] @ 2800
+	.field  	104,16			; _setting[3][1][5] @ 2816
+	.field  	32,16			; _setting[3][1][6] @ 2832
+	.field  	32,16			; _setting[3][1][7] @ 2848
+	.field  	0,16			; _setting[3][1][8] @ 2864
+	.field  	83,16			; _setting[3][2][0] @ 2880
+	.field  	116,16			; _setting[3][2][1] @ 2896
+	.field  	114,16			; _setting[3][2][2] @ 2912
+	.field  	97,16			; _setting[3][2][3] @ 2928
+	.field  	105,16			; _setting[3][2][4] @ 2944
+	.field  	103,16			; _setting[3][2][5] @ 2960
+	.field  	104,16			; _setting[3][2][6] @ 2976
+	.field  	116,16			; _setting[3][2][7] @ 2992
+	.field  	0,16			; _setting[3][2][8] @ 3008
+	.field  	66,16			; _setting[3][3][0] @ 3024
+	.field  	105,16			; _setting[3][3][1] @ 3040
+	.field  	103,16			; _setting[3][3][2] @ 3056
+	.field  	32,16			; _setting[3][3][3] @ 3072
+	.field  	84,16			; _setting[3][3][4] @ 3088
+	.field  	117,16			; _setting[3][3][5] @ 3104
+	.field  	114,16			; _setting[3][3][6] @ 3120
+	.field  	110,16			; _setting[3][3][7] @ 3136
+	.field  	0,16			; _setting[3][3][8] @ 3152
+	.field  	32,16			; _setting[3][4][0] @ 3168
+	.field  	32,16			; _setting[3][4][1] @ 3184
+	.field  	69,16			; _setting[3][4][2] @ 3200
+	.field  	88,16			; _setting[3][4][3] @ 3216
+	.field  	52,16			; _setting[3][4][4] @ 3232
+	.field  	53,16			; _setting[3][4][5] @ 3248
+	.field  	32,16			; _setting[3][4][6] @ 3264
+	.field  	32,16			; _setting[3][4][7] @ 3280
+	.field  	0,16			; _setting[3][4][8] @ 3296
+	.field  	32,16			; _setting[3][5][0] @ 3312
+	.field  	69,16			; _setting[3][5][1] @ 3328
+	.field  	88,16			; _setting[3][5][2] @ 3344
+	.field  	83,16			; _setting[3][5][3] @ 3360
+	.field  	52,16			; _setting[3][5][4] @ 3376
+	.field  	53,16			; _setting[3][5][5] @ 3392
+	.field  	83,16			; _setting[3][5][6] @ 3408
+	.field  	32,16			; _setting[3][5][7] @ 3424
+	.field  	0,16			; _setting[3][5][8] @ 3440
+IR_2:	.set	216
 
 
-DW$1	.dwtag  DW_TAG_subprogram, DW_AT_name("position_check"), DW_AT_symbol_name("_position_check")
+DW$1	.dwtag  DW_TAG_subprogram, DW_AT_name("change_handle_value"), DW_AT_symbol_name("_change_handle_value")
 	.dwattr DW$1, DW_AT_declaration(0x01)
 	.dwattr DW$1, DW_AT_external(0x01)
 
-DW$2	.dwtag  DW_TAG_subprogram, DW_AT_name("line_info_check"), DW_AT_symbol_name("_line_info_check")
+DW$2	.dwtag  DW_TAG_subprogram, DW_AT_name("change_PID_value"), DW_AT_symbol_name("_change_PID_value")
 	.dwattr DW$2, DW_AT_declaration(0x01)
 	.dwattr DW$2, DW_AT_external(0x01)
 
-DW$3	.dwtag  DW_TAG_subprogram, DW_AT_name("max_min_check"), DW_AT_symbol_name("_max_min_check")
+DW$3	.dwtag  DW_TAG_subprogram, DW_AT_name("set_zero"), DW_AT_symbol_name("_set_zero")
 	.dwattr DW$3, DW_AT_declaration(0x01)
 	.dwattr DW$3, DW_AT_external(0x01)
 
-DW$4	.dwtag  DW_TAG_subprogram, DW_AT_name("max_min_print"), DW_AT_symbol_name("_max_min_print")
+DW$4	.dwtag  DW_TAG_subprogram, DW_AT_name("change_run_value"), DW_AT_symbol_name("_change_run_value")
 	.dwattr DW$4, DW_AT_declaration(0x01)
 	.dwattr DW$4, DW_AT_external(0x01)
 
-DW$5	.dwtag  DW_TAG_subprogram, DW_AT_name("sensor_check_127"), DW_AT_symbol_name("_sensor_check_127")
+DW$5	.dwtag  DW_TAG_subprogram, DW_AT_name("line_info_check"), DW_AT_symbol_name("_line_info_check")
 	.dwattr DW$5, DW_AT_declaration(0x01)
 	.dwattr DW$5, DW_AT_external(0x01)
 
-DW$6	.dwtag  DW_TAG_subprogram, DW_AT_name("race_3D"), DW_AT_symbol_name("_race_3D")
+DW$6	.dwtag  DW_TAG_subprogram, DW_AT_name("end_set"), DW_AT_symbol_name("_end_set")
 	.dwattr DW$6, DW_AT_declaration(0x01)
 	.dwattr DW$6, DW_AT_external(0x01)
 
@@ -336,7 +296,7 @@ DW$8	.dwtag  DW_TAG_formal_parameter, DW_AT_type(*DW$T$21)
 	.dwendtag DW$7
 
 
-DW$9	.dwtag  DW_TAG_subprogram, DW_AT_name("set_zero"), DW_AT_symbol_name("_set_zero")
+DW$9	.dwtag  DW_TAG_subprogram, DW_AT_name("change_run_value_2"), DW_AT_symbol_name("_change_run_value_2")
 	.dwattr DW$9, DW_AT_declaration(0x01)
 	.dwattr DW$9, DW_AT_external(0x01)
 
@@ -344,7 +304,7 @@ DW$10	.dwtag  DW_TAG_subprogram, DW_AT_name("second_race"), DW_AT_symbol_name("_
 	.dwattr DW$10, DW_AT_declaration(0x01)
 	.dwattr DW$10, DW_AT_external(0x01)
 
-DW$11	.dwtag  DW_TAG_subprogram, DW_AT_name("change_run_value"), DW_AT_symbol_name("_change_run_value")
+DW$11	.dwtag  DW_TAG_subprogram, DW_AT_name("bigturn_race"), DW_AT_symbol_name("_bigturn_race")
 	.dwattr DW$11, DW_AT_declaration(0x01)
 	.dwattr DW$11, DW_AT_external(0x01)
 
@@ -364,23 +324,23 @@ DW$16	.dwtag  DW_TAG_unspecified_parameters
 	.dwendtag DW$14
 
 
-DW$17	.dwtag  DW_TAG_subprogram, DW_AT_name("end_set"), DW_AT_symbol_name("_end_set")
+DW$17	.dwtag  DW_TAG_subprogram, DW_AT_name("max_min_print"), DW_AT_symbol_name("_max_min_print")
 	.dwattr DW$17, DW_AT_declaration(0x01)
 	.dwattr DW$17, DW_AT_external(0x01)
 
-DW$18	.dwtag  DW_TAG_subprogram, DW_AT_name("sensor_check_4095"), DW_AT_symbol_name("_sensor_check_4095")
+DW$18	.dwtag  DW_TAG_subprogram, DW_AT_name("position_check"), DW_AT_symbol_name("_position_check")
 	.dwattr DW$18, DW_AT_declaration(0x01)
 	.dwattr DW$18, DW_AT_external(0x01)
 
-DW$19	.dwtag  DW_TAG_subprogram, DW_AT_name("change_PID_value"), DW_AT_symbol_name("_change_PID_value")
+DW$19	.dwtag  DW_TAG_subprogram, DW_AT_name("sensor_check_127"), DW_AT_symbol_name("_sensor_check_127")
 	.dwattr DW$19, DW_AT_declaration(0x01)
 	.dwattr DW$19, DW_AT_external(0x01)
 
-DW$20	.dwtag  DW_TAG_subprogram, DW_AT_name("change_run_value_2"), DW_AT_symbol_name("_change_run_value_2")
+DW$20	.dwtag  DW_TAG_subprogram, DW_AT_name("max_min_check"), DW_AT_symbol_name("_max_min_check")
 	.dwattr DW$20, DW_AT_declaration(0x01)
 	.dwattr DW$20, DW_AT_external(0x01)
 
-DW$21	.dwtag  DW_TAG_subprogram, DW_AT_name("change_handle_value"), DW_AT_symbol_name("_change_handle_value")
+DW$21	.dwtag  DW_TAG_subprogram, DW_AT_name("sensor_check_4095"), DW_AT_symbol_name("_sensor_check_4095")
 	.dwattr DW$21, DW_AT_declaration(0x01)
 	.dwattr DW$21, DW_AT_external(0x01)
 DW$22	.dwtag  DW_TAG_variable, DW_AT_name("GpioDataRegs"), DW_AT_symbol_name("_GpioDataRegs")
@@ -388,19 +348,19 @@ DW$22	.dwtag  DW_TAG_variable, DW_AT_name("GpioDataRegs"), DW_AT_symbol_name("_G
 	.dwattr DW$22, DW_AT_declaration(0x01)
 	.dwattr DW$22, DW_AT_external(0x01)
 	.global	_menu_func
-_menu_func:	.usect	".ebss",56,1,1
+_menu_func:	.usect	".ebss",48,1,1
 DW$23	.dwtag  DW_TAG_variable, DW_AT_name("menu_func"), DW_AT_symbol_name("_menu_func")
 	.dwattr DW$23, DW_AT_location[DW_OP_addr _menu_func]
 	.dwattr DW$23, DW_AT_type(*DW$T$34)
 	.dwattr DW$23, DW_AT_external(0x01)
 	.global	_setting
-_setting:	.usect	".ebss",252,1,0
+_setting:	.usect	".ebss",216,1,0
 DW$24	.dwtag  DW_TAG_variable, DW_AT_name("setting"), DW_AT_symbol_name("_setting")
 	.dwattr DW$24, DW_AT_location[DW_OP_addr _setting]
 	.dwattr DW$24, DW_AT_type(*DW$T$52)
 	.dwattr DW$24, DW_AT_external(0x01)
-;	..\Compiler\bin\opt2000.exe C:\Users\JS\AppData\Local\Temp\TI37610 C:\Users\JS\AppData\Local\Temp\TI3764 
-;	..\Compiler\bin\ac2000.exe --keep_unneeded_types -D_INLINE -DLARGE_MODEL -I..\include --version=28 --keep_unneeded_types --mem_model:code=flat --mem_model:data=large -m --i_output_file C:\Users\JS\AppData\Local\Temp\TI3762 --template_info_file C:\Users\JS\AppData\Local\Temp\TI3766 --object_file menu.obj --embed_opts 10 --call_assumptions=0 --mem_model:code=flat --mem_model:data=large --opt_for_speed --opt_level=3 --optimizer_comments --optimizer_interlist --program_level_compile --silicon_version=28 
+;	..\Compiler\bin\opt2000.exe C:\Users\JS\AppData\Local\Temp\TI91610 C:\Users\JS\AppData\Local\Temp\TI9164 
+;	..\Compiler\bin\ac2000.exe --keep_unneeded_types -D_INLINE -DLARGE_MODEL -I..\include --version=28 --keep_unneeded_types --mem_model:code=flat --mem_model:data=large -m --i_output_file C:\Users\JS\AppData\Local\Temp\TI9162 --template_info_file C:\Users\JS\AppData\Local\Temp\TI9166 --object_file menu.obj --embed_opts 10 --call_assumptions=0 --mem_model:code=flat --mem_model:data=large --opt_for_speed --opt_level=3 --optimizer_comments --optimizer_interlist --program_level_compile --silicon_version=28 
 	.sect	".text"
 	.global	_FUCKING_NULL
 
@@ -490,7 +450,7 @@ DW$26	.dwtag  DW_TAG_subprogram, DW_AT_name("menu"), DW_AT_symbol_name("_menu")
 _menu:
 ;***  	-----------------------    K$6 = &setting;
 ;***  	-----------------------    U$7 = (int (*)[9])K$6;
-;***  	-----------------------    K$44 = &menu_func;
+;***  	-----------------------    K$45 = &menu_func;
 ;***  	-----------------------    U$4 = 0L;
 ;*** 39	-----------------------    int32_X = 0L;
 ;*** 40	-----------------------    int32_Y = 0L;
@@ -515,13 +475,12 @@ DW$27	.dwtag  DW_TAG_variable, DW_AT_name("int32_Y"), DW_AT_symbol_name("_int32_
 DW$28	.dwtag  DW_TAG_variable, DW_AT_name("int32_X"), DW_AT_symbol_name("_int32_X")
 	.dwattr DW$28, DW_AT_type(*DW$T$47)
 	.dwattr DW$28, DW_AT_location[DW_OP_breg20 -8]
-DW$29	.dwtag  DW_TAG_variable, DW_AT_name("K$44"), DW_AT_symbol_name("K$44")
+DW$29	.dwtag  DW_TAG_variable, DW_AT_name("K$45"), DW_AT_symbol_name("K$45")
 	.dwattr DW$29, DW_AT_type(*DW$T$35)
-	.dwattr DW$29, DW_AT_location[DW_OP_breg20 -6]
-;* AR2   assigned to U$4
+	.dwattr DW$29, DW_AT_location[DW_OP_breg20 -4]
 DW$30	.dwtag  DW_TAG_variable, DW_AT_name("U$4"), DW_AT_symbol_name("U$4")
 	.dwattr DW$30, DW_AT_type(*DW$T$12)
-	.dwattr DW$30, DW_AT_location[DW_OP_reg8]
+	.dwattr DW$30, DW_AT_location[DW_OP_breg20 -6]
 ;* AR1   assigned to U$28
 DW$31	.dwtag  DW_TAG_variable, DW_AT_name("U$28"), DW_AT_symbol_name("U$28")
 	.dwattr DW$31, DW_AT_type(*DW$T$44)
@@ -530,16 +489,17 @@ DW$31	.dwtag  DW_TAG_variable, DW_AT_name("U$28"), DW_AT_symbol_name("U$28")
 DW$32	.dwtag  DW_TAG_variable, DW_AT_name("K$6"), DW_AT_symbol_name("K$6")
 	.dwattr DW$32, DW_AT_type(*DW$T$43)
 	.dwattr DW$32, DW_AT_location[DW_OP_reg10]
+;* AR2   assigned to U$7
 DW$33	.dwtag  DW_TAG_variable, DW_AT_name("U$7"), DW_AT_symbol_name("U$7")
 	.dwattr DW$33, DW_AT_type(*DW$T$44)
-	.dwattr DW$33, DW_AT_location[DW_OP_breg20 -4]
+	.dwattr DW$33, DW_AT_location[DW_OP_reg8]
+        MOVB      ACC,#0
         MOVL      XAR4,#_menu_func
         MOVL      XAR3,#_setting
-        MOVL      *-SP[6],XAR4
-        MOVL      *-SP[4],XAR3
-        MOVB      XAR2,#0
+        MOVL      *-SP[6],ACC
+        MOVL      *-SP[4],XAR4
+        MOVL      XAR2,XAR3
 	.dwpsn	"menu.c",39,8
-        MOVB      ACC,#0
         MOVL      *-SP[8],ACC           ; |39| 
 	.dwpsn	"menu.c",40,8
         MOVL      *-SP[10],ACC          ; |40| 
@@ -619,20 +579,21 @@ DW$L$_menu$7$E:
 L4:    
 DW$L$_menu$8$B:
 ;***	-----------------------g8:
-;*** 65	-----------------------    U$4 = int32_X*63L;
+;*** 65	-----------------------    U$4 = int32_X*54L;
 ;*** 65	-----------------------    U$7 = U$4+K$6;
 ;*** 65	-----------------------    VFDPrintf((char *)U$7);
 ;*** 66	-----------------------    DSP28x_usDelay(1999998uL);
 	.dwpsn	"menu.c",65,4
-        MOVL      XAR6,*-SP[8]          ; |65| 
-        MOVL      ACC,*-SP[8]
-        LSL       ACC,6                 ; |65| 
-        SUBL      ACC,XAR6
-        MOVL      XAR2,ACC              ; |65| 
+        MOVB      ACC,#54
+        MOVL      XT,ACC                ; |65| 
+        MOVL      ACC,*-SP[8]           ; |65| 
+        IMPYL     ACC,XT,ACC            ; |65| 
+        MOVL      *-SP[6],ACC           ; |65| 
+        MOVL      XAR6,*-SP[6]          ; |65| 
         MOVL      ACC,XAR3              ; |65| 
-        ADDL      ACC,XAR2
-        MOVL      *-SP[4],ACC           ; |65| 
+        ADDL      ACC,XAR6
         MOVL      *-SP[2],ACC           ; |65| 
+        MOVL      XAR2,ACC              ; |65| 
         LCR       #_VFDPrintf           ; |65| 
         ; call occurs [#_VFDPrintf] ; |65| 
 	.dwpsn	"menu.c",66,4
@@ -649,8 +610,7 @@ DW$L$_menu$9$B:
 ;*** 45	-----------------------    DSP28x_usDelay(1999998uL);
 ;*** 47	-----------------------    if ( !(*&GpioDataRegs&0x4000u) ) goto g6;
 	.dwpsn	"menu.c",44,3
-        MOVL      ACC,*-SP[4]
-        MOVL      *-SP[2],ACC           ; |44| 
+        MOVL      *-SP[2],XAR2          ; |44| 
         LCR       #_VFDPrintf           ; |44| 
         ; call occurs [#_VFDPrintf] ; |44| 
 	.dwpsn	"menu.c",45,3
@@ -698,7 +658,7 @@ DW$L$_menu$12$B:
         LSL       ACC,3
         ADDL      ACC,XAR6
         MOVL      XAR6,ACC
-        MOVL      ACC,XAR2
+        MOVL      ACC,*-SP[6]
         MOVL      P,XAR3
         ADDL      ACC,XAR6
         ADDL      P,ACC
@@ -718,10 +678,10 @@ DW$L$_menu$13$B:
         ; branchcc occurs ; |92| 
 DW$L$_menu$13$E:
 DW$L$_menu$14$B:
-;*** 94	-----------------------    int32_Y = 6L;
+;*** 94	-----------------------    int32_Y = 5L;
 ;*** 94	-----------------------    goto g17;
 	.dwpsn	"menu.c",94,26
-        MOVB      ACC,#6
+        MOVB      ACC,#5
         MOVL      *-SP[10],ACC          ; |94| 
         BF        L8,UNC                ; |94| 
         ; branch occurs ; |94| 
@@ -729,7 +689,7 @@ DW$L$_menu$14$E:
 L7:    
 DW$L$_menu$15$B:
 ;***	-----------------------g15:
-;*** 81	-----------------------    if ( (++int32_Y) <= 6L ) goto g17;
+;*** 81	-----------------------    if ( (++int32_Y) < 6L ) goto g17;
 	.dwpsn	"menu.c",81,6
         MOVL      ACC,*-SP[10]
         ADDB      ACC,#1                ; |81| 
@@ -737,7 +697,7 @@ DW$L$_menu$15$B:
         MOVL      XAR6,*-SP[10]         ; |81| 
         MOVB      ACC,#6
         CMPL      ACC,XAR6              ; |81| 
-        BF        L8,GEQ                ; |81| 
+        BF        L8,GT                 ; |81| 
         ; branchcc occurs ; |81| 
 DW$L$_menu$15$E:
 DW$L$_menu$16$B:
@@ -759,7 +719,7 @@ DW$L$_menu$17$B:
         ADDL      ACC,XAR6
         MOVL      XAR6,ACC              ; |97| 
         MOVL      P,XAR3                ; |97| 
-        MOVL      ACC,XAR2              ; |97| 
+        MOVL      ACC,*-SP[6]           ; |97| 
         ADDL      ACC,XAR6
         ADDL      P,ACC
         MOVL      *-SP[2],P             ; |97| 
@@ -809,20 +769,20 @@ DW$L$_menu$20$B:
         ; branchcc occurs ; |101| 
 DW$L$_menu$20$E:
 DW$L$_menu$21$B:
-;*** 101	-----------------------    (*K$44[7*int32_X+int32_Y])();
+;*** 101	-----------------------    (*K$45[6*int32_X+int32_Y])();
 ;*** 101	-----------------------    goto g18;
 	.dwpsn	"menu.c",101,21
         MOVL      ACC,*-SP[8]
-        LSL       ACC,1                 ; |101| 
-        MOVL      XAR4,*-SP[6]          ; |101| 
+        LSL       ACC,3                 ; |101| 
         MOVL      XAR6,ACC              ; |101| 
         MOVL      ACC,*-SP[8]           ; |101| 
-        LSL       ACC,4                 ; |101| 
-        MOVL      P,ACC                 ; |101| 
+        LSL       ACC,2                 ; |101| 
+        ADDL      ACC,XAR6
+        MOVL      XAR7,ACC              ; |101| 
+        MOVL      XAR4,*-SP[4]          ; |101| 
         MOVL      ACC,*-SP[10]          ; |101| 
         LSL       ACC,1                 ; |101| 
-        SUBUL     P,XAR6
-        ADDL      ACC,P
+        ADDL      ACC,XAR7
         ADDL      XAR4,ACC
         MOVL      XAR7,*+XAR4[0]        ; |101| 
         LCR       *XAR7                 ; |101| 
@@ -839,7 +799,7 @@ DW$L$_menu$21$E:
 	.dwcfa	0xc0, 7
 
 DW$34	.dwtag  DW_TAG_loop
-	.dwattr DW$34, DW_AT_name("H:\Tracer_Mouse\Tracer\##DC##\BEHEMOTH\main\menu.asm:L5:1:1692411763")
+	.dwattr DW$34, DW_AT_name("H:\Tracer_Mouse\Tracer\##DC##\BEHEMOTH\main\menu.asm:L5:1:1723055798")
 	.dwattr DW$34, DW_AT_begin_file("menu.c")
 	.dwattr DW$34, DW_AT_begin_line(0x2c)
 	.dwattr DW$34, DW_AT_end_line(0x6d)
@@ -875,7 +835,7 @@ DW$44	.dwtag  DW_TAG_loop_range
 	.dwattr DW$44, DW_AT_high_pc(DW$L$_menu$3$E)
 
 DW$45	.dwtag  DW_TAG_loop
-	.dwattr DW$45, DW_AT_name("H:\Tracer_Mouse\Tracer\##DC##\BEHEMOTH\main\menu.asm:L9:2:1692411763")
+	.dwattr DW$45, DW_AT_name("H:\Tracer_Mouse\Tracer\##DC##\BEHEMOTH\main\menu.asm:L9:2:1723055798")
 	.dwattr DW$45, DW_AT_begin_file("menu.c")
 	.dwattr DW$45, DW_AT_begin_line(0x4c)
 	.dwattr DW$45, DW_AT_end_line(0x67)
@@ -932,24 +892,24 @@ FSL3:	.string	"SUB___IN",0
 ;***************************************************************
 ;* UNDEFINED EXTERNAL REFERENCES                               *
 ;***************************************************************
-	.global	_position_check
-	.global	_line_info_check
-	.global	_max_min_check
-	.global	_max_min_print
-	.global	_sensor_check_127
-	.global	_race_3D
-	.global	_DSP28x_usDelay
+	.global	_change_handle_value
+	.global	_change_PID_value
 	.global	_set_zero
-	.global	_second_race
 	.global	_change_run_value
+	.global	_line_info_check
+	.global	_end_set
+	.global	_DSP28x_usDelay
+	.global	_change_run_value_2
+	.global	_second_race
+	.global	_bigturn_race
 	.global	_Sensor_setting
 	.global	_search_race
 	.global	_VFDPrintf
-	.global	_end_set
+	.global	_max_min_print
+	.global	_position_check
+	.global	_sensor_check_127
+	.global	_max_min_check
 	.global	_sensor_check_4095
-	.global	_change_PID_value
-	.global	_change_run_value_2
-	.global	_change_handle_value
 	.global	_GpioDataRegs
 
 ;***************************************************************
@@ -968,11 +928,11 @@ DW$T$31	.dwtag  DW_TAG_subroutine_type
 
 DW$T$34	.dwtag  DW_TAG_array_type, DW_AT_type(*DW$T$32)
 	.dwattr DW$T$34, DW_AT_language(DW_LANG_C)
-	.dwattr DW$T$34, DW_AT_byte_size(0x38)
+	.dwattr DW$T$34, DW_AT_byte_size(0x30)
 DW$58	.dwtag  DW_TAG_subrange_type
 	.dwattr DW$58, DW_AT_upper_bound(0x03)
 DW$59	.dwtag  DW_TAG_subrange_type
-	.dwattr DW$59, DW_AT_upper_bound(0x06)
+	.dwattr DW$59, DW_AT_upper_bound(0x05)
 	.dwendtag DW$T$34
 
 DW$T$35	.dwtag  DW_TAG_pointer_type, DW_AT_type(*DW$T$33)
@@ -1003,11 +963,11 @@ DW$T$28	.dwtag  DW_TAG_pointer_type, DW_AT_type(*DW$T$27)
 
 DW$T$52	.dwtag  DW_TAG_array_type, DW_AT_type(*DW$T$27)
 	.dwattr DW$T$52, DW_AT_language(DW_LANG_C)
-	.dwattr DW$T$52, DW_AT_byte_size(0xfc)
+	.dwattr DW$T$52, DW_AT_byte_size(0xd8)
 DW$62	.dwtag  DW_TAG_subrange_type
 	.dwattr DW$62, DW_AT_upper_bound(0x03)
 DW$63	.dwtag  DW_TAG_subrange_type
-	.dwattr DW$63, DW_AT_upper_bound(0x06)
+	.dwattr DW$63, DW_AT_upper_bound(0x05)
 DW$64	.dwtag  DW_TAG_subrange_type
 	.dwattr DW$64, DW_AT_upper_bound(0x08)
 	.dwendtag DW$T$52
@@ -1017,9 +977,9 @@ DW$T$32	.dwtag  DW_TAG_pointer_type, DW_AT_type(*DW$T$31)
 
 DW$T$33	.dwtag  DW_TAG_array_type, DW_AT_type(*DW$T$32)
 	.dwattr DW$T$33, DW_AT_language(DW_LANG_C)
-	.dwattr DW$T$33, DW_AT_byte_size(0x0e)
+	.dwattr DW$T$33, DW_AT_byte_size(0x0c)
 DW$65	.dwtag  DW_TAG_subrange_type
-	.dwattr DW$65, DW_AT_upper_bound(0x06)
+	.dwattr DW$65, DW_AT_upper_bound(0x05)
 	.dwendtag DW$T$33
 
 
@@ -1033,9 +993,9 @@ DW$66	.dwtag  DW_TAG_subrange_type
 
 DW$T$41	.dwtag  DW_TAG_array_type, DW_AT_type(*DW$T$10)
 	.dwattr DW$T$41, DW_AT_language(DW_LANG_C)
-	.dwattr DW$T$41, DW_AT_byte_size(0x3f)
+	.dwattr DW$T$41, DW_AT_byte_size(0x36)
 DW$67	.dwtag  DW_TAG_subrange_type
-	.dwattr DW$67, DW_AT_upper_bound(0x06)
+	.dwattr DW$67, DW_AT_upper_bound(0x05)
 DW$68	.dwtag  DW_TAG_subrange_type
 	.dwattr DW$68, DW_AT_upper_bound(0x08)
 	.dwendtag DW$T$41

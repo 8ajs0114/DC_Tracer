@@ -19,16 +19,6 @@
 #include "Check.h"
 #include "Sensor.h"
 
-typedef volatile enum //enum : make original value ,volatile : changable
-{
-	#if 1
-
-	SEN_NUM = 8,//On right side of it(++8)
-	ADC_NUM = 16
-	
-	#endif	
-}sensor_num;
-
 void sensor_check_4095(void)
 {
 	int32_repeat_const = 0;
@@ -42,17 +32,16 @@ void sensor_check_4095(void)
 		{
 			int32_repeat_const++;
 			
-			if(int32_repeat_const > 15)
-				int32_repeat_const = 0;
-		
+			if(int32_repeat_const > ADC_NUM - 1)	int32_repeat_const = 0;
+			else;
 		}
 
 		else if(!SL)
 		{
 			int32_repeat_const--;
 			
-			if(int32_repeat_const < 0)
-				int32_repeat_const = 15;
+			if(int32_repeat_const < 0)		int32_repeat_const = ADC_NUM - 1;
+			else;
 		}
 		
 		DELAY_US(50000);
@@ -83,16 +72,16 @@ void sensor_check_127(void)
 		{
 			int32_repeat_const++;
 
-			if(int32_repeat_const > 15)
-				int32_repeat_const = 0;
+			if(int32_repeat_const > ADC_NUM - 1)	int32_repeat_const = 0;
+			else;
 		}
 
 		else if(!SL)
 		{
 			int32_repeat_const--;
 			
-			if(int32_repeat_const < 0)
-				int32_repeat_const = 15;
+			if(int32_repeat_const < 0)		int32_repeat_const = ADC_NUM - 1;
+			else;
 		}
 		
 		VFDPrintf("[%2ld]%4.0f",int32_repeat_const, _IQtoF(g_sen[int32_repeat_const].iq15_127_value));
@@ -120,16 +109,16 @@ void max_min_check (void)
 		{
 			int32_repeat_const++;
 
-			if(int32_repeat_const > 15)
-				int32_repeat_const = 0;
+			if(int32_repeat_const > ADC_NUM - 1)	int32_repeat_const = 0;
+			else;
 		}
 
 		else if(!SL)
 		{
 			int32_repeat_const--;
 			
-			if(int32_repeat_const < 0)
-				int32_repeat_const = 15;
+			if(int32_repeat_const < 0)		int32_repeat_const = ADC_NUM - 1;
+			else;
 		}
   
 		VFDPrintf("M%2ld:%4.0f",int32_repeat_const, _IQtoF(g_sen[ int32_repeat_const ].iq15_4095_max_value));
@@ -150,16 +139,16 @@ void max_min_check (void)
 		{
 			int32_repeat_const++;
 
-			if(int32_repeat_const > 15)
-				int32_repeat_const = 0;
+			if(int32_repeat_const > ADC_NUM - 1)	int32_repeat_const = 0;
+			else;
 		}
 
 		else if(!SL)
 		{
 			int32_repeat_const--;
 			
-			if(int32_repeat_const < 0)
-				int32_repeat_const = 15;
+			if(int32_repeat_const < 0)		int32_repeat_const = ADC_NUM - 1;
+			else;
 		}
   
 		VFDPrintf("m%2ld:%4.0f",int32_repeat_const, _IQtoF(g_sen[ int32_repeat_const ].iq15_4095_min_value));
@@ -174,8 +163,8 @@ void max_min_check (void)
 
 void max_min_print (void)
 {	
-	for(u16_repeat_const = 0; u16_repeat_const < 16; u16_repeat_const++)
-		TxPrintf("[%d] MAX : %.0f , MIN : %.0f\n",u16_repeat_const,_IQtoF(g_sen[u16_repeat_const].iq15_4095_max_value),_IQtoF(g_sen[u16_repeat_const].iq15_4095_min_value));
+	for(int32_repeat_const = 0; int32_repeat_const < ADC_NUM; int32_repeat_const++)
+		TxPrintf("[%ld] MAX : %.0f\t, MIN : %.0f\t, RANGE : %.0f\n",int32_repeat_const,_IQtoF(g_sen[int32_repeat_const].iq15_4095_max_value),_IQtoF(g_sen[int32_repeat_const].iq15_4095_min_value),_IQtoF(g_sen[int32_repeat_const].iq15_4095_max_min_range_value));
 	
 }
 
@@ -210,16 +199,11 @@ void position_check(void)
 
 			g_pos.iq7_temp_position = _IQ7div( g_pos.iq7_sum_of_sec, g_pos.iq7_sum );
 
-			if( g_pos.iq7_temp_position >= iq7_POSITION_END )		
-				g_pos.iq7_temp_position = iq7_POSITION_END;
-
-			else if( g_pos.iq7_temp_position <= -iq7_POSITION_END )	
-				g_pos.iq7_temp_position = -iq7_POSITION_END;
-			
+			if( g_pos.iq7_temp_position >= iq7_POSITION_END )		g_pos.iq7_temp_position = iq7_POSITION_END;
+			else if( g_pos.iq7_temp_position <= -iq7_POSITION_END )	g_pos.iq7_temp_position = -iq7_POSITION_END;
 			else;
 			
 			g_pos.iq10_temp_position = g_pos.iq7_temp_position<<3;
-
 			position_enable(&g_pos, g_sen);	
 		}
 		
@@ -243,17 +227,20 @@ void line_info_check (void)
 
 	TxPrintf("\n");
 	
+	TxPrintf("\t\t\t\tL_Dist\t\tR_Dist\t\tC_Dist\t\tD_dist\t\tMaxVel\t\tOutVel\t\tDecel\t\tT_way\n");
+	
 	#if 1
-    	for(u16_repeat_const = 0; u16_repeat_const <= int32_total_count; u16_repeat_const++)
+    	for(int32_repeat_const = 0; int32_repeat_const <= int32_total_count; int32_repeat_const++)
     	{ 
-    		TxPrintf("%3d ~%3d |\t ",u16_repeat_const,u16_repeat_const+1);
-		TxPrintf("L_Dist : %4f\t",_IQtoF(search_info[u16_repeat_const].iq15_left_dist));
-		TxPrintf("R_Dist : %4f\t",_IQtoF(search_info[u16_repeat_const].iq15_right_dist));
-		TxPrintf("C_Dist : %4f\t",_IQtoF(search_info[u16_repeat_const].iq15_center_dist));
-		TxPrintf("D_dist : %4f\t",_IQtoF(search_info[u16_repeat_const].iq15_decel_dist));
-		TxPrintf("MaxVel : %4f\t",_IQtoF(search_info[u16_repeat_const].iq15_max_vel));	
-		TxPrintf("Decel : %4f\t",_IQtoF(search_info[u16_repeat_const].iq15_decel));
-		TxPrintf("T_way : 0x%04x\n",(Uint16)search_info[u16_repeat_const].int32_turn_way);
+    		TxPrintf("%3ld\t~\t%3ld\t|\t ",	int32_repeat_const,int32_repeat_const+1);
+		TxPrintf("%4f\t", 				_IQtoF(search_info[int32_repeat_const].iq15_left_dist));
+		TxPrintf("%4f\t", 				_IQtoF(search_info[int32_repeat_const].iq15_right_dist));
+		TxPrintf("%4f\t", 				_IQtoF(search_info[int32_repeat_const].iq15_center_dist));
+		TxPrintf("%4f\t", 				_IQtoF(search_info[int32_repeat_const].iq15_decel_dist));
+		TxPrintf("%4f\t", 				_IQtoF(search_info[int32_repeat_const].iq15_max_vel));
+		TxPrintf("%4f\t", 				_IQtoF(search_info[int32_repeat_const].iq15_decel_vel));
+		TxPrintf("%4f\t",	 			_IQtoF(search_info[int32_repeat_const].iq15_decel));
+		TxPrintf("0x%04x\n", 			(Uint16)search_info[int32_repeat_const].int32_turn_way);
 		
 	}
 
